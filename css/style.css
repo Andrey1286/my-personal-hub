@@ -1,156 +1,240 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Основные настройки и профессиональная цветовая палитра */
+:root {
+    --bg-color: #f4f6f8;         /* Светло-серый фон для мягкости */
+    --card-bg: #ffffff;          /* Чистый белый для карточек и блоков */
+    --accent-blue: #1a365d;      /* Глубокий синий: надежность и профессионализм */
+    --accent-blue-light: #2c5282;/* Чуть светлее для эффекта при наведении */
+    --text-primary: #1a202c;     /* Темно-серый для заголовков (мягче черного) */
+    --text-secondary: #4a5568;   /* Серый для основного текста */
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+    margin: 0;
+    padding: 0;
     line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
 }
 
+/* Герой-блок (шапка с фото справа) */
 .hero {
-    text-align: center;
+    background-color: var(--card-bg);
     padding: 60px 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-bottom: 1px solid #e2e8f0;
 }
 
-.photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #4a90e2;
+.hero-text {
+    flex: 1;
+    text-align: left;
 }
 
 .hero h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: #2c3e50;
+    color: var(--accent-blue);
+    font-size: 2.5rem;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-.subtitle {
-    font-size: 1.1em;
-    color: #666;
-    max-width: 600px;
-    margin: 0 auto;
+.hero .subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin: 0;
 }
 
+.hero .photo {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 12px; /* Скругленные углы выглядят современно и строго */
+    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.15);
+    border: 4px solid var(--bg-color);
+}
+
+/* Навигация */
 .menu {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: var(--accent-blue);
+    padding: 15px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .menu a {
+    color: #ffffff;
     text-decoration: none;
-    color: #4a90e2;
+    margin: 0 15px;
     font-weight: 500;
-    transition: color 0.3s;
+    font-size: 1.05rem;
+    transition: opacity 0.3s;
 }
 
 .menu a:hover {
-    color: #2c3e50;
+    opacity: 0.8;
+    text-decoration: underline;
 }
 
+/* Основной контент */
 .materials {
     max-width: 1000px;
-    margin: 40px auto;
+    margin: 50px auto;
     padding: 0 20px;
 }
 
 .materials h2 {
+    color: var(--accent-blue);
     text-align: center;
-    font-size: 1.8em;
+    font-size: 2rem;
     margin-bottom: 10px;
-    color: #2c3e50;
 }
 
 .materials > p {
     text-align: center;
-    color: #666;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
 }
 
+/* Карточки материалов */
 .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 25px;
 }
 
 .card {
-    background-color: #fff;
+    background-color: var(--card-bg);
     padding: 25px;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
     text-decoration: none;
-    color: #333;
-    border: 1px solid #e0e0e0;
-    transition: box-shadow 0.3s, transform 0.3s;
+    color: var(--text-primary);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid var(--accent-blue); /* Синий акцент слева */
 }
 
 .card:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(26, 54, 93, 0.1);
+    border-left-color: var(--accent-blue-light);
 }
 
 .card h3 {
-    color: #4a90e2;
+    color: var(--accent-blue);
+    margin-top: 0;
     margin-bottom: 10px;
+    font-size: 1.2rem;
 }
 
 .card p {
-    color: #666;
-    font-size: 0.95em;
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
 }
 
-footer {
-    text-align: center;
-    padding: 30px 20px;
-    background-color: #fff;
-    border-top: 1px solid #e0e0e0;
-    margin-top: 40px;
-}
-
-footer a {
-    color: #4a90e2;
-    text-decoration: none;
-    margin: 0 10px;
-}
+/* Страницы "Обо мне" и "Услуги" */
 .about-text {
-    max-width: 800px;
-    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
 }
 
 .about-text h3 {
-    color: #2c3e50;
+    color: var(--accent-blue);
     margin-top: 30px;
     margin-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
 }
 
-.about-text p {
-    margin-bottom: 15px;
-    color: #555;
+.about-text h3:first-child {
+    margin-top: 0;
 }
 
+.about-text ul {
+    padding-left: 20px;
+}
+
+.about-text li {
+    margin-bottom: 8px;
+}
+
+/* Кнопки */
 .card-button {
     display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #4a90e2;
-    color: #fff !important;
-    border-radius: 5px;
+    background-color: var(--accent-blue);
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     transition: background-color 0.3s;
 }
 
 .card-button:hover {
-    background-color: #357abd;
+    background-color: var(--accent-blue-light);
+}
+
+/* Футер */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--accent-blue);
+    color: #ffffff;
+    margin-top: 60px;
+}
+
+footer a {
+    color: #cbd5e0;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Адаптивность для мобильных телефонов */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column-reverse; /* На телефоне фото будет сверху, текст снизу */
+        text-align: center;
+        gap: 30px;
+        padding: 40px 20px;
+    }
+    
+    .hero-text {
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero .photo {
+        width: 200px;
+        height: 200px;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .about-text {
+        padding: 25px;
+    }
 }
