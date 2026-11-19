@@ -10,7 +10,16 @@
     <meta property="og:url" content="https://pystogov-doc.ru/about.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=7">
+    <link rel="stylesheet" href="css/style.css?v=8">
+    
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem("theme") || "light";
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            } catch(e) {}
+        })();
+    </script>
     
     <script type="application/ld+json">
     {
@@ -38,10 +47,13 @@
     </header>
 
     <nav class="menu">
-        <a href="index.html">Главная</a>
-        <a href="about.html">Обо мне</a>
-        <a href="services.html">Услуги</a>
-        <a href="https://pystogovas.taplink.ws/" target="_blank">Таплинк</a>
+        <div class="menu-links">
+            <a href="index.html">Главная</a>
+            <a href="about.html">Обо мне</a>
+            <a href="services.html">Услуги</a>
+            <a href="https://pystogovas.taplink.ws/" target="_blank">Таплинк</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">🌙</button>
     </nav>
 
     <section class="materials fade-in">
@@ -71,13 +83,25 @@
     <footer>
         <p><a href="index.html">← Вернуться на главную</a></p>
         <p style="margin-top: 15px; font-size: 0.9em;">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" style="color: #3182CE; text-decoration: underline; margin-right: 15px;">Оставить отзыв</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" style="color: var(--accent-blue); text-decoration: underline; margin-right: 15px;">Оставить отзыв</a>
             <a href="offer.pdf" target="_blank" class="offer-link">Договор-оферта (ознакомьтесь перед получением услуг онлайн)</a>
         </p>
     </footer>
 
     <button id="backToTop" title="Наверх">↑</button>
     <script>
+        const themeToggle = document.getElementById("themeToggle");
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme") || "light";
+        themeToggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+
+        themeToggle.addEventListener("click", function() {
+            const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            html.setAttribute("data-theme", next);
+            try { localStorage.setItem("theme", next); } catch(e) {}
+            themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
+        });
+
         const backToTopButton = document.getElementById("backToTop");
         window.onscroll = function() {
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) backToTopButton.classList.add("show");
