@@ -1,4 +1,4 @@
-/* Мягкая, профессиональная палитра: спокойствие, забота, доверие */
+/* Мягкая, профессиональная палитра */
 :root {
     --bg-color: #F7FAFC;
     --card-bg: #FFFFFF;
@@ -15,6 +15,23 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    position: relative;
+}
+
+/* Полупрозрачная молекула на фоне всего сайта */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('molecule.png');
+    background-repeat: repeat;
+    background-size: 250px 250px;
+    opacity: 0.04;
+    z-index: -1;
+    pointer-events: none;
 }
 
 /* Шапка с фото СПРАВА и текстом СЛЕВА - светло-синий фон как у ВК */
@@ -76,7 +93,7 @@ body {
     font-weight: 600;
 }
 
-/* Меню: ВСЕГДА видно, ничего не пропадает */
+/* Меню */
 .menu {
     background-color: var(--card-bg);
     padding: 15px 20px;
@@ -160,7 +177,7 @@ body {
     color: var(--text-secondary);
 }
 
-/* Текстовые блоки на страницах "Обо мне" и "Услуги" */
+/* Текстовые блоки */
 .about-text {
     background-color: var(--card-bg);
     padding: 40px;
