@@ -122,6 +122,74 @@ body::before {
 .about-text ul { padding-left: 20px; color: var(--text-secondary); }
 .about-text li { margin-bottom: 8px; }
 
+/* Прайс-лист */
+.price-category {
+    color: var(--accent-blue);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.price-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.price-item {
+    background-color: var(--card-bg);
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.price-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(49, 130, 206, 0.1);
+    border-color: var(--accent-blue);
+}
+
+.price-item h4 {
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.price-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+}
+
+.price-value {
+    color: var(--accent-blue);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: auto;
+}
+
+.price-note {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #718096;
+    margin-top: 25px;
+    font-style: italic;
+}
+
 /* Виджет отзывов */
 .widget-container {
     background-color: #FFFFFF;
@@ -188,5 +256,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .hero .photo { width: 200px; height: 200px; order: -1; }
     .menu { display: flex; flex-direction: column; gap: 12px; }
     .about-text { padding: 25px; }
+    .price-list { grid-template-columns: 1fr; }
     #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 20px; }
 }
