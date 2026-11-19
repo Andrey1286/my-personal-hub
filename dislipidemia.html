@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Маршрут пациента: впервые выявленная дислипидемия</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+background: linear-gradient(160deg, #e8f0f8 0%, #f5f9fc 100%);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+padding: 32px 20px 64px;
+color: #1f2e3d;
+}
+.app { max-width: 960px; width: 100%; }
+/* ---------- Прогресс и панель управления ---------- */
+.progress-wrap { margin-bottom: 22px; position: relative; z-index: 2; }
+.progress-top {
+display: flex; justify-content: space-between; align-items: center;
+gap: 12px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.progress-label {
+font-size: 0.95rem; color: #3f566b; font-weight: 600;
+display: flex; gap: 10px; align-items: baseline;
+}
+.progress-label .percent { color: #1e6fa8; }
+.controls { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+border: 1px solid #c9d8e6; background: #fff; cursor: pointer;
+width: 38px; height: 38px; border-radius: 12px;
+display: inline-flex; align-items: center; justify-content: center;
+font-size: 1.05rem; color: #2c4a66; transition: background 0.2s, border-color 0.2s;
+}
+.icon-btn:hover { background: #eef5fb; border-color: #9dbdd8; }
+.icon-btn:focus-visible { outline: 3px solid #2e86c1; outline-offset: 2px; }
+.progress-bar { height: 10px; background: #d6e2ee; border-radius: 20px; overflow: hidden; }
+.progress-fill {
+height: 100%; width: 0%;
+background: linear-gradient(90deg, #2e86c1, #1e6fa8);
+border-radius: 20px; transition: width 0.4s ease;
+}
+/* ---------- Степпер ---------- */
+.stepper {
+margin-top: 18px;
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+justify-content: space-between;
+align-items: flex-start;
+padding: 6px 2px 4px;
+position: relative;
+z-index: 2;
+}
+.step-item {
+flex: 1 1 0;
+min-width: 64px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+background: none;
+border: none;
+cursor: pointer;
+padding: 4px 2px;
+font-family: inherit;
+color: #64748b;
+transition: color 0.2s;
+position: relative;
+z-index: 3;
+pointer-events: auto;
+}
+.step-item:hover .step-dot { transform: scale(1.12); background: #9dbdd8; }
+.step-item:focus-visible { outline: 3px solid #2e86c1; outline-offset: 2px; border-radius: 10px; }
+.step-dot {
+width: 18px; height: 18px; border-radius: 50%;
+background: #d6e2ee;
+border: 2px solid #c9d8e6;
+transition: background 0.2s, border-color 0.2s, transform 0.2s;
+flex-shrink: 0;
+pointer-events: none;
+}
+.step-item.done .step-dot { background: #1e6fa8; border-color: #1e6fa8; }
+.step-item.current .step-dot {
+background: #fff; border-color: #1e6fa8; border-width: 3px;
+transform: scale(1.25);
+box-shadow: 0 0 0 4px rgba(46,134,193,0.18);
+}
+.step-item.current { color: #143a5a; }
+.step-caption {
+font-size: 0.72rem;
+line-height: 1.2;
+text-align: center;
+max-width: 82px;
+color: #64748b;
+font-weight: 500;
+pointer-events: none;
+}
+.step-item.current .step-caption { color: #143a5a; font-weight: 700; }
+.step-item.done .step-caption { color: #3f566b; }
+@media (max-width: 720px) {
+.step-caption { display: none; }
+.step-item { min-width: 40px; gap: 0; }
+.stepper { gap: 2px; }
+}
+/* ---------- Уведомление (toast) ---------- */
+.toast {
+position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: #1e3a5f; color: #fff; padding: 12px 22px; border-radius: 12px;
+font-size: 0.95rem; opacity: 0; pointer-events: none;
+transition: opacity 0.3s, transform 0.3s; z-index: 1000;
+box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ---------- Карточка ---------- */
+.card {
+background: #fff; border-radius: 28px;
+box-shadow: 0 24px 56px rgba(20, 50, 80, 0.13);
+padding: 48px 48px 40px;
+animation: slideIn 0.35s ease;
+position: relative;
+z-index: 1;
+}
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(18px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.card.hidden { display: none; }
+.card-tag {
+display: inline-block; background: #e3eef8; color: #1e6fa8;
+font-size: 0.85rem; font-weight: 600; padding: 6px 18px;
+border-radius: 40px; margin-bottom: 18px; letter-spacing: 0.3px;
+}
+.card-tag.warn { background: #fdecea; color: #b02a1f; }
+.card-tag.ok   { background: #e6f6ea; color: #1e8449; }
+.card-tag.neutral { background: #eef2f6; color: #3f566b; }
+.card h2 { font-size: 1.8rem; line-height: 1.3; color: #143a5a; margin-bottom: 20px; }
+.card h3 { font-size: 1.2rem; color: #1e6fa8; margin: 26px 0 12px; }
+.card p  { font-size: 1.08rem; line-height: 1.75; margin-bottom: 16px; color: #2c3e50; }
+.card ul { margin: 0 0 18px 4px; padding-left: 22px; }
+.card li { font-size: 1.05rem; line-height: 1.7; margin-bottom: 12px; color: #2c3e50; }
+.card li strong { color: #143a5a; }
+.nested-list { margin-top: 10px; margin-bottom: 0; padding-left: 22px; }
+.nested-list li { font-size: 1rem; margin-bottom: 8px; }
+.callout {
+background: #eaf7ea; border-left: 6px solid #2e8b57;
+padding: 18px 20px; border-radius: 14px;
+font-size: 1rem; line-height: 1.65; margin-bottom: 18px;
+}
+.callout.red  { background: #fdf0ef; border-left-color: #c0392b; }
+.callout.blue { background: #eaf2fb; border-left-color: #2e86c1; }
+.callout.amber { background: #fff8e7; border-left-color: #d68910; }
+.callout strong { color: inherit; }
+/* ---------- Кнопки ---------- */
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.btn {
+border: none; cursor: pointer; font-family: inherit;
+font-size: 1.05rem; font-weight: 600;
+padding: 16px 30px; border-radius: 60px;
+transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid #2e86c1; outline-offset: 3px; }
+.btn-primary {
+background: #1e6fa8; color: #fff;
+box-shadow: 0 6px 18px rgba(30, 111, 168, 0.35);
+}
+.btn-primary:hover { background: #155a8a; }
+.btn-secondary { background: #eef3f8; color: #2c4a66; }
+.btn-secondary:hover { background: #e0e9f2; }
+.btn-small { padding: 10px 18px; font-size: 0.95rem; }
+/* ---------- Мифы ---------- */
+.myth-accordion { display: flex; flex-direction: column; gap: 12px; margin: 18px 0 22px; }
+.myth-item { border: 1px solid #e3ecf4; border-radius: 14px; background: #fff; overflow: hidden; }
+.myth-header {
+width: 100%; border: none; background: transparent; cursor: pointer;
+font-family: inherit; font-size: 1.05rem; font-weight: 600; color: #143a5a;
+text-align: left; padding: 16px 18px;
+display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.myth-header:hover { background: rgba(30,111,168,0.05); }
+.myth-header:focus-visible { outline: 3px solid #2e86c1; outline-offset: -3px; }
+.myth-header .chev { transition: transform 0.25s ease; color: #1e6fa8; font-size: 0.9rem; flex-shrink: 0; }
+.myth-item.open .myth-header .chev { transform: rotate(180deg); }
+.myth-body { display: none; padding: 0 18px 18px; font-size: 1rem; line-height: 1.65; color: #2c3e50; }
+.myth-item.open .myth-body { display: block; animation: slideIn 0.25s ease; }
+.myth-body p { font-size: 1rem; margin-bottom: 10px; }
+.myth-body ul { margin: 6px 0 10px 18px; }
+.myth-body li { font-size: 1rem; margin-bottom: 8px; }
+.myth-verdict {
+display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 20px;
+font-size: 0.82rem; font-weight: 700;
+}
+.myth-verdict.false { background: #fdecea; color: #b02a1f; }
+.myth-verdict.partly { background: #fff3cd; color: #856404; }
+/* ---------- Сравнение норм ---------- */
+.compare-toggle { margin-top: 6px; }
+.compare-block { display: none; margin-top: 20px; animation: slideIn 0.3s ease; }
+.compare-block.visible { display: block; }
+.compare-table-wrap { overflow-x: auto; border-radius: 18px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+table { width: 100%; border-collapse: collapse; font-size: 0.98rem; background: #fff; min-width: 560px; }
+th { background: #1e3a5f; color: #fff; padding: 16px 14px; text-align: left; font-weight: 600; font-size: 0.92rem; }
+td { padding: 14px; border-bottom: 1px solid #e9edf2; vertical-align: top; line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) { background: #f8fbfe; }
+.row-esc { background: #e8f0fe !important; }
+.row-extreme { background: #fdf0ef !important; }
+.badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; margin-left: 4px; white-space: nowrap; }
+.badge-esc { background: #d4e6f1; color: #1a5276; }
+.badge-extreme { background: #fdecea; color: #b02a1f; }
+.compare-note { background: #eaf7ea; border-left: 6px solid #2e8b57; padding: 18px 20px; border-radius: 14px; margin-top: 18px; font-size: 1rem; line-height: 1.65; }
+.compare-source { margin-top: 12px; font-size: 0.82rem; color: #64748b; text-align: center; }
+/* ---------- Сворачиваемые источники ---------- */
+details.sources-toggle {
+margin-top: 16px;
+border: 1px dashed #cbd5e1;
+border-radius: 12px;
+background: #f8fafc;
+padding: 0 14px;
+}
+details.sources-toggle > summary {
+cursor: pointer;
+padding: 12px 0;
+font-size: 0.9rem;
+font-weight: 600;
+color: #3f566b;
+list-style: none;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+details.sources-toggle > summary::-webkit-details-marker { display: none; }
+details.sources-toggle > summary::after {
+content: '▾';
+color: #1e6fa8;
+transition: transform 0.2s;
+}
+details.sources-toggle[open] > summary::after { transform: rotate(180deg); }
+details.sources-toggle .sources { margin: 0 0 14px; }
+/* ---------- Финальная памятка ---------- */
+.summary-list { counter-reset: step; list-style: none; padding-left: 0; margin: 0 0 18px; }
+.summary-list li { counter-increment: step; position: relative; padding-left: 52px; margin-bottom: 18px; font-size: 1.06rem; line-height: 1.6; }
+.summary-list li::before {
+content: counter(step); position: absolute; left: 0; top: -2px;
+width: 36px; height: 36px; background: #1e6fa8; color: #fff;
+border-radius: 50%; display: flex; align-items: center; justify-content: center;
+font-weight: 700; font-size: 1rem;
+}
+/* ---------- Источники ---------- */
+.sources { font-size: 0.85rem; color: #64748b; line-height: 1.55; border-top: 1px dashed #d1d5db; padding-top: 10px; margin-top: 14px; }
+.sources strong { color: #3f566b; }
+.sources ol { margin: 6px 0 0 18px; padding: 0; }
+.sources li { margin-bottom: 4px; }
+.sources-note { font-style: italic; margin-bottom: 6px; }
+/* ---------- Дисклеймер ---------- */
+.disclaimer {
+margin-top: 24px; padding: 14px 18px;
+background: #fff7ed; border: 1px solid #fed7aa; border-radius: 14px;
+font-size: 0.9rem; line-height: 1.55; color: #7c4a12;
+}
+.disclaimer strong { color: #7c4a12; }
+/* ---------- Мобильная адаптация ---------- */
+@media (max-width: 640px) {
+body { padding: 20px 12px 48px; }
+.card { padding: 30px 22px 26px; border-radius: 22px; }
+.card h2 { font-size: 1.4rem; }
+.card p, .card li { font-size: 1rem; }
+.btn { width: 100%; text-align: center; }
+.btn-row { flex-direction: column; }
+}
+/* ---------- Печать ---------- */
+@media print {
+body { background: #fff; padding: 0; }
+.progress-wrap, .btn-row, .controls, .compare-toggle, .toast, .stepper { display: none !important; }
+.card { box-shadow: none; padding: 20px; }
+.card.hidden { display: none !important; }
+.myth-body { display: block !important; }
+details.sources-toggle > summary { display: none; }
+details.sources-toggle .sources { display: block !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- Прогресс и панель управления -->
+<div class="progress-wrap">
+<div class="progress-top">
+<div class="progress-label">
+<span id="progressText">Старт</span>
+<span class="percent" id="progressPercent">0%</span>
+</div>
+<div class="controls">
+<button class="icon-btn" id="printBtn" aria-label="Печать или сохранение в PDF" title="Печать / сохранить">🖨️</button>
+</div>
+</div>
+<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<!-- Степпер -->
+<nav class="stepper" id="stepper" aria-label="Навигация по шагам маршрута"></nav>
+</div>
+<div id="liveRegion" aria-live="polite" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- ================= СТАРТ ================= -->
+<section class="card" id="card-0" tabindex="-1" aria-labelledby="h-0">
+<span class="card-tag neutral">Старт</span>
+<h2 id="h-0">У вас впервые выявили повышение холестерина. Что это значит?</h2>
+<p>Дислипидемия — это нарушение жирового обмена, чаще всего повышение уровня холестерина липопротеинов низкой плотности (ХС ЛПНП), который называют «плохим» холестерином.</p>
+<div class="callout">
+<strong>У большинства людей повышенный холестерин никак не ощущается.</strong> У вас не болит голова, не покалывает сердце, вы полны сил. Но за этим «спокойствием» скрывается процесс, который идёт годами: избыток ХС ЛПНП откладывается в стенках артерий, формируя атеросклеротические бляшки. Это постепенно сужает просвет сосудов и ухудшает кровоснабжение органов — сердца, мозга, почек, ног.
+</div>
+<p>Именно поэтому дислипидемию называют «тихим» состоянием: самочувствие — не надёжный ориентир. Ориентироваться нужно на <strong>цифры липидограммы</strong> и на оценку вашего индивидуального риска врачом.</p>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(1)">Понятно, что дальше? →</button>
+</div>
+</section>
+<!-- ================= ШАГ 1 ================= -->
+<section class="card hidden" id="card-1" tabindex="-1" aria-labelledby="h-1">
+<span class="card-tag neutral">Шаг 1</span>
+<h2 id="h-1">Почему это важно, если я чувствую себя хорошо?</h2>
+<p>Атеросклероз — это не «отложение извести», а активный процесс. Когда бляшка становится нестабильной и разрывается, организм пытается её «залечить», образуя тромб. Именно тромб, перекрывающий сосуд, и вызывает инфаркт или инсульт.</p>
+<ul>
+<li><strong>Сердце:</strong> стенокардия, инфаркт миокарда.</li>
+<li><strong>Мозг:</strong> транзиторные ишемические атаки (ТИА), ишемический инсульт, сосудистая деменция.</li>
+<li><strong>Периферические артерии:</strong> атеросклероз артерий нижних конечностей (боль при ходьбе, риск гангрены).</li>
+</ul>
+<div class="callout blue">
+Хорошая новость: снижение ХС ЛПНП доказанно снижает риск этих событий. Это один из самых изученных механизмов в медицине. Чем ниже ХС ЛПНП — тем ниже риск инфарктов и инсультов. Этот эффект подтверждён на миллионах пациентов в крупных рандомизированных исследованиях.
+</div>
+<p><strong>Подумайте о близких.</strong> Если у вас впервые выявили дислипидемию, стоит сказать об этом родственникам — им тоже полезно сдать липидограмму, особенно если есть другие факторы риска. Это не про лечение, а про заботу: дислипидемия часто имеет семейную природу.</p>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(2)">Какие анализы сдавать? →</button>
+<button class="btn btn-secondary" onclick="goTo(0)">← Назад</button>
+</div>
+</section>
+<!-- ================= ШАГ 2 ================= -->
+<section class="card hidden" id="card-2" tabindex="-1" aria-labelledby="h-2">
+<span class="card-tag neutral">Шаг 2</span>
+<h2 id="h-2">Какие анализы сдавать и что означают цифры</h2>
+<p>Для оценки ситуации недостаточно только «общего холестерина». Врач смотрит на липидный профиль в комплексе.</p>
+<h3>Стандартная липидограмма</h3>
+<ul>
+<li><strong>Общий холестерин (ОХС)</strong> — суммарный показатель, но сам по себе малоинформативен.</li>
+<li><strong>ХС ЛПНП («плохой»)</strong> — главная мишень терапии. Именно его избыток формирует бляшки.</li>
+<li><strong>ХС ЛПВП («хороший»)</strong> — участвует в обратном транспорте холестерина. Низкий уровень — фактор риска.</li>
+<li><strong>Триглицериды (ТГ)</strong> — другой тип жиров. Высокий уровень (особенно > 5,6 ммоль/л) — риск панкреатита, а также маркер метаболических нарушений.</li>
+</ul>
+<h3>Дополнительные инструменты (по показаниям)</h3>
+<ul>
+<li><strong>Липопротеин(а) — Lp(a).</strong> Генетически детерминированный фактор. Достаточно измерить один раз в жизни. Уровень > 125 нмоль/л (50 мг/дл) считается повышенным и автоматически переводит пациента в группу более высокого риска. При уровне ≥ 100 мг/дл (≥ 250 нмоль/л) риск сердечно-сосудистых заболеваний примерно удваивается, и рекомендуется каскадное обследование родственников.</li>
+<li><strong>Аполипопротеин B (ApoB).</strong> Показывает общее количество «плохих» частиц. Иногда информативнее, чем ХС ЛПНП.</li>
+<li><strong>ТТГ (тиреотропный гормон).</strong> Гипотиреоз может вторично повышать уровень холестерина. Это важно исключить, прежде чем назначать статины.</li>
+<li><strong>УЗИ брахиоцефальных артерий (БЦА).</strong> Наличие атеросклеротической бляшки в сонной артерии автоматически переводит пациента в категорию высокого или очень высокого риска, даже если цифры холестерина не «пугающие».</li>
+<li><strong>Кальциевый индекс (CAC).</strong> КТ-исследование коронарного кальция. Используется при сомнениях, назначать ли статин пациенту промежуточного риска. CAC = 0 — можно отложить терапию (кроме курильщиков и диабетиков). CAC ≥ 100 — немедленный старт терапии.</li>
+<li><strong>АЛТ, АСТ, креатинин</strong> — базовые показатели безопасности перед началом терапии статинами.</li>
+</ul>
+<div class="callout amber">
+<strong>Важно:</strong> не пытайтесь интерпретировать липидограмму самостоятельно. Один и тот же уровень ХС ЛПНП может быть «нормальным» для одного человека и требовать лечения для другого — всё зависит от суммарного риска.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(3)">Почему нормы индивидуальны? →</button>
+<button class="btn btn-secondary" onclick="goTo(1)">← Назад</button>
+</div>
+</section>
+<!-- ================= ШАГ 3 ================= -->
+<section class="card hidden" id="card-3" tabindex="-1" aria-labelledby="h-3">
+<span class="card-tag neutral">Шаг 3</span>
+<h2 id="h-3">«Мои нормы» — почему они не универсальны</h2>
+<p>Целевой уровень ХС ЛПНП <strong>не является одинаковым для всех</strong>. Он зависит от вашего суммарного сердечно-сосудистого риска. Обновление ESC/EAS 2025 подтверждает этот принцип: цель по ЛПНП определяется категорией риска.</p>
+<h3>Как определяется риск (SCORE2 / SCORE2-OP)</h3>
+<p>Врач использует шкалы <strong>SCORE2</strong> (для лиц младше 70 лет) или <strong>SCORE2-OP</strong> (для лиц 70 лет и старше), которые оценивают 10-летний риск фатальных и нефатальных сердечно-сосудистых событий.</p>
+<h3>Категории риска и целевые уровни ХС ЛПНП</h3>
+<div class="compare-table-wrap" style="margin:16px 0 20px;">
+<table>
+<thead>
+<tr><th>Категория риска</th><th>Критерии (упрощённо)</th><th>Цель по ХС ЛПНП</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Низкий</strong></td>
+<td>SCORE2 &lt; 2%</td>
+<td><strong>&lt; 3,0 ммоль/л</strong> (116 мг/дл)</td>
+</tr>
+<tr>
+<td><strong>Умеренный</strong></td>
+<td>SCORE2 2–&lt;10%</td>
+<td><strong>&lt; 2,6 ммоль/л</strong> (100 мг/дл)</td>
+</tr>
+<tr>
+<td><strong>Высокий</strong></td>
+<td>SCORE2 10–&lt;20%; выраженное повышение одного фактора; СД без поражения органов; умеренная ХБП</td>
+<td><strong>&lt; 1,8 ммоль/л</strong> (70 мг/дл) и снижение от исходного на ≥ 50%</td>
+</tr>
+<tr>
+<td><strong>Очень высокий</strong></td>
+<td>Перенесённый инфаркт/инсульт, доказанный атеросклероз, СД с поражением органов, тяжёлая ХБП, SCORE2 ≥ 20%</td>
+<td><strong>&lt; 1,4 ммоль/л</strong> (55 мг/дл) и снижение от исходного на ≥ 50%</td>
+</tr>
+<tr class="row-extreme">
+<td><strong>Крайне высокий (для отдельных пациентов)</strong> <span class="badge badge-extreme">ESC 2025</span></td>
+<td>Повторное сердечно-сосудистое событие в течение 2 лет на фоне терапии, или поливаскулярное поражение</td>
+<td><strong>&lt; 1,0 ммоль/л</strong> (40 мг/дл) <span class="badge badge-extreme">для отдельных пациентов</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="callout red">
+<strong>Ключевой момент:</strong> если у вас уже есть атеросклеротическая бляшка в сосудах (по УЗИ), вы автоматически попадаете в категорию высокого или очень высокого риска, даже если по шкале SCORE2 риск кажется низким. А для пациентов с повторными событиями или поливаскулярным поражением целевой уровень может быть ещё ниже — <strong>&lt; 1,0 ммоль/л (40 мг/дл)</strong>.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(4)">Разбор мифов →</button>
+<button class="btn btn-secondary" onclick="goTo(2)">← Назад</button>
+</div>
+</section>
+<!-- ================= ШАГ 4: МИФЫ ================= -->
+<section class="card hidden" id="card-4" tabindex="-1" aria-labelledby="h-4">
+<span class="card-tag warn">Шаг 4 · Разбор мифов</span>
+<h2 id="h-4">Что говорят сторонники альтернативной медицины — и что говорит наука</h2>
+<p>В интернете можно встретить утверждения, что снижать холестерин вредно, а статины «разрушают организм». Давайте разберём самые популярные мифы с опорой на исследования.</p>
+<div class="myth-accordion" id="mythAccordion">
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-1">
+<span>Миф 1: «Статины снижают тестостерон и вызывают импотенцию»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-1" role="region">
+<p><strong>Что говорит наука:</strong> Холестерин действительно является предшественником половых гормонов. Однако каждая клетка организма — включая клетки яичек, яичников и надпочечников — способна синтезировать собственный холестерин независимо от его уровня в крови.</p>
+<ul>
+<li><strong>Тестостерон:</strong> систематический обзор и мета-анализ 2024 года (Glina et al.) показал, что статины вызывают небольшое снижение общего тестостерона — в среднем на <strong>9–13 нг/дл</strong> в проспективных исследованиях и РКИ. Однако <strong>это снижение не выводило пациентов за пределы нормального референсного диапазона и не имело клинического значения</strong>. Уровни свободного тестостерона, ЛГ, эстрадиола и ГСПГ не изменялись.</li>
+<li><strong>Эректильная функция:</strong> мета-анализ 6 РКИ (JACC, 2025) показал, что статины <strong>улучшают</strong> эректильную функцию по опроснику IIEF по сравнению с плацебо. Механизм — улучшение функции эндотелия и рост активности оксида азота, а не влияние на тестостерон.</li>
+<li><strong>Позиция ACC:</strong> «Десятилетия клинических данных подтверждают, что статины не вызывают низкий тестостерон, дефицит эстрогенов или сексуальную дисфункцию».</li>
+</ul>
+<span class="myth-verdict partly">❌ Миф (частично основан на реальных данных, но вывод неверен)</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-liver">
+<span>Миф 2: «Статины разрушают печень»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-liver" role="region">
+<p><strong>Что говорит наука:</strong> Статины действительно могут вызывать бессимптомное повышение печёночных ферментов (АЛТ, АСТ), но это повышение обычно <strong>транзиторное, слабое и не отражает повреждение печени</strong>. Более того, накопленные данные показывают, что статины связаны со <strong>снижением</strong> риска некоторых видов рака.</p>
+<ul>
+<li><strong>Рак печени (гепатоцеллюлярная карцинома):</strong> мета-анализ проспективных когортных исследований (Yi et al., Medicine, 2017) показал, что приём статинов ассоциирован со <strong>снижением риска рака печени</strong> (OR = 0,46; 95% CI 0,24–0,68). Каждое увеличение накопленной дозы на 50 определённых суточных доз в год снижало риск на 14%.</li>
+<li><strong>Рак кишечника:</strong> мета-анализ 18 исследований с участием более 1,5 млн человек (Bonovas et al., J Clin Oncol, 2007) не выявил сильного защитного эффекта, но и <strong>не показал увеличения риска</strong>. В исследованиях «случай-контроль» отмечено умеренное снижение риска (RR = 0,91).</li>
+<li><strong>Общий риск рака:</strong> мета-анализ 26 рандомизированных исследований (Browning et al., Int J Cancer, 2007) не выявил связи статинов с риском рака в целом или отдельных локализаций.</li>
+</ul>
+<p><strong>Вывод:</strong> страх «разрушения печени» сильно преувеличен. Перед началом терапии врач проверяет АЛТ/АСТ, а затем контролирует их по показаниям. Повышение ферментов — не повод для паники, а сигнал для наблюдения.</p>
+<span class="myth-verdict false">❌ Миф, противоречащий данным крупных мета-анализов</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-2">
+<span>Миф 3: «Снижение холестерина вызывает депрессию и повышает риск самоубийств»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-2" role="region">
+<p><strong>Откуда пошёл миф:</strong> старые обсервационные наблюдения связывали низкий уровень холестерина с депрессией и суицидальным поведением. Однако эти данные были получены на людях с генетически низким холестерином или сопутствующими тяжёлыми заболеваниями, а не на фоне терапии статинами.</p>
+<p><strong>Что говорит наука:</strong></p>
+<ul>
+<li>Обзор в Pharmacopsychiatry (2002): «В настоящее время у нас нет достаточных доказательств того, что терапия, снижающая холестерин, повышает риск депрессии и самоубийства».</li>
+<li>Крупные рандомизированные исследования статинов <strong>не показали увеличения смертности от самоубийств</strong>.</li>
+<li>В отличие от обсервационных данных, рандомизированные контролируемые исследования позволяют установить причинно-следственную связь — и они её не находят.</li>
+</ul>
+<span class="myth-verdict false">❌ Миф, не подтверждённый качественными исследованиями</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-3">
+<span>Миф 4: «Статины вызывают деменцию и ухудшают память»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-3" role="region">
+<p><strong>Откуда пошёл миф:</strong> единичные сообщения после регистрации препаратов привели к предупреждению FDA в 2012 году. Однако последующие крупные исследования это опровергли.</p>
+<p><strong>Что говорит наука:</strong></p>
+<ul>
+<li>Обзор в GeroScience (2026): «Большинство РКИ не продемонстрировали вредного влияния статинов на когнитивные функции». Менделевская рандомизация (более 100 000 человек) <strong>не выявила причинной связи</strong> между генетически опосредованным эффектом статинов и деменцией.</li>
+<li>Исследование STAREE (2026): ~10 000 пожилых людей (70+) принимали аторвастатин или плацебо. Статин значительно снизил сердечно-сосудистые события, при этом <strong>не было выявлено статистически значимой разницы</strong> по риску деменции или инвалидности по сравнению с плацебо.</li>
+</ul>
+<span class="myth-verdict false">❌ Миф, опровергнутый крупными РКИ</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-4">
+<span>Миф 5: «Статины вызывают диабет, поэтому ими нельзя пользоваться»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-4" role="region">
+<p><strong>Что говорит наука:</strong> Статины действительно могут вызывать умеренное, дозозависимое повышение уровня глюкозы и увеличивать частоту новых диагнозов диабета. Однако:</p>
+<ul>
+<li>Большинство новых случаев диабета возникает у людей, чьи исходные показатели гликемии <strong>уже были близки к диагностическому порогу</strong>.</li>
+<li>«Любые теоретические неблагоприятные эффекты статинов на сердечно-сосудистый риск, которые могли бы возникнуть из-за этого небольшого повышения гликемии, <strong>уже учтены в общем снижении сердечно-сосудистого риска</strong>, наблюдаемом в этих исследованиях».</li>
+<li>У пациентов с диабетом или высоким риском его развития <strong>польза статинов значительно перевешивает этот небольшой риск</strong>: они снижают риск инфаркта и инсульта.</li>
+</ul>
+<span class="myth-verdict partly">⚠️ Частично верно, но вывод неверен</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-5">
+<span>Миф 6: «Холестерин не вреден, а статины — заговор»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-5" role="region">
+<p><strong>Что говорит наука:</strong> Этот взгляд игнорирует гигантский массив данных. Обновление ESC/EAS 2025 подтверждает: «ХС ЛПНП и другие липопротеины, содержащие аполипопротеин B, являются не только фактором риска, но и <strong>непосредственной причиной</strong> атеросклеротических сердечно-сосудистых заболеваний».</p>
+<ul>
+<li>Каждое крупное рандомизированное исследование (4S, HPS, PROVE-IT, IMPROVE-IT и десятки других) демонстрирует: <strong>чем ниже ХС ЛПНП, тем ниже риск инфарктов и инсультов</strong>.</li>
+<li>Менделевская рандомизация (генетические варианты, снижающие ЛПНП с рождения) также показывает защитный эффект от сердечно-сосудистых болезней.</li>
+<li>Это биологический закон, подтверждённый на миллионах пациентов, а не «мнение» или «заговор».</li>
+</ul>
+<span class="myth-verdict false">❌ Миф, противоречащий всему массиву доказательной медицины</span>
+</div>
+</div>
+</div>
+<details class="sources-toggle">
+<summary>Источники к разделу мифов</summary>
+<div class="sources">
+<p class="sources-note">Названия работ приведены на языке оригинала — так их можно найти в медицинских базах.</p>
+<ol>
+<li>Glina F.P.A., Lopes L., Silva R.S. et al. Do statins decrease testosterone in men? Systematic review and meta-analysis. <em>International Brazilian Journal of Urology</em>, 2024;50(2):119-135.</li>
+<li>Raut A.P., Singla A., Rao A. et al. Statin-associated improvement in erectile dysfunction: a systematic review and meta-analysis. <em>JACC</em>, 2025;85(12_Supplement):2369.</li>
+<li>CardioSmart (American College of Cardiology). Q&amp;A: Do Statins Have a Negative Effect on My Sex Hormones? 2026.</li>
+<li>Yi C., Song Z., Wan M. et al. Statins intake and risk of liver cancer: A dose-response meta analysis of prospective cohort studies. <em>Medicine (Baltimore)</em>, 2017;96(27):e7435.</li>
+<li>Bonovas S., Filioussi K., Flordellis C.S., Sitaras N.M. Statins and the risk of colorectal cancer: a meta-analysis of 18 studies involving more than 1.5 million patients. <em>J Clin Oncol</em>, 2007;25(23):3462-3468.</li>
+<li>Browning D.R., Martin R.M. Statins and risk of cancer: a systematic review and metaanalysis. <em>Int J Cancer</em>, 2007;120(4):833-843.</li>
+<li>Brunner J., Parhofer K.G., Schwandt P., Bronisch T. Cholesterol, essential fatty acids, and suicide. <em>Pharmacopsychiatry</em>, 2002;35(1):1-5.</li>
+<li>Brain, benefit, or burden? Revisiting statins and cognitive function in older adults. <em>GeroScience</em>, 2026;48(3):4529-4545.</li>
+<li>STAREE trial (результаты представлены на ESC Congress 2026, опубликованы в NEJM).</li>
+<li>Cholesterol Treatment Trialists' (CTT) Collaboration. Effects of statin therapy on new-onset diabetes. <em>The Lancet Diabetes &amp; Endocrinology</em>, 2024.</li>
+<li>2025 Focused Update of the 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>European Heart Journal</em>, 2025;46:4359-4378.</li>
+</ol>
+</div>
+</details>
+<div class="btn-row" style="margin-top:22px;">
+<button class="btn btn-primary" onclick="goTo(5)">Питание при высоком холестерине →</button>
+<button class="btn btn-secondary" onclick="goTo(3)">← К нормам</button>
+</div>
+</section>
+<!-- ================= ШАГ 5: ПИТАНИЕ ================= -->
+<section class="card hidden" id="card-5" tabindex="-1" aria-labelledby="h-5">
+<span class="card-tag neutral">Шаг 5 · Питание</span>
+<h2 id="h-5">Как питание влияет на холестерин</h2>
+<p>Часто можно услышать: «У меня высокий холестерин, значит, я неправильно питаюсь». Это не совсем так. У большинства людей на наследственность и внутренний синтез холестерина приходится <strong>около 80–85%</strong> уровня ХС ЛПНП. Питание влияет на оставшиеся <strong>15–20%</strong>.</p>
+<div class="callout blue">
+<strong>Что это значит на практике:</strong> диета — это база, она помогает снизить риск и улучшить общее состояние сосудов. Но если у вас семейная гиперхолестеринемия или очень высокий риск, одной диеты может быть недостаточно. В таких случаях врач может сразу обсудить медикаментозную поддержку.
+</div>
+<p><strong>Про «редких пациентов» и яйца.</strong> Существует небольшая группа людей (гиперреспондеры), у которых уровень холестерина в крови заметно реагирует на пищевой холестерин, например, на яичные желтки. Исследования показывают, что у таких людей добавление в рацион яиц может повышать как ЛПНП, так и ЛПВП, а соотношение ЛПНП/ЛПВП может оставаться в пределах нормы. Однако для большинства людей умеренное потребление яиц не является проблемой. Если вы замечаете, что после увеличения количества яиц в рационе ваши цифры растут, — это повод обсудить это с врачом, но не повод отказываться от яиц всем подряд.</p>
+<h3>Основные принципы питания</h3>
+<ul>
+<li><strong>Расширение растительного рациона.</strong> Используйте метод «Гарвардской тарелки»: половина тарелки — овощи и фрукты, четверть — цельнозерновые, четверть — белок. Это автоматически обеспечивает употребление овощей и фруктов 3 раза в день. Фрукты — на перекус, ягоды можно добавлять в кашу. Ориентир — <strong>5 порций овощей и фруктов в день</strong>.</li>
+</ul>
+<h3>Что добавить в рацион</h3>
+<ul>
+<li><strong>Орехи:</strong> 30 г любых орехов в день (одна горсть). Не солёные, не сладкие. Добавляйте в основные блюда или используйте как перекус.</li>
+<li><strong>Бобовые:</strong> фасоль, нут, чечевица, горох, маш.</li>
+<li><strong>Цельнозерновые:</strong> гречка, булгур, бурый рис, киноа, овёс, цельнозерновая паста, цельнозерновой хлеб.</li>
+<li><strong>Бета-глюканы</strong> — особая форма клетчатки, содержащаяся в овсе и ячмене. <strong>3 г в сутки</strong> снижают уровень холестерина в крови. Ориентиры: 1 г содержится в 30 г овсяной каши (сухой), 1–2 ложках овсяных отрубей, 60 г перловой крупы.</li>
+<li><strong>Соевые продукты:</strong> 100 г тофу, 100 г соевого фарша, горсть бобов эдамаме, стакан соевого молока, 150 г соевого йогурта.</li>
+<li><strong>Растительные стеролы и станолы:</strong> 2 г в день снижают ХС ЛПНП в среднем на 10%. Содержатся в обогащённых продуктах (маргарины, йогурты). Это не замена статинам, но полезное дополнение к диете.</li>
+</ul>
+<h3>Что ограничить или заменить</h3>
+<ul>
+<li><strong>Насыщенные жиры и трансжиры:</strong> колбасы, сосиски, бекон и другие переработанные мясные продукты.</li>
+<li><strong>Источники белка:</strong> птица без кожи, красное мясо — до 500 г в неделю, рыба (в том числе жирная), бобовые, заменители мяса (соевое мясо), куриные яйца. Вместо жирного мяса, субпродуктов, колбас и сосисок.</li>
+<li><strong>Молочные продукты:</strong> обезжиренные или с пониженной жирностью, соевое молоко и молочные продукты, сыры с невысокой жирностью (до 20%): рикотта, фета, моцарелла, адыгейский сыр. Вместо жирных сливок, жирных сыров (бри, камамбер, горгонзола, полутвёрдые и твёрдые сыры), кокосового молока.</li>
+<li><strong>Растительные масла:</strong> оливковое, льняное, подсолнечное, рапсовое. Вместо кокосового масла, пальмового масла, сала, сливочного масла.</li>
+<li><strong>Яйца:</strong> отличный источник белка. Только четверть жиров, содержащихся в желтке, являются насыщенными. Источник витаминов и микроэлементов.</li>
+</ul>
+<h3>Подходящие диеты</h3>
+<ul>
+<li>Средиземноморская</li>
+<li>DASH-диета</li>
+<li>VEGA</li>
+</ul>
+<h3>Пищевые добавки</h3>
+<div class="callout amber">
+<strong>Не существует убедительных доказательств того, что пищевые добавки снижают риск сердечно-сосудистых заболеваний.</strong> Исследование OMEMI (полиненасыщенные жирные кислоты для пациентов без повышенного уровня триглицеридов) — клинический эффект отсутствует. Исследование SPORT (рыбий жир, корица, чеснок, куркума, красный дрожжевой рис, растительные стеролы) — клинический эффект отсутствует. Омега-3 в форме лекарственного препарата (Омакор, рецептурный Этил-ЭПК) — это другое: он назначается врачом по конкретным показаниям (гипертриглицеридемия, постинфарктная профилактика), а не как «витамин для профилактики».
+</div>
+<details class="sources-toggle">
+<summary>Источники к разделу питания</summary>
+<div class="sources">
+<ol>
+<li>Общие рекомендации при гиперхолестеринемии (дислипидемия, атеросклероз). Методические рекомендации для пациентов.</li>
+<li>2025 Focused Update of the 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>European Heart Journal</em>, 2025.</li>
+<li>Новые рекомендации AHA, ACC 2026 по дислипидемии.</li>
+<li>OMEMI Investigators. Polyunsaturated fatty acids in patients without elevated triglycerides. 2021.</li>
+<li>SPORT trial. Fish oil, cinnamon, garlic, turmeric, red yeast rice, plant sterols. 2022.</li>
+</ol>
+</div>
+</details>
+<div class="btn-row" style="margin-top:22px;">
+<button class="btn btn-primary" onclick="goTo(6)">Образ жизни: движение, курение, алкоголь →</button>
+<button class="btn btn-secondary" onclick="goTo(4)">← К мифам</button>
+</div>
+</section>
+<!-- ================= ШАГ 6: ОБРАЗ ЖИЗНИ ================= -->
+<section class="card hidden" id="card-6" tabindex="-1" aria-labelledby="h-6">
+<span class="card-tag neutral">Шаг 6 · Образ жизни</span>
+<h2 id="h-6">Движение, курение и алкоголь</h2>
+<p>Питание — важная часть, но не единственная. Физическая активность, отказ от курения и ограничение алкоголя влияют на липидный профиль и общий риск независимо от диеты.</p>
+<h3>Физическая активность</h3>
+<ul>
+<li><strong>150–300 минут аэробных нагрузок в неделю.</strong> Спорт может быть любой, главное, чтобы он вам нравился и его можно было интегрировать в обычную жизнь. Регулярность важнее интенсивности.</li>
+<li><strong>Вклад физической активности:</strong> повышает уровень ХС ЛПВП («хороший» холестерин), снижает уровень ХС ЛПНП («плохой»), помогает снизить вес или поддерживать здоровый вес, снижает артериальное давление, снижает риск развития сахарного диабета 2 типа или помогает контролировать его.</li>
+<li><strong>Аэробные нагрузки</strong> — это активность, которая задействует многие группы мышц, где кислород используется как основной источник энергии: ходьба, бег, велосипед, плавание, танцы, теннис, игровые виды спорта.</li>
+<li><strong>Ходьба.</strong> Лёгкий способ определить достаточную аэробную нагрузку: пульс учащается, но вы не задыхаетесь; вы ещё можете говорить, но уже не можете петь.</li>
+<li><strong>Интегрирование движения в жизнь:</strong> выходите на 1–2 остановки раньше и пройдите это расстояние пешком; паркуйте автомобиль возле дома и отправляйтесь в ближайшие магазины пешком; при прогулке с детьми — двигайтесь вместе с ними; откажитесь от лифта, если речь идёт о 3–5 этажах (либо часть расстояния можно проехать на лифте, остальную часть пройти пешком).</li>
+</ul>
+<h3>Отказ от курения</h3>
+<ul>
+<li>Курение снижает уровень ХС ЛПВП («хороший» холестерин).</li>
+<li>Курение повреждает стенки артерий, способствуя «прилипанию» ХС ЛПНП («плохой» холестерин) к ним.</li>
+<li>При отказе от курения через год риск сердечных заболеваний и инфарктов снизится вдвое. Через 15 лет он будет таким же, как у тех, кто никогда не курил.</li>
+</ul>
+<h3>Ограничение употребления алкоголя</h3>
+<ul>
+<li>Алкоголь повышает уровень триглицеридов.</li>
+<li>Алкоголь снижает уровень ХС ЛПВП.</li>
+<li>Способствует набору веса.</li>
+<li>Способствует повышению артериального давления.</li>
+</ul>
+<div class="callout red">
+<strong>Полезных доз алкоголя не существует!</strong> Умеренное употребление: женщины — ≤ 1 порции в день и < 7 порций в неделю; мужчины — ≤ 2 порций в день и < 14 порций в неделю.
+</div>
+<details class="sources-toggle">
+<summary>Источники к разделу образа жизни</summary>
+<div class="sources">
+<ol>
+<li>Общие рекомендации при гиперхолестеринемии (дислипидемия, атеросклероз). Методические рекомендации для пациентов.</li>
+<li>2025 Focused Update of the 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>European Heart Journal</em>, 2025.</li>
+<li>Новые рекомендации AHA, ACC 2026 по дислипидемии.</li>
+</ol>
+</div>
+</details>
+<div class="btn-row" style="margin-top:22px;">
+<button class="btn btn-primary" onclick="goTo(7)">Реальные побочные эффекты →</button>
+<button class="btn btn-secondary" onclick="goTo(5)">← К питанию</button>
+</div>
+</section>
+<!-- ================= ШАГ 7: ПОБОЧНЫЕ ЭФФЕКТЫ ================= -->
+<section class="card hidden" id="card-7" tabindex="-1" aria-labelledby="h-7">
+<span class="card-tag neutral">Шаг 7</span>
+<h2 id="h-7">Побочные эффекты статинов: что реально, а что преувеличено</h2>
+<p>Мы разобрали мифы, но у статинов действительно есть побочные эффекты. Важно понимать их <strong>реальную частоту</strong> — и не путать с страхами из интернета.</p>
+<h3>Мышечные боли (самая обсуждаемая тема)</h3>
+<p>Это самый частый повод для беспокойства. Цифры могут сбивать с толку, потому что «мышечные симптомы» и «симптомы, вызванные именно статином» — это разные вещи.</p>
+<ul>
+<li><strong>Любые мышечные жалобы:</strong> до 30% людей, принимающих статины, сообщают о болях или слабости в мышцах. Однако в крупных двойных слепых исследованиях <strong>почти столько же людей сообщали о тех же симптомах при приёме плацебо</strong> (26,6%). Это означает, что более 90% мышечных симптомов <strong>не связаны со статином</strong>.</li>
+<li><strong>Симптомы, действительно вызванные статином:</strong> по оценкам Национальной липидной ассоциации (США), распространённость фармакологических мышечных симптомов составляет <strong>около 1–2%</strong> (диапазон 0,5–4%).</li>
+<li><strong>Серьёзное повреждение мышц (миопатия с повышением КФК):</strong> менее 1 случая на 1000 человек.</li>
+<li><strong>Рабдомиолиз (разрушение мышц с риском для почек):</strong> крайне редко — примерно 1 на 10 000–100 000 человек.</li>
+</ul>
+<div class="callout blue">
+<strong>Что это значит на практике:</strong> если у вас появились мышечные боли на фоне статина, это <strong>не повод сразу бросать лечение</strong>. Врач может снизить дозу, заменить статин на другой (например, гидрофильный — розувастатин или правастатин — реже вызывает мышечные боли, чем липофильные) или предложить перерыв. Более 70% людей, которые считали себя «непереносимыми к статинам», успешно продолжают лечение после корректировки схемы.
+</div>
+<h3>Другие возможные эффекты</h3>
+<ul>
+<li><strong>Печень:</strong> бессимптомное повышение АЛТ/АСТ. Обычно слабое и транзиторное. Требует наблюдения, но не является признаком «разрушения печени».</li>
+<li><strong>Уровень глюкозы:</strong> возможно небольшое повышение. Клиническое значение для большинства пациентов перевешивается пользой для сердца и сосудов.</li>
+<li><strong>Пищеварительные симптомы:</strong> тошнота, запор или диарея — обычно временные и слабо выраженные.</li>
+</ul>
+<div class="callout amber">
+<strong>Главное:</strong> не занимайтесь самодиагностикой побочных эффектов. Если что-то вас беспокоит — обсудите это с врачом, а не бросайте препарат самостоятельно. Риск инфаркта или инсульта на фоне нелеченого высокого холестерина гораздо реальнее, чем серьёзные побочные эффекты статинов.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(8)">Какие ещё есть препараты? →</button>
+<button class="btn btn-secondary" onclick="goTo(6)">← К образу жизни</button>
+</div>
+</section>
+<!-- ================= ШАГ 8: ДРУГИЕ ПРЕПАРАТЫ И ОМЕГА ================= -->
+<section class="card hidden" id="card-8" tabindex="-1" aria-labelledby="h-8">
+<span class="card-tag neutral">Шаг 8</span>
+<h2 id="h-8">Лечение: не только статины</h2>
+<p>Статины — основа терапии для большинства пациентов. Но существуют и другие группы препаратов, которые врач может назначить — отдельно или в комбинации.</p>
+<h3>Другие группы гиполипидемических препаратов</h3>
+<ul>
+<li><strong>Эзетимиб.</strong> Блокирует всасывание холестерина в кишечнике. Снижает ХС ЛПНП примерно на 15–20%. Часто используется в комбинации со статином, особенно у пациентов очень высокого риска, которым нужно достичь цели &lt; 1,4 ммоль/л.</li>
+<li><strong>Ингибиторы PCSK9</strong> (эволокумаб, алирокумаб, инклисиран). Значительно снижают ХС ЛПНП — примерно на 50%. Назначаются при семейной гиперхолестеринемии, непереносимости статинов или когда цель не достигается на максимальной терапии.</li>
+<li><strong>Бемпедоевая кислота.</strong> Новый препарат, снижающий синтез холестерина в печени. Снижает ХС ЛПНП примерно на 20%. Рекомендована пациентам, которые не могут принимать статины для достижения цели по ХС ЛПНП. Может добавляться к максимально переносимой дозе статина с эзетимибом или без него. Важно: может повышаться мочевая кислота.</li>
+<li><strong>Фибраты</strong> (фенофибрат, гемфиброзил). В первую очередь снижают триглицериды, также умеренно снижают ХС ЛПНП. Используются при выраженной гипертриглицеридемии.</li>
+</ul>
+<h3>Омега-3 полиненасыщенные жирные кислоты: важна форма</h3>
+<p>Омега-3 — это не «просто рыбий жир из магазина». Для клинического эффекта важны <strong>концентрация и форма</strong> препарата.</p>
+<ul>
+<li><strong>Что работает:</strong> высокоочищенные концентраты омега-3 кислот в форме этиловых эфиров (например, препарат <strong>Омакор</strong>). Одна капсула Омакора содержит 1000 мг омега-3 кислот этиловых эфиров 90%, в том числе ЭПК 46% и ДГК 38%.</li>
+<li><strong>Показания к применению Омакора:</strong> эндогенная гипертриглицеридемия (в качестве дополнения к диете или в комбинации со статинами, когда триглицериды недостаточно контролируются), а также вторичная профилактика после инфаркта миокарда (в составе комбинированной терапии).</li>
+<li><strong>Почему форма важна:</strong> обычные БАДы с рыбьим жиром часто содержат низкие концентрации ЭПК/ДГК и могут не давать того же эффекта, что клинически изученные препараты. Омакор — это <strong>лекарственный препарат</strong>, а не БАД, и его эффективность подтверждена в клинических исследованиях (включая исследование GISSI-Prevenzione, где омега-3 снижали риск смерти после инфаркта).</li>
+<li><strong>Рецептурный Этил-ЭПК (Vascepa)</strong> — исключение для узкой группы пациентов (высокий атерогенный риск, непереносимость других линий липидснижающих препаратов, отсутствие аритмии). Обычный рыбий жир из магазина к этой категории не относится.</li>
+</ul>
+<div class="callout amber">
+<strong>Важно:</strong> обновление ESC/EAS 2025 прямо указывает, что <strong>пищевые добавки и витамины не рекомендуются для снижения ХС ЛПНП</strong>. Омега-3 в форме лекарственного препарата (Омакор, рецептурный Этил-ЭПК) — это другое: он назначается врачом по конкретным показаниям (гипертриглицеридемия, постинфарктная профилактика), а не как «витамин для профилактики».
+</div>
+<details class="sources-toggle">
+<summary>Источники к разделу препаратов</summary>
+<div class="sources">
+<ol>
+<li>2025 Focused Update of the 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>European Heart Journal</em>, 2025.</li>
+<li>Новые рекомендации AHA, ACC 2026 по дислипидемии.</li>
+<li>American Heart Association. Cholesterol-Lowering Medications. 2026.</li>
+<li>Инструкция по медицинскому применению препарата Омакор (омега-3 кислот этиловые эфиры 90), 1000 мг.</li>
+<li>GISSI-Prevenzione Investigators. Dietary supplementation with n-3 polyunsaturated fatty acids and vitamin E after myocardial infarction. <em>Lancet</em>, 1999.</li>
+<li>Warden B.A., Guyton J.R., Kowalczyk A. et al. Assessment and management of statin-associated muscle symptoms (SAMS): A clinical perspective from the National Lipid Association. <em>J Clin Lipidol</em>, 2023;17(1):19-39.</li>
+<li>Cholesterol Treatment Trialists' Collaboration. Effect of statin therapy on muscle symptoms: an individual participant data meta-analysis. <em>Lancet</em>, 2022.</li>
+</ol>
+</div>
+</details>
+<div class="btn-row" style="margin-top:22px;">
+<button class="btn btn-primary" onclick="goTo(9)">К итоговой памятке →</button>
+<button class="btn btn-secondary" onclick="goTo(7)">← К побочным эффектам</button>
+</div>
+</section>
+<!-- ================= ФИНАЛ ================= -->
+<section class="card hidden" id="card-9" tabindex="-1" aria-labelledby="h-9">
+<span class="card-tag ok">Финал · Памятка</span>
+<h2 id="h-9">Маршрут коротко</h2>
+<ol class="summary-list">
+<li><strong>Дислипидемия не болит.</strong> Не полагайтесь на самочувствие — сдайте липидограмму.</li>
+<li><strong>Нормы индивидуальны.</strong> Целевой ХС ЛПНП зависит от вашего риска (SCORE2), наличия бляшек (УЗИ) и сопутствующих болезней (диабет, ХБП). Для отдельных пациентов с повторными событиями или поливаскулярным поражением цель может быть <strong>&lt; 1,0 ммоль/л (40 мг/дл)</strong>.</li>
+<li><strong>Сдайте базовый набор:</strong> липидограмма, АЛТ/АСТ, ТТГ, креатинин. По показаниям — Lp(a) однократно, УЗИ БЦА, кальциевый индекс (CAC).</li>
+<li><strong>Питание влияет на 15–20% уровня ХС ЛПНП.</strong> Это база, но при высоком риске одной диеты может быть недостаточно. Используйте «Гарвардскую тарелку», добавляйте бета-глюканы (3 г/сут), орехи (30 г/сут), бобовые, цельнозерновые. Ограничьте насыщенные и трансжиры.</li>
+<li><strong>Образ жизни — это лечение:</strong> 150–300 минут аэробной активности в неделю, отказ от курения (через год риск инфаркта вдвое ниже), ограничение алкоголя (полезных доз не существует).</li>
+<li><strong>Если врач назначил статины, не бойтесь их.</strong> Их цель — продлить жизнь без инфаркта и инсульта.</li>
+<li><strong>Побочные эффекты реальны, но их частота преувеличена.</strong> Более 90% мышечных симптомов не связаны со статином. Серьёзные осложнения крайне редки.</li>
+<li><strong>Мифы о тестостероне, деменции и диабете</strong> не подтверждены качественными исследованиями. Риск от инфаркта на фоне «высокого холестерина» гораздо реальнее.</li>
+<li><strong>Не бросайте препарат,</strong> если холестерин снизился. Это значит, что лечение работает.</li>
+<li><strong>Существуют и другие препараты</strong> (эзетимиб, ингибиторы PCSK9, бемпедоевая кислота, фибраты). Омега-3 в форме лекарственного препарата (Омакор, рецептурный Этил-ЭПК) — не БАД, а назначение врача по показаниям.</li>
+</ol>
+<div class="callout">
+<strong>Помните:</strong> если у вас уже есть атеросклеротическая бляшка, вы находитесь в группе высокого или очень высокого риска — независимо от того, что показывает шкала SCORE2.
+</div>
+<div class="callout blue">
+<strong>Вы прошли маршрут.</strong> Если что-то осталось непонятным — вернитесь к нужному шагу через точки вверху или обсудите с врачом.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="restart()">🔄 Пройти маршрут заново</button>
+<button class="btn btn-secondary" onclick="goTo(8)">← Назад</button>
+</div>
+</section>
+<div class="disclaimer" role="note">
+<strong>Дисклеймер.</strong> Материал носит информационный характер и не заменяет консультацию врача. Не занимайтесь самолечением. Обсудите ваши цифры и риски с врачом. При ухудшении самочувствия — обратитесь за медицинской помощью.
+</div>
+</div>
+<script>
+/* ---------- Toast ---------- */
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function showToast(msg) {
+toastEl.textContent = msg;
+toastEl.classList.add('show');
+if (toastTimer) clearTimeout(toastTimer);
+toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
+}
+/* ---------- Печать ---------- */
+document.getElementById('printBtn').addEventListener('click', () => {
+try { window.print(); } catch (e) { showToast('Не удалось открыть печать'); }
+});
+/* ---------- Навигация ---------- */
+const TOTAL_STEPS = 10;
+const LAST_STEP = TOTAL_STEPS - 1;
+let currentStep = 0;
+function goTo(step) {
+if (step < 0 || step > LAST_STEP) return;
+currentStep = step;
+document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+const target = document.getElementById('card-' + step);
+if (target) {
+target.classList.remove('hidden');
+target.focus({ preventScroll: true });
+window.scrollTo({ top: 0, behavior: 'smooth' });
+updateProgress(step);
+const heading = target.querySelector('h2');
+const live = document.getElementById('liveRegion');
+live.textContent = heading ? heading.textContent : '';
+}
+}
+function updateProgress(step) {
+const percent = Math.round((step / LAST_STEP) * 100);
+document.getElementById('progressFill').style.width = percent + '%';
+document.getElementById('progressPercent').textContent = percent + '%';
+document.getElementById('progressBar').setAttribute('aria-valuenow', String(percent));
+document.getElementById('progressText').textContent =
+step === 0 ? 'Старт' :
+step === LAST_STEP ? 'Финал' :
+'Шаг ' + step + ' из ' + (LAST_STEP - 1);
+updateStepper(step);
+}
+/* ---------- Степпер ---------- */
+const STEP_LABELS = [
+{ caption: 'Старт', full: 'Старт: что значит повышение холестерина' },
+{ caption: '1. Важно', full: 'Почему это важно' },
+{ caption: '2. Анализы', full: 'Какие анализы сдавать' },
+{ caption: '3. Нормы', full: 'Индивидуальные нормы' },
+{ caption: '4. Мифы', full: 'Разбор мифов' },
+{ caption: '5. Питание', full: 'Питание при высоком холестерине' },
+{ caption: '6. Образ жизни', full: 'Движение, курение и алкоголь' },
+{ caption: '7. Побочные', full: 'Побочные эффекты' },
+{ caption: '8. Препараты', full: 'Другие препараты и омега-3' },
+{ caption: 'Финал', full: 'Итоговая памятка' }
+];
+const stepperEl = document.getElementById('stepper');
+function buildStepper() {
+stepperEl.innerHTML = '';
+STEP_LABELS.forEach((label, idx) => {
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'step-item';
+btn.dataset.step = String(idx);
+btn.setAttribute('aria-label', 'Перейти к шагу ' + (idx === 0 ? 'Старт' : idx === LAST_STEP ? 'Финал' : idx) + ': ' + label.full);
+btn.innerHTML =
+'<span class="step-dot" aria-hidden="true"></span>' +
+'<span class="step-caption">' + label.caption + '</span>';
+btn.addEventListener('click', function (e) {
+e.preventDefault();
+goTo(idx);
+});
+stepperEl.appendChild(btn);
+});
+}
+function updateStepper(step) {
+stepperEl.querySelectorAll('.step-item').forEach((btn, idx) => {
+btn.classList.toggle('current', idx === step);
+btn.classList.toggle('done', idx < step);
+if (idx === step) {
+btn.setAttribute('aria-current', 'step');
+} else {
+btn.removeAttribute('aria-current');
+}
+});
+}
+buildStepper();
+function toggleCompare() {
+const block = document.getElementById('compareBlock');
+const btn = document.getElementById('compareBtn');
+if (!block || !btn) return;
+const isOpen = block.classList.toggle('visible');
+btn.textContent = isOpen ? '📊 Скрыть сравнение ↑' : '📊 Показать сравнение целевых уровней';
+btn.setAttribute('aria-expanded', String(isOpen));
+}
+function restart() {
+const block = document.getElementById('compareBlock');
+if (block) block.classList.remove('visible');
+const btn = document.getElementById('compareBtn');
+if (btn) { btn.textContent = '📊 Показать сравнение целевых уровней'; btn.setAttribute('aria-expanded', 'false'); }
+currentStep = 0;
+goTo(0);
+}
+/* ---------- Аккордеон мифов ---------- */
+document.querySelectorAll('#mythAccordion .myth-header').forEach(header => {
+header.addEventListener('click', () => {
+const item = header.closest('.myth-item');
+const isOpen = item.classList.toggle('open');
+header.setAttribute('aria-expanded', String(isOpen));
+});
+});
+/* ---------- Инициализация ---------- */
+updateProgress(0);
+</script>
+</body>
+</html>
