@@ -1,15 +1,15 @@
-/* Основные настройки и профессиональная цветовая палитра */
+/* Мягкая, профессиональная палитра: спокойствие, забота, доверие */
 :root {
-    --bg-color: #f4f6f8;         /* Светло-серый фон для мягкости */
-    --card-bg: #ffffff;          /* Чистый белый для карточек и блоков */
-    --accent-blue: #1a365d;      /* Глубокий синий: надежность и профессионализм */
-    --accent-blue-light: #2c5282;/* Чуть светлее для эффекта при наведении */
-    --text-primary: #1a202c;     /* Темно-серый для заголовков (мягче черного) */
-    --text-secondary: #4a5568;   /* Серый для основного текста */
+    --bg-color: #F7FAFC;         /* Очень светлый, мягкий серо-голубой фон */
+    --card-bg: #FFFFFF;          /* Чистый белый для блоков */
+    --accent-blue: #3182CE;      /* Спокойный, доверительный синий (не резкий) */
+    --accent-hover: #2B6CB0;     /* Чуть темнее при наведении */
+    --text-primary: #2D3748;     /* Мягкий темно-серый для заголовков */
+    --text-secondary: #4A5568;   /* Спокойный серый для текста */
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-secondary);
     margin: 0;
@@ -17,17 +17,17 @@ body {
     line-height: 1.6;
 }
 
-/* Герой-блок (шапка с фото справа) */
+/* Шапка с фото СПРАВА и текстом СЛЕВА */
 .hero {
     background-color: var(--card-bg);
     padding: 60px 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 50px;
+    justify-content: space-between; /* Текст слева, фото справа */
+    gap: 40px;
     max-width: 1000px;
     margin: 0 auto;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .hero-text {
@@ -37,50 +37,66 @@ body {
 
 .hero h1 {
     color: var(--accent-blue);
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin: 0 0 15px 0;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.2;
 }
 
 .hero .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     color: var(--text-secondary);
     margin: 0;
+    line-height: 1.5;
 }
 
 .hero .photo {
-    width: 280px;
-    height: 280px;
+    width: 260px;
+    height: 260px;
     object-fit: cover;
-    border-radius: 12px; /* Скругленные углы выглядят современно и строго */
-    box-shadow: 0 10px 25px rgba(26, 54, 93, 0.15);
-    border: 4px solid var(--bg-color);
+    border-radius: 16px; /* Мягкое скругление */
+    box-shadow: 0 8px 20px rgba(49, 130, 206, 0.1); /* Очень мягкая синяя тень */
+    border: 3px solid #FFFFFF;
+    flex-shrink: 0; /* Запрещаем фото сжиматься */
 }
 
-/* Навигация */
+/* Заголовки на внутренних страницах */
+.hero-page {
+    background-color: var(--card-bg);
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid #E2E8F0;
+}
+.hero-page h1 {
+    color: var(--accent-blue);
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Меню: ВСЕГДА видно, ничего не пропадает */
 .menu {
-    background-color: var(--accent-blue);
+    background-color: var(--card-bg);
     padding: 15px 20px;
     text-align: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-bottom: 1px solid #E2E8F0;
 }
 
 .menu a {
-    color: #ffffff;
+    color: var(--text-primary);
     text-decoration: none;
     margin: 0 15px;
     font-weight: 500;
     font-size: 1.05rem;
-    transition: opacity 0.3s;
+    transition: color 0.2s;
 }
 
 .menu a:hover {
-    opacity: 0.8;
-    text-decoration: underline;
+    color: var(--accent-blue);
 }
 
 /* Основной контент */
@@ -91,19 +107,20 @@ body {
 }
 
 .materials h2 {
-    color: var(--accent-blue);
+    color: var(--text-primary);
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .materials > p {
     text-align: center;
     margin-bottom: 40px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
 }
 
-/* Карточки материалов */
+/* Карточки */
 .cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -113,26 +130,26 @@ body {
 .card {
     background-color: var(--card-bg);
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     text-decoration: none;
     color: var(--text-primary);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid var(--accent-blue); /* Синий акцент слева */
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #E2E8F0;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(26, 54, 93, 0.1);
-    border-left-color: var(--accent-blue-light);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(49, 130, 206, 0.1);
+    border-color: var(--accent-blue);
 }
 
 .card h3 {
     color: var(--accent-blue);
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    font-weight: 600;
 }
 
 .card p {
@@ -141,20 +158,21 @@ body {
     color: var(--text-secondary);
 }
 
-/* Страницы "Обо мне" и "Услуги" */
+/* Текстовые блоки на страницах "Обо мне" и "Услуги" */
 .about-text {
     background-color: var(--card-bg);
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid #E2E8F0;
 }
 
 .about-text h3 {
     color: var(--accent-blue);
     margin-top: 30px;
     margin-bottom: 15px;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 8px;
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 .about-text h3:first-child {
@@ -163,6 +181,7 @@ body {
 
 .about-text ul {
     padding-left: 20px;
+    color: var(--text-secondary);
 }
 
 .about-text li {
@@ -173,45 +192,43 @@ body {
 .card-button {
     display: inline-block;
     background-color: var(--accent-blue);
-    color: #ffffff;
+    color: #FFFFFF;
     padding: 14px 28px;
     border-radius: 8px;
     text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
 
 .card-button:hover {
-    background-color: var(--accent-blue-light);
+    background-color: var(--accent-hover);
 }
 
 /* Футер */
 footer {
     text-align: center;
     padding: 40px 20px;
-    background-color: var(--accent-blue);
-    color: #ffffff;
+    background-color: var(--card-bg);
+    color: var(--text-secondary);
     margin-top: 60px;
+    border-top: 1px solid #E2E8F0;
 }
 
 footer a {
-    color: #cbd5e0;
+    color: var(--accent-blue);
     text-decoration: none;
     margin: 0 10px;
-    transition: color 0.3s;
 }
 
 footer a:hover {
-    color: #ffffff;
     text-decoration: underline;
 }
 
-/* Адаптивность для мобильных телефонов */
+/* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .hero {
-        flex-direction: column-reverse; /* На телефоне фото будет сверху, текст снизу */
+        flex-direction: column; /* На телефоне фото сверху, текст снизу */
         text-align: center;
-        gap: 30px;
         padding: 40px 20px;
     }
     
@@ -220,12 +237,13 @@ footer a:hover {
     }
 
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
 
     .hero .photo {
         width: 200px;
         height: 200px;
+        order: -1; /* Фото гарантированно первое на мобильном */
     }
 
     .menu {
