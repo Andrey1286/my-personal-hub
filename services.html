@@ -11,9 +11,17 @@
     <meta property="og:url" content="https://pystogov-doc.ru/services.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=7">
+    <link rel="stylesheet" href="css/style.css?v=8">
     
-    <!-- Schema.org микроразметка для услуг -->
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem("theme") || "light";
+                document.documentElement.setAttribute("data-theme", savedTheme);
+            } catch(e) {}
+        })();
+    </script>
+    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -22,42 +30,12 @@
       "url": "https://pystogov-doc.ru/services.html",
       "serviceType": ["Консультация эндокринолога", "Нутрициология", "Health-коучинг"],
       "offers": [
-        {
-          "@type": "Offer",
-          "name": "Первичная консультация эндокринолога",
-          "price": "3000",
-          "priceCurrency": "RUB"
-        },
-        {
-          "@type": "Offer",
-          "name": "Повторная консультация эндокринолога",
-          "price": "2000",
-          "priceCurrency": "RUB"
-        },
-        {
-          "@type": "Offer",
-          "name": "Консультация нутрициолога",
-          "price": "3000",
-          "priceCurrency": "RUB"
-        },
-        {
-          "@type": "Offer",
-          "name": "Сопровождение нутрициолога (3 месяца)",
-          "price": "15000",
-          "priceCurrency": "RUB"
-        },
-        {
-          "@type": "Offer",
-          "name": "Онлайн-сессия health-коуча",
-          "price": "2500",
-          "priceCurrency": "RUB"
-        },
-        {
-          "@type": "Offer",
-          "name": "Сопровождение health-коуча (6 месяцев)",
-          "price": "30000",
-          "priceCurrency": "RUB"
-        }
+        { "@type": "Offer", "name": "Первичная консультация эндокринолога", "price": "3000", "priceCurrency": "RUB" },
+        { "@type": "Offer", "name": "Повторная консультация эндокринолога", "price": "2000", "priceCurrency": "RUB" },
+        { "@type": "Offer", "name": "Консультация нутрициолога", "price": "3000", "priceCurrency": "RUB" },
+        { "@type": "Offer", "name": "Сопровождение нутрициолога (3 месяца)", "price": "15000", "priceCurrency": "RUB" },
+        { "@type": "Offer", "name": "Онлайн-сессия health-коуча", "price": "2500", "priceCurrency": "RUB" },
+        { "@type": "Offer", "name": "Сопровождение health-коуча (6 месяцев)", "price": "30000", "priceCurrency": "RUB" }
       ]
     }
     </script>
@@ -78,10 +56,13 @@
     </header>
 
     <nav class="menu">
-        <a href="index.html">Главная</a>
-        <a href="about.html">Обо мне</a>
-        <a href="services.html">Услуги</a>
-        <a href="https://pystogovas.taplink.ws/" target="_blank">Таплинк</a>
+        <div class="menu-links">
+            <a href="index.html">Главная</a>
+            <a href="about.html">Обо мне</a>
+            <a href="services.html">Услуги</a>
+            <a href="https://pystogovas.taplink.ws/" target="_blank">Таплинк</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">🌙</button>
     </nav>
 
     <section class="materials fade-in">
@@ -114,69 +95,67 @@
 
             <h3>Прайс-лист</h3>
 
-            <!-- Эндокринология -->
-            <div class="price-category">🩺 Эндокринология</div>
-            <div class="price-list">
-                <div class="price-item">
-                    <div>
-                        <h4>Первичная консультация эндокринолога</h4>
-                        <p>Информационная услуга. Продолжительность — 60 минут.</p>
-                    </div>
-                    <div class="price-value">3 000 ₽</div>
-                </div>
-                <div class="price-item">
-                    <div>
-                        <h4>Повторная консультация эндокринолога</h4>
-                        <p>Информационная услуга. Продолжительность — 30–60 минут.</p>
-                    </div>
-                    <div class="price-value">2 000 ₽</div>
-                </div>
+            <div class="price-table-wrapper">
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Формат / длительность</th>
+                            <th>Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="category-row">
+                            <td colspan="3">Эндокринология</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Первичная консультация эндокринолога</td>
+                            <td class="service-desc">Информационная услуга, 60 минут</td>
+                            <td>3 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Повторная консультация эндокринолога</td>
+                            <td class="service-desc">Информационная услуга, 30–60 минут</td>
+                            <td>2 000 ₽</td>
+                        </tr>
+
+                        <tr class="category-row">
+                            <td colspan="3">Нутрициология</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Консультация нутрициолога</td>
+                            <td class="service-desc">Разовая встреча, 60 минут</td>
+                            <td>3 000 ₽</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Сопровождение нутрициолога</td>
+                            <td class="service-desc">3 месяца, встречи по 30–60 минут, 2 раза в месяц</td>
+                            <td>15 000 ₽</td>
+                        </tr>
+
+                        <tr class="category-row">
+                            <td colspan="3">Health-коучинг</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Онлайн-сессия health-коуча</td>
+                            <td class="service-desc">Модификация образа жизни, 60 минут</td>
+                            <td>2 500 ₽</td>
+                        </tr>
+                        <tr>
+                            <td class="service-name">Сопровождение health-коуча</td>
+                            <td class="service-desc">6 месяцев, сессии по 30–60 минут, 1 раз в неделю</td>
+                            <td>30 000 ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <!-- Нутрициология -->
-            <div class="price-category">🥗 Нутрициология</div>
-            <div class="price-list">
-                <div class="price-item">
-                    <div>
-                        <h4>Консультация нутрициолога</h4>
-                        <p>Разовая встреча. Продолжительность — 60 минут.</p>
-                    </div>
-                    <div class="price-value">3 000 ₽</div>
-                </div>
-                <div class="price-item">
-                    <div>
-                        <h4>Сопровождение нутрициолога</h4>
-                        <p>От первого знакомства до первых результатов — в течение 3 месяцев. Встречи по 30–60 минут, 2 раза в месяц.</p>
-                    </div>
-                    <div class="price-value">15 000 ₽</div>
-                </div>
-            </div>
-
-            <!-- Health-коучинг -->
-            <div class="price-category">🧠 Health-коучинг</div>
-            <div class="price-list">
-                <div class="price-item">
-                    <div>
-                        <h4>Онлайн-сессия health-коуча</h4>
-                        <p>Специалиста по модификации образа жизни. Продолжительность — 60 минут.</p>
-                    </div>
-                    <div class="price-value">2 500 ₽</div>
-                </div>
-                <div class="price-item">
-                    <div>
-                        <h4>Сопровождение health-коуча</h4>
-                        <p>От первого знакомства до устойчивых изменений — 6 месяцев. Сессии по 30–60 минут, 1 раз в неделю.</p>
-                    </div>
-                    <div class="price-value">30 000 ₽</div>
-                </div>
-            </div>
-
-            <p class="price-note">Все консультации проводятся в формате информационно-консультационных услуг.</p>
+            <p class="price-note">Все консультации оказываются в формате информационно-консультационных услуг.</p>
 
             <hr class="section-divider">
 
             <h3>Контакты для связи и записи</h3>
-            <p>Все актуальные контакты и дополнительная информация находятся на моей странице в Taplink: <a href="https://pystogovas.taplink.ws/" target="_blank" style="color: #3182CE; text-decoration: underline;">pystogovas.taplink.ws</a></p>
+            <p>Все актуальные контакты и дополнительная информация находятся на моей странице в Taplink: <a href="https://pystogovas.taplink.ws/" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">pystogovas.taplink.ws</a></p>
 
             <h3>Как проходит работа</h3>
             <p><strong>1. Запись.</strong> Нажмите кнопку «Заявка на консультацию» ниже, чтобы выбрать удобное время в моем календаре, или напишите мне напрямую в мессенджере Max.</p>
@@ -193,13 +172,25 @@
     <footer>
         <p><a href="index.html">← Вернуться на главную</a></p>
         <p style="margin-top: 15px; font-size: 0.9em;">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" style="color: #3182CE; text-decoration: underline; margin-right: 15px;">Оставить отзыв</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" style="color: var(--accent-blue); text-decoration: underline; margin-right: 15px;">Оставить отзыв</a>
             <a href="offer.pdf" target="_blank" class="offer-link">Договор-оферта (ознакомьтесь перед получением услуг онлайн)</a>
         </p>
     </footer>
 
     <button id="backToTop" title="Наверх">↑</button>
     <script>
+        const themeToggle = document.getElementById("themeToggle");
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute("data-theme") || "light";
+        themeToggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+
+        themeToggle.addEventListener("click", function() {
+            const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+            html.setAttribute("data-theme", next);
+            try { localStorage.setItem("theme", next); } catch(e) {}
+            themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
+        });
+
         const backToTopButton = document.getElementById("backToTop");
         window.onscroll = function() {
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) backToTopButton.classList.add("show");
