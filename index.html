@@ -96,8 +96,22 @@
         <h2>Отзывы пациентов</h2>
         <p>Мнение тех, кто уже прошел путь к здоровью вместе со мной.</p>
         <div class="widget-container">
-            <!-- СЮДА ВСТАВЬ КОД ВИДЖЕТА (например, с ПроДокторов или Яндекс.Карт) -->
-            <p>Здесь будет отображаться виджет с отзывами. <br>Вставьте HTML-код виджета в это место в файле index.html</p>
+            <!-- Виджет ПроДокторов -->
+            <div id="pd_widget_big" data-doctor="936440" hidden>
+              <div class="pd_rate_header">
+                Отзывы о враче Пыстогов А. С.
+                <br>
+                <a target="_blank" class="pd_rate_new" href="https://prodoctorov.ru/new/rate/doctor/936440/">Оставить отзыв</a>
+              </div>
+              <div id="pd_widget_big_content"></div>
+              <a target="_blank" href="https://prodoctorov.ru/krasnodar/vrach/936440-pystogov/#otzivi" class="pd_read_all">Читать все отзывы</a>
+              <span id="pd_powered_by">
+                <a target="_blank" href="https://prodoctorov.ru">
+                  <img class="pd_logo" src="https://prodoctorov.ru/static/_v1/pd/logos/logo-pd-widget.png" alt="ПроДокторов">
+                </a>
+              </span>
+            </div>
+            <script defer src="https://prodoctorov.ru/static/js/widget_big.js?v07"></script>
         </div>
     </section>
 
