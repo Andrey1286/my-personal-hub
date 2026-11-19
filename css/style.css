@@ -1,11 +1,11 @@
 /* Мягкая, профессиональная палитра: спокойствие, забота, доверие */
 :root {
-    --bg-color: #F7FAFC;         /* Очень светлый, мягкий серо-голубой фон */
-    --card-bg: #FFFFFF;          /* Чистый белый для блоков */
-    --accent-blue: #3182CE;      /* Спокойный, доверительный синий (не резкий) */
-    --accent-hover: #2B6CB0;     /* Чуть темнее при наведении */
-    --text-primary: #2D3748;     /* Мягкий темно-серый для заголовков */
-    --text-secondary: #4A5568;   /* Спокойный серый для текста */
+    --bg-color: #F7FAFC;
+    --card-bg: #FFFFFF;
+    --accent-blue: #3182CE;
+    --accent-hover: #2B6CB0;
+    --text-primary: #2D3748;
+    --text-secondary: #4A5568;
 }
 
 body {
@@ -17,17 +17,19 @@ body {
     line-height: 1.6;
 }
 
-/* Шапка с фото СПРАВА и текстом СЛЕВА */
+/* Шапка с фото СПРАВА и текстом СЛЕВА - светло-синий фон как у ВК */
 .hero {
-    background-color: var(--card-bg);
+    background-color: #F0F2F5;
     padding: 60px 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Текст слева, фото справа */
+    justify-content: space-between;
     gap: 40px;
     max-width: 1000px;
     margin: 0 auto;
-    border-bottom: 1px solid #E2E8F0;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid #E7EBF0;
 }
 
 .hero-text {
@@ -54,10 +56,10 @@ body {
     width: 260px;
     height: 260px;
     object-fit: cover;
-    border-radius: 16px; /* Мягкое скругление */
-    box-shadow: 0 8px 20px rgba(49, 130, 206, 0.1); /* Очень мягкая синяя тень */
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15);
     border: 3px solid #FFFFFF;
-    flex-shrink: 0; /* Запрещаем фото сжиматься */
+    flex-shrink: 0;
 }
 
 /* Заголовки на внутренних страницах */
@@ -227,7 +229,7 @@ footer a:hover {
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .hero {
-        flex-direction: column; /* На телефоне фото сверху, текст снизу */
+        flex-direction: column;
         text-align: center;
         padding: 40px 20px;
     }
@@ -243,7 +245,7 @@ footer a:hover {
     .hero .photo {
         width: 200px;
         height: 200px;
-        order: -1; /* Фото гарантированно первое на мобильном */
+        order: -1;
     }
 
     .menu {
