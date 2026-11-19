@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Памятка пациенту: аГПП-1 (семаглутид) и двойные агонисты (тирзепатид)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+--bg-grad-1: #e8f0f8;
+--bg-grad-2: #f5f9fc;
+--ink: #1f2e3d;
+--ink-soft: #2c3e50;
+--ink-head: #143a5a;
+--brand: #1e6fa8;
+--brand-dark: #155a8a;
+--muted: #64748b;
+--card-bg: #ffffff;
+--card-shadow: 0 24px 56px rgba(20, 50, 80, 0.13);
+--card-border: transparent;
+--progress-bg: #d6e2ee;
+--progress-fill-a: #2e86c1;
+--progress-fill-b: #1e6fa8;
+--tag-bg: #e3eef8;
+--tag-ink: #1e6fa8;
+--tag-neutral-bg: #eef2f6;
+--tag-neutral-ink: #3f566b;
+--tag-warn-bg: #fdecea;
+--tag-warn-ink: #b02a1f;
+--tag-ok-bg: #e6f6ea;
+--tag-ok-ink: #1e8449;
+--callout-bg: #eaf7ea;
+--callout-border: #2e8b57;
+--callout-red-bg: #fdf0ef;
+--callout-red-border: #c0392b;
+--callout-blue-bg: #eaf2fb;
+--callout-blue-border: #2e86c1;
+--callout-amber-bg: #fff8e7;
+--callout-amber-border: #d68910;
+--btn-secondary-bg: #eef3f8;
+--btn-secondary-ink: #2c4a66;
+--btn-secondary-hover: #e0e9f2;
+--btn-print-bg: #f7fafd;
+--btn-print-border: #c9d8e6;
+--btn-print-ink: #2c4a66;
+--myth-border: #e3ecf4;
+--myth-hover: rgba(30,111,168,0.05);
+--sources-border: #cbd5e1;
+--sources-bg: #f8fafc;
+--sources-ink: #3f566b;
+--sources-muted: #64748b;
+--disclaimer-bg: #fff7ed;
+--disclaimer-border: #fed7aa;
+--disclaimer-ink: #7c4a12;
+--red-flags-green-bg: #e8f7ee;
+--red-flags-green-border: #1f9d55;
+--red-flags-yellow-bg: #fdf6e3;
+--red-flags-yellow-border: #b7791f;
+--red-flags-red-bg: #fdecec;
+--red-flags-red-border: #c53030;
+--toc-bg: #f4f8fc;
+--toc-border: #d8e2ec;
+--toc-ink: #1e6fa8;
+--toc-hover: #e3eef8;
+--toc-arrow: #2e86c1;
+--questions-bg: #f6f3fb;
+--questions-border: #d9cff0;
+--questions-ink: #4b3b7a;
+--storage-bg: #eef7fb;
+--storage-border: #2e86c1;
+--contra-bg: #fff5f5;
+--contra-border: #e53e3e;
+--contra-ink: #742a2a;
+--contra-yellow-bg: #fffbeb;
+--contra-yellow-border: #d69e2e;
+--contra-yellow-ink: #744210;
+}
+@media (prefers-color-scheme: dark) {
+:root {
+--bg-grad-1: #0f172a;
+--bg-grad-2: #1e293b;
+--ink: #e2e8f0;
+--ink-soft: #cbd5e1;
+--ink-head: #93c5fd;
+--brand: #60a5fa;
+--brand-dark: #3b82f6;
+--muted: #94a3b8;
+--card-bg: #1e293b;
+--card-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+--card-border: #334155;
+--progress-bg: #334155;
+--progress-fill-a: #60a5fa;
+--progress-fill-b: #3b82f6;
+--tag-bg: #1e3a5f;
+--tag-ink: #93c5fd;
+--tag-neutral-bg: #334155;
+--tag-neutral-ink: #cbd5e1;
+--tag-warn-bg: #4a1c1c;
+--tag-warn-ink: #fca5a5;
+--tag-ok-bg: #14532d;
+--tag-ok-ink: #86efac;
+--callout-bg: #143322;
+--callout-border: #4ade80;
+--callout-red-bg: #3a1414;
+--callout-red-border: #f87171;
+--callout-blue-bg: #142a3e;
+--callout-blue-border: #60a5fa;
+--callout-amber-bg: #3a2e10;
+--callout-amber-border: #fbbf24;
+--btn-secondary-bg: #334155;
+--btn-secondary-ink: #cbd5e1;
+--btn-secondary-hover: #475569;
+--btn-print-bg: #1e293b;
+--btn-print-border: #475569;
+--btn-print-ink: #cbd5e1;
+--myth-border: #334155;
+--myth-hover: rgba(96,165,250,0.1);
+--sources-border: #475569;
+--sources-bg: #1e293b;
+--sources-ink: #cbd5e1;
+--sources-muted: #94a3b8;
+--disclaimer-bg: #3a2e10;
+--disclaimer-border: #b45309;
+--disclaimer-ink: #fbbf24;
+--red-flags-green-bg: #143322;
+--red-flags-green-border: #4ade80;
+--red-flags-yellow-bg: #3a2e10;
+--red-flags-yellow-border: #fbbf24;
+--red-flags-red-bg: #3a1414;
+--red-flags-red-border: #f87171;
+--toc-bg: #1e3a5f;
+--toc-border: #334155;
+--toc-ink: #93c5fd;
+--toc-hover: #334155;
+--toc-arrow: #60a5fa;
+--questions-bg: #2a2140;
+--questions-border: #6d4fa1;
+--questions-ink: #c4b5fd;
+--storage-bg: #142a3e;
+--storage-border: #60a5fa;
+--contra-bg: #3a1414;
+--contra-border: #f87171;
+--contra-ink: #fecaca;
+--contra-yellow-bg: #3a2e10;
+--contra-yellow-border: #fbbf24;
+--contra-yellow-ink: #fde68a;
+}
+body { background: linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%); }
+.step-dot { background: var(--progress-bg); border-color: var(--btn-print-border); }
+.step-item.done .step-dot { background: var(--brand); border-color: var(--brand); }
+.step-item.current .step-dot { background: var(--card-bg); border-color: var(--brand); }
+th { background: #0f172a; }
+td { border-bottom-color: #334155; }
+tr:nth-child(even) { background: #243447; }
+.row-esc { background: #1e3a5f !important; }
+.row-extreme { background: #3a1414 !important; }
+.btn-print.primary { background: var(--brand); border-color: var(--brand); color: #0f172a; }
+.btn-print.primary:hover { background: var(--brand-dark); }
+.btn-primary { background: var(--brand); color: #0f172a; }
+.btn-primary:hover { background: var(--brand-dark); }
+.summary-list li::before { background: var(--brand); color: #0f172a; }
+.callout strong, .disclaimer strong { color: inherit; }
+.myth-header { color: var(--ink-head); }
+.myth-header .chev { color: var(--brand); }
+.card h2 { color: var(--ink-head); }
+.card h3 { color: var(--brand); }
+.card-tag { background: var(--tag-bg); color: var(--tag-ink); }
+.card-tag.neutral { background: var(--tag-neutral-bg); color: var(--tag-neutral-ink); }
+.card-tag.warn { background: var(--tag-warn-bg); color: var(--tag-warn-ink); }
+.card-tag.ok { background: var(--tag-ok-bg); color: var(--tag-ok-ink); }
+.toast { background: #0f172a; border: 1px solid #334155; }
+}
+@media (prefers-reduced-motion: reduce) {
+* { animation: none !important; transition: none !important; }
+html { scroll-behavior: auto; }
+}
+body {
+font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+background: linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%);
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+padding: 32px 20px 64px;
+color: var(--ink);
+}
+.app { max-width: 960px; width: 100%; }
+/* ---------- Прогресс ---------- */
+.progress-wrap { margin-bottom: 22px; position: relative; z-index: 2; }
+.progress-top {
+display: flex; justify-content: space-between; align-items: center;
+gap: 12px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.progress-label {
+font-size: 0.95rem; color: var(--muted); font-weight: 600;
+display: flex; gap: 10px; align-items: baseline;
+}
+.progress-label .percent { color: var(--brand); }
+.progress-bar { height: 10px; background: var(--progress-bg); border-radius: 20px; overflow: hidden; }
+.progress-fill {
+height: 100%; width: 0%;
+background: linear-gradient(90deg, var(--progress-fill-a), var(--progress-fill-b));
+border-radius: 20px; transition: width 0.4s ease;
+}
+/* ---------- Степпер ---------- */
+.stepper {
+margin-top: 18px;
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+justify-content: space-between;
+align-items: flex-start;
+padding: 6px 2px 4px;
+position: relative;
+z-index: 2;
+}
+.step-item {
+flex: 1 1 0;
+min-width: 56px;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+background: none;
+border: none;
+cursor: pointer;
+padding: 4px 2px;
+font-family: inherit;
+color: var(--muted);
+transition: color 0.2s;
+position: relative;
+z-index: 3;
+pointer-events: auto;
+}
+.step-item:hover .step-dot { transform: scale(1.12); }
+.step-item:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; border-radius: 10px; }
+.step-dot {
+width: 18px; height: 18px; border-radius: 50%;
+background: var(--progress-bg);
+border: 2px solid var(--btn-print-border);
+transition: background 0.2s, border-color 0.2s, transform 0.2s;
+flex-shrink: 0;
+pointer-events: none;
+}
+.step-item.done .step-dot { background: var(--brand); border-color: var(--brand); }
+.step-item.current .step-dot {
+background: var(--card-bg); border-color: var(--brand); border-width: 3px;
+transform: scale(1.25);
+box-shadow: 0 0 0 4px rgba(46,134,193,0.18);
+}
+.step-item.current { color: var(--ink-head); }
+.step-caption {
+font-size: 0.7rem;
+line-height: 1.2;
+text-align: center;
+max-width: 78px;
+color: var(--muted);
+font-weight: 500;
+pointer-events: none;
+}
+.step-item.current .step-caption { color: var(--ink-head); font-weight: 700; }
+@media (max-width: 720px) {
+.step-caption { display: none; }
+.step-item { min-width: 32px; gap: 0; }
+.stepper { gap: 2px; }
+}
+/* ---------- Toast ---------- */
+.toast {
+position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+background: #1e3a5f; color: #fff; padding: 12px 22px; border-radius: 12px;
+font-size: 0.95rem; opacity: 0; pointer-events: none;
+transition: opacity 0.3s, transform 0.3s; z-index: 1000;
+box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ---------- Карточка ---------- */
+.card {
+background: var(--card-bg); border-radius: 28px;
+border: 1px solid var(--card-border);
+box-shadow: var(--card-shadow);
+padding: 48px 48px 40px;
+animation: slideIn 0.35s ease;
+position: relative;
+z-index: 1;
+}
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(18px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.card.hidden { display: none; }
+.card-tag {
+display: inline-block; background: var(--tag-bg); color: var(--tag-ink);
+font-size: 0.85rem; font-weight: 600; padding: 6px 18px;
+border-radius: 40px; margin-bottom: 18px; letter-spacing: 0.3px;
+}
+.card-tag.warn { background: var(--tag-warn-bg); color: var(--tag-warn-ink); }
+.card-tag.ok   { background: var(--tag-ok-bg); color: var(--tag-ok-ink); }
+.card-tag.neutral { background: var(--tag-neutral-bg); color: var(--tag-neutral-ink); }
+.card-tag.contra { background: var(--contra-bg); color: var(--contra-ink); }
+.card h2 { font-size: 1.8rem; line-height: 1.3; color: var(--ink-head); margin-bottom: 20px; }
+.card h3 { font-size: 1.2rem; color: var(--brand); margin: 26px 0 12px; }
+.card p  { font-size: 1.08rem; line-height: 1.75; margin-bottom: 16px; color: var(--ink-soft); }
+.card ul { margin: 0 0 18px 4px; padding-left: 22px; }
+.card li { font-size: 1.05rem; line-height: 1.7; margin-bottom: 12px; color: var(--ink-soft); }
+.card li strong { color: var(--ink-head); }
+.nested-list { margin-top: 10px; margin-bottom: 0; padding-left: 22px; }
+.nested-list li { font-size: 1rem; margin-bottom: 8px; }
+.callout {
+background: var(--callout-bg); border-left: 6px solid var(--callout-border);
+padding: 18px 20px; border-radius: 14px;
+font-size: 1rem; line-height: 1.65; margin-bottom: 18px;
+color: var(--ink-soft);
+}
+.callout.red  { background: var(--callout-red-bg); border-left-color: var(--callout-red-border); }
+.callout.blue { background: var(--callout-blue-bg); border-left-color: var(--callout-blue-border); }
+.callout.amber { background: var(--callout-amber-bg); border-left-color: var(--callout-amber-border); }
+.callout strong { color: inherit; }
+/* ---------- Кнопки ---------- */
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.btn {
+border: none; cursor: pointer; font-family: inherit;
+font-size: 1.05rem; font-weight: 600;
+padding: 16px 30px; border-radius: 60px;
+transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.btn-primary {
+background: var(--brand); color: #fff;
+box-shadow: 0 6px 18px rgba(30, 111, 168, 0.35);
+}
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-ink); }
+.btn-secondary:hover { background: var(--btn-secondary-hover); }
+/* ---------- Кнопки печати внутри карточки ---------- */
+.print-row {
+display: flex; gap: 10px; flex-wrap: wrap;
+margin: 0 0 22px;
+padding-bottom: 16px;
+border-bottom: 1px dashed var(--toc-border);
+}
+.btn-print {
+display: inline-flex; align-items: center; gap: 8px;
+border: 1px solid var(--btn-print-border); background: var(--btn-print-bg); color: var(--btn-print-ink);
+cursor: pointer; font-family: inherit;
+font-size: 0.9rem; font-weight: 600;
+padding: 9px 16px; border-radius: 10px;
+transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn-print:hover { background: var(--btn-secondary-hover); border-color: var(--brand); color: var(--brand); }
+.btn-print:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.btn-print .ico { font-size: 1rem; }
+.btn-print.primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+.btn-print.primary:hover { background: var(--brand-dark); color: #fff; }
+/* ---------- Оглавление ---------- */
+.toc {
+background: var(--toc-bg);
+border: 1px solid var(--toc-border);
+border-radius: 16px;
+padding: 18px 20px;
+margin: 0 0 20px;
+}
+.toc-title {
+font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.6px;
+color: var(--muted); font-weight: 700; margin-bottom: 10px;
+}
+.toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.toc-list li { margin: 0; }
+.toc-link {
+display: inline-flex; align-items: center; gap: 6px;
+background: var(--card-bg); color: var(--toc-ink);
+text-decoration: none; font-size: 0.9rem; font-weight: 600;
+padding: 7px 14px; border-radius: 40px;
+border: 1px solid var(--toc-border);
+transition: background 0.2s, border-color 0.2s;
+}
+.toc-link:hover { background: var(--toc-hover); border-color: var(--brand); }
+.toc-link .num { color: var(--muted); font-weight: 700; }
+.toc-link .arrow { color: var(--toc-arrow); }
+/* ---------- Красные флаги (светофор) ---------- */
+.flag-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 18px 0 8px; }
+@media (min-width: 720px) { .flag-grid { grid-template-columns: repeat(3, 1fr); } }
+.flag {
+border-radius: 16px; padding: 18px 16px;
+border: 1px solid transparent;
+display: flex; flex-direction: column; gap: 8px;
+}
+.flag.green { background: var(--red-flags-green-bg); border-color: var(--red-flags-green-border); }
+.flag.yellow { background: var(--red-flags-yellow-bg); border-color: var(--red-flags-yellow-border); }
+.flag.red { background: var(--red-flags-red-bg); border-color: var(--red-flags-red-border); }
+.flag-head {
+display: flex; align-items: center; gap: 8px;
+font-size: 1rem; font-weight: 700; margin-bottom: 4px;
+}
+.flag.green .flag-head { color: var(--red-flags-green-border); }
+.flag.yellow .flag-head { color: var(--red-flags-yellow-border); }
+.flag.red .flag-head { color: var(--red-flags-red-border); }
+.flag-body { font-size: 0.95rem; line-height: 1.55; color: var(--ink-soft); }
+.flag-body strong { color: var(--ink-head); }
+.flag-body ul { padding-left: 20px; margin: 6px 0 0; }
+.flag-body li { font-size: 0.95rem; margin-bottom: 6px; }
+/* ---------- Противопоказания ---------- */
+.contra-block {
+background: var(--contra-bg);
+border-left: 6px solid var(--contra-border);
+padding: 18px 20px;
+border-radius: 14px;
+margin: 18px 0;
+color: var(--contra-ink);
+}
+.contra-block h3 { color: var(--contra-border); margin-top: 0; }
+.contra-block ul { padding-left: 22px; }
+.contra-block li { margin-bottom: 10px; line-height: 1.6; }
+.contra-block li strong { color: inherit; }
+.contra-block.yellow {
+background: var(--contra-yellow-bg);
+border-left-color: var(--contra-yellow-border);
+color: var(--contra-yellow-ink);
+}
+.contra-block.yellow h3 { color: var(--contra-yellow-border); }
+/* ---------- Хранение ---------- */
+.storage-block {
+background: var(--storage-bg);
+border-left: 6px solid var(--storage-border);
+padding: 16px 18px; border-radius: 14px;
+font-size: 0.98rem; line-height: 1.65; margin: 18px 0 8px;
+color: var(--ink-soft);
+}
+.storage-block strong { color: var(--ink-head); }
+.storage-block ul { margin: 8px 0 0; padding-left: 20px; }
+.storage-block li { font-size: 0.98rem; margin-bottom: 6px; }
+/* ---------- Что спросить у врача ---------- */
+.questions-block {
+background: var(--questions-bg);
+border: 1px solid var(--questions-border);
+border-radius: 16px;
+padding: 18px 20px;
+margin: 18px 0 8px;
+}
+.questions-title {
+font-size: 1rem; font-weight: 700; color: var(--questions-ink);
+margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.questions-list { list-style: none; padding: 0; margin: 0; counter-reset: q; }
+.questions-list li {
+counter-increment: q;
+position: relative;
+padding-left: 34px;
+margin-bottom: 10px;
+font-size: 1rem; line-height: 1.55; color: var(--ink-soft);
+}
+.questions-list li::before {
+content: counter(q);
+position: absolute; left: 0; top: 0;
+width: 24px; height: 24px; border-radius: 50%;
+background: var(--questions-border); color: #fff;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.8rem; font-weight: 700;
+}
+.questions-note { font-size: 0.88rem; color: var(--muted); margin-top: 8px; }
+/* ---------- Мифы ---------- */
+.myth-accordion { display: flex; flex-direction: column; gap: 12px; margin: 18px 0 22px; }
+.myth-item { border: 1px solid var(--myth-border); border-radius: 14px; background: var(--card-bg); overflow: hidden; }
+.myth-header {
+width: 100%; border: none; background: transparent; cursor: pointer;
+font-family: inherit; font-size: 1.05rem; font-weight: 600; color: var(--ink-head);
+text-align: left; padding: 16px 18px;
+display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.myth-header:hover { background: var(--myth-hover); }
+.myth-header:focus-visible { outline: 3px solid var(--brand); outline-offset: -3px; }
+.myth-header .chev { transition: transform 0.25s ease; color: var(--brand); font-size: 0.9rem; flex-shrink: 0; }
+.myth-item.open .myth-header .chev { transform: rotate(180deg); }
+.myth-body { display: none; padding: 0 18px 18px; font-size: 1rem; line-height: 1.65; color: var(--ink-soft); }
+.myth-item.open .myth-body { display: block; animation: slideIn 0.25s ease; }
+.myth-body p { font-size: 1rem; margin-bottom: 10px; }
+.myth-body ul { margin: 6px 0 10px 18px; }
+.myth-body li { font-size: 1rem; margin-bottom: 8px; }
+.myth-verdict {
+display: inline-block; margin-top: 6px; padding: 4px 12px; border-radius: 20px;
+font-size: 0.82rem; font-weight: 700;
+}
+.myth-verdict.false { background: #fdecea; color: #b02a1f; }
+.myth-verdict.partly { background: #fff3cd; color: #856404; }
+/* ---------- Сворачиваемые источники ---------- */
+details.sources-toggle {
+margin-top: 16px;
+border: 1px dashed var(--sources-border);
+border-radius: 12px;
+background: var(--sources-bg);
+padding: 0 14px;
+}
+details.sources-toggle > summary {
+cursor: pointer;
+padding: 12px 0;
+font-size: 0.9rem;
+font-weight: 600;
+color: var(--sources-ink);
+list-style: none;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+details.sources-toggle > summary::-webkit-details-marker { display: none; }
+details.sources-toggle > summary::after {
+content: '▾';
+color: var(--brand);
+transition: transform 0.2s;
+}
+details.sources-toggle[open] > summary::after { transform: rotate(180deg); }
+details.sources-toggle .sources { margin: 0 0 14px; }
+/* ---------- Финальная памятка ---------- */
+.summary-list { counter-reset: step; list-style: none; padding-left: 0; margin: 0 0 18px; }
+.summary-list li { counter-increment: step; position: relative; padding-left: 52px; margin-bottom: 18px; font-size: 1.06rem; line-height: 1.6; color: var(--ink-soft); }
+.summary-list li::before {
+content: counter(step); position: absolute; left: 0; top: -2px;
+width: 36px; height: 36px; background: var(--brand); color: #fff;
+border-radius: 50%; display: flex; align-items: center; justify-content: center;
+font-weight: 700; font-size: 1rem;
+}
+.summary-list li strong { color: var(--ink-head); }
+/* ---------- Источники ---------- */
+.sources { font-size: 0.85rem; color: var(--sources-muted); line-height: 1.55; border-top: 1px dashed var(--sources-border); padding-top: 10px; margin-top: 14px; }
+.sources strong { color: var(--sources-ink); }
+.sources ol { margin: 6px 0 0 18px; padding: 0; }
+.sources li { margin-bottom: 4px; }
+.sources-note { font-style: italic; margin-bottom: 6px; }
+/* ---------- Дисклеймер ---------- */
+.disclaimer {
+margin-top: 24px; padding: 14px 18px;
+background: var(--disclaimer-bg); border: 1px solid var(--disclaimer-border); border-radius: 14px;
+font-size: 0.9rem; line-height: 1.55; color: var(--disclaimer-ink);
+}
+.disclaimer strong { color: var(--disclaimer-ink); }
+/* ---------- Мобильная адаптация ---------- */
+@media (max-width: 640px) {
+body { padding: 20px 12px 48px; }
+.card { padding: 30px 22px 26px; border-radius: 22px; }
+.card h2 { font-size: 1.4rem; }
+.card p, .card li { font-size: 1rem; }
+.btn { width: 100%; text-align: center; }
+.btn-row { flex-direction: column; }
+.print-row { flex-direction: column; }
+.btn-print { width: 100%; justify-content: center; }
+}
+/* ---------- Печать ---------- */
+@media print {
+@page { margin: 15mm; }
+body { background: #fff; padding: 0; display: block; }
+.progress-wrap, .btn-row, .controls, .compare-toggle, .toast, .stepper,
+.print-row, .icon-btn { display: none !important; }
+.card { box-shadow: none; padding: 20px; border-radius: 0; animation: none; border: 1px solid #ddd; }
+.myth-body { display: block !important; }
+details.sources-toggle > summary { display: none; }
+details.sources-toggle .sources { display: block !important; }
+details.sources-toggle { border: 0; padding: 0; background: transparent; }
+body.print-current .card { display: none !important; }
+body.print-current .card[data-current="true"] { display: block !important; }
+body.print-all .card { display: block !important; }
+body.print-all .card.hidden { display: block !important; }
+.disclaimer { margin-top: 16px; }
+.toc { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+<!-- Прогресс -->
+<div class="progress-wrap">
+<div class="progress-top">
+<div class="progress-label">
+<span id="progressText">Старт</span>
+<span class="percent" id="progressPercent">0%</span>
+</div>
+</div>
+<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<!-- Степпер -->
+<nav class="stepper" id="stepper" aria-label="Навигация по шагам памятки"></nav>
+</div>
+<div id="liveRegion" aria-live="polite" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- ================= СТАРТ ================= -->
+<section class="card" id="card-0" tabindex="-1" aria-labelledby="h-0">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Старт</span>
+<h2 id="h-0">Вам назначен семаглутид или тирзепатид. Что это за препараты?</h2>
+<p>Семаглутид — это агонист рецепторов ГПП-1 (глюкагоноподобного пептида-1). Тирзепатид — двойной агонист: он действует и на рецепторы ГПП-1, и на рецепторы ГИП (глюкозозависимого инсулинотропного полипептида). Оба препарата имитируют действие естественных гормонов кишечника, которые выделяются после еды.</p>
+<!-- Оглавление -->
+<div class="toc" aria-label="Оглавление памятки">
+<div class="toc-title">Оглавление</div>
+<ul class="toc-list">
+<li><a class="toc-link" href="#card-1" onclick="event.preventDefault(); goTo(1);"><span class="num">1</span> Механизм <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-2" onclick="event.preventDefault(); goTo(2);"><span class="num">2</span> Побочные эффекты <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-3" onclick="event.preventDefault(); goTo(3);"><span class="num">3</span> Красные флаги <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-4" onclick="event.preventDefault(); goTo(4);"><span class="num">4</span> Разбор пугалок <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-5" onclick="event.preventDefault(); goTo(5);"><span class="num">5</span> Противопоказания <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-6" onclick="event.preventDefault(); goTo(6);"><span class="num">6</span> Обследование перед началом <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-7" onclick="event.preventDefault(); goTo(7);"><span class="num">7</span> Обследование на фоне <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-8" onclick="event.preventDefault(); goTo(8);"><span class="num">8</span> Наблюдение <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-9" onclick="event.preventDefault(); goTo(9);"><span class="num">9</span> Вопросы врачу и памятка <span class="arrow">→</span></a></li>
+</ul>
+</div>
+<div class="callout">
+<strong>Как они работают:</strong> стимулируют выработку инсулина и подавляют выработку глюкагона — но только тогда, когда сахар высокий. Замедляют опорожнение желудка, благодаря чему дольше сохраняется чувство сытости. И действуют на центры аппетита в головном мозге — пациенты отмечают, что «наедаются меньшим» и реже испытывают тягу к еде вне приёма пищи.
+</div>
+<p>Эффект дозозависимый. В клинических исследованиях семаглутид в дозах 0,5 мг и 1 мг снижал HbA1c на 1,5–1,6% и массу тела на 3,7–4,5 кг за 30 недель по сравнению с плацебо. Тирзепатид в исследованиях по снижению веса демонстрировал ещё более выраженные результаты: доля пациентов, потерявших ≥15% массы тела, достигала 65%.</p>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(1)">Понятно, что дальше? →</button>
+</div>
+</section>
+<!-- ================= ШАГ 1: МЕХАНИЗМ + ХРАНЕНИЕ ================= -->
+<section class="card hidden" id="card-1" tabindex="-1" aria-labelledby="h-1">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Шаг 1</span>
+<h2 id="h-1">Как препараты влияют на вес и сахар крови</h2>
+<p>Чтобы понять, чего ожидать от лечения, полезно разобраться, как именно работают эти препараты.</p>
+<ul>
+<li><strong>Снижение сахара крови.</strong> Препараты стимулируют выработку инсулина и подавляют выработку глюкагона — но только тогда, когда сахар высокий. Поэтому на монотерапии этими препаратами гипогликемия практически не встречается.</li>
+<li><strong>Снижение массы тела.</strong> Замедляется опорожнение желудка (дольше сохраняется чувство сытости), и — что важно — препараты действуют на центры аппетита в головном мозге. Пациенты отмечают, что «наедаются меньшим» и реже испытывают тягу к еде вне приёма пищи.</li>
+<li><strong>Эффект дозозависимый.</strong> В клинических исследованиях семаглутид в дозах 0,5 мг и 1 мг снижал HbA1c на 1,5–1,6% и массу тела на 3,7–4,5 кг за 30 недель по сравнению с плацебо. Тирзепатид в исследованиях по снижению веса демонстрировал ещё более выраженные результаты: доля пациентов, потерявших ≥15% массы тела, достигала 65%.</li>
+</ul>
+<div class="callout blue">
+<strong>Важно:</strong> препарат — не замена образу жизни, а инструмент. Рацион и физическую активность нужно адаптировать по мере снижения веса — об этом мы поговорим отдельно.
+</div>
+<h3>Хранение препарата</h3>
+<div class="storage-block">
+<strong>Общие правила (уточните по инструкции к вашей форме):</strong>
+<ul>
+<li>Храните в холодильнике при температуре 2–8 °C — до первого использования.</li>
+<li>Не замораживайте. Если препарат случайно замёрз — не используйте его.</li>
+<li>Защищайте от прямого света: храните в оригинальной упаковке.</li>
+<li>После первого вскрытия шприц-ручку можно хранить при комнатной температуре (обычно до 30 °C) ограниченное время — конкретный срок указан в инструкции (часто 4–6 недель).</li>
+<li>Не используйте препарат с истёкшим сроком годности или если раствор изменил цвет / появились частицы.</li>
+<li>Храните в недоступном для детей месте.</li>
+</ul>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(2)">Какие побочные эффекты бывают? →</button>
+<button class="btn btn-secondary" onclick="goTo(0)">← Назад</button>
+</div>
+</section>
+<!-- ================= ШАГ 2: ПОБОЧНЫЕ ЭФФЕКТЫ ================= -->
+<section class="card hidden" id="card-2" tabindex="-1" aria-labelledby="h-2">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag warn">Шаг 2 · Побочные эффекты</span>
+<h2 id="h-2">Что важно знать и когда звонить врачу</h2>
+<p>Побочные эффекты — самая обсуждаемая тема. Давайте разберём их по частоте и по тому, что с ними делать. На следующем шаге мы соберём самые важные симптомы в «светофор» — его удобно распечатать и держать под рукой.</p>
+<h3>🟢 Частые и обычно преходящие (адаптационный период)</h3>
+<ul>
+<li><strong>Тошнота, рвота, диарея, запор, боль в животе, отрыжка, снижение аппетита.</strong> Это самые частые нежелательные явления — они встречаются у значительной части пациентов в начале лечения и при повышении дозы.</li>
+</ul>
+<div class="callout">
+<strong>Что делать:</strong> Это действительно адаптационный период. Организм привыкает к новому сигналу сытости. Обычно симптомы ослабевают в течение нескольких недель. Помогает дробное питание малыми порциями, отказ от жирной и жареной пищи, достаточный питьевой режим. Если симптомы выражены, но терпимы — обсудите с врачом темп повышения дозы, а не отмену препарата.
+</div>
+<p><strong>Когда звонить врачу срочно:</strong> если рвота не даёт пить воду и появляются признаки обезвоживания (головокружение, тёмная моча, сухость во рту), если боль в животе сильная и не проходит.</p>
+<h3>🟡 Менее частые, но требующие внимания</h3>
+<ul>
+<li><strong>Обезвоживание и нагрузка на почки.</strong> На фоне рвоты или диареи может развиться острое повреждение почек из-за потери жидкости. Врач должен контролировать креатинин, если у вас была рвота или диарея.</li>
+<li><strong>Гипогликемия — если вы дополнительно принимаете другие сахароснижающие препараты</strong> (инсулин, препараты сульфанилмочевины, а также ряд других). Сам по себе семаглутид или тирзепатид гипогликемию практически не вызывает, но в комбинации с этими препаратами риск возрастает. Врач может заранее скорректировать их дозу.</li>
+<li><strong>Реакции в месте инъекции</strong> (для инъекционных форм): покраснение, уплотнение. Обычно проходят самостоятельно.</li>
+<li><strong>Выпадение волос.</strong> Указано в инструкции тирзепатида как частая реакция. Чаще связано с быстрой потерей веса и дефицитом питательных веществ, а не с прямым токсическим действием препарата. Обсудите с врачом, если заметите усиленное выпадение.</li>
+</ul>
+<h3>🔴 Редкие, но грозные: знать в лицо, чтобы вовремя обратиться</h3>
+<ul>
+<li><strong>Панкреатит.</strong> В клинических исследованиях тирзепатида частота острого панкреатита была низкой (около 0,2% в исследованиях по снижению веса). В пострегистрационном периоде поступали сообщения о случаях панкреатита — как и для многих других препаратов этого класса, они требуют настороженности, но встречаются редко. <strong>Симптомы:</strong> сильная боль в верхней части живота, отдающая в спину, тошнота, рвота. <strong>Действие:</strong> при подозрении на панкреатит — немедленно вызвать скорую помощь и прекратить приём препарата до консультации с врачом.</li>
+<li><strong>Желчнокаменная болезнь и холецистит.</strong> Быстрая потеря веса сама по себе предрасполагает к камнеобразованию, и на фоне аГПП-1 этот риск есть. В исследованиях тирзепатида холелитиаз встречался с частотой от 0,3% до 3,7% в разных выборках. <strong>Симптомы:</strong> боль в правом подреберье, особенно после жирной пищи, тошнота, горечь во рту, желтушность кожи или склер. <strong>Действие:</strong> планово или срочно (при сильной боли и температуре) — к врачу. Обычно требуется УЗИ органов брюшной полости.</li>
+<li><strong>Неартериитная передняя ишемическая оптическая нейропатия (НПИОН).</strong> Это редкое состояние — внезапная безболезненная потеря зрения на одном глазу из-за недостатка кровоснабжения зрительного нерва. Подробнее — на следующем шаге.</li>
+<li><strong>Тяжёлые аллергические реакции.</strong> Анафилаксия и ангионевротический отёк сообщались в пострегистрационном периоде. <strong>Симптомы:</strong> отёк лица, губ, языка, затруднение дыхания, сыпь. <strong>Действие:</strong> прекратить препарат и немедленно обратиться за помощью.</li>
+<li><strong>Аспирация при наркозе и глубокой седации.</strong> Из-за замедленного опорожнения желудка у пациентов, получающих аГПП-1, описаны случаи аспирации во время плановых операций и процедур под наркозом. <strong>Что делать:</strong> обязательно сообщите анестезиологу и хирургу, что вы получаете семаглутид или тирзепатид, до планируемой операции.</li>
+</ul>
+<details class="sources-toggle">
+<summary>Источники к разделу о побочных эффектах</summary>
+<div class="sources">
+<p class="sources-note">Названия работ приведены на языке оригинала — так их можно найти в медицинских базах.</p>
+<ol>
+<li>Wilding J.P.H., Batterham R.L., Calanna S. et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1). <em>N Engl J Med</em>, 2021;384:989-1002.</li>
+<li>Jastreboff A.M., Aronne L.J., Ahmad N.N. et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). <em>N Engl J Med</em>, 2022;387:205-216.</li>
+<li>Lincoff A.M., Brown-Frandsen K., Colhoun H.M. et al. Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes (SELECT). <em>N Engl J Med</em>, 2023;389:2221-2232.</li>
+<li>Perkovic V., Tuttle K.R., Rossing P. et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). <em>N Engl J Med</em>, 2024;391:109-121.</li>
+<li>Hathaway J.T., Shah M.P., Hathaway D.B. et al. Risk of Nonarteritic Anterior Ischemic Optic Neuropathy in Patients Prescribed Semaglutide. <em>JAMA Ophthalmol</em>, 2024;142(8):732-739.</li>
+<li>American Academy of Ophthalmology. Statement on Semaglutide and NAION. 2024.</li>
+<li>EMA. PRAC recommendations on signals: semaglutide and NAION. 2025.</li>
+<li>Stein R.A., Kang S., McKean A. et al. Semaglutide and delayed gastric emptying: implications for perioperative aspiration risk. <em>Anesthesiology</em>, 2024.</li>
+</ol>
+</div>
+</details>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(3)">Красные флаги: когда действовать немедленно →</button>
+<button class="btn btn-secondary" onclick="goTo(1)">← К механизму</button>
+</div>
+</section>
+<!-- ================= ШАГ 3: КРАСНЫЕ ФЛАГИ ================= -->
+<section class="card hidden" id="card-3" tabindex="-1" aria-labelledby="h-3">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag warn">Шаг 3 · Светофор</span>
+<h2 id="h-3">Красные флаги: когда действовать немедленно</h2>
+<p>Эта карточка — «светофор». Её удобно распечатать отдельно и держать под рукой. Она помогает быстро сориентироваться: что можно переждать, когда звонить врачу, а когда — вызывать скорую.</p>
+<div class="flag-grid">
+<div class="flag green">
+<div class="flag-head">🟢 Зелёный — адаптация</div>
+<div class="flag-body">
+<p><strong>Симптомы:</strong> лёгкая тошнота, снижение аппетита, отрыжка, мягкий запор или послабление стула в первые недели.</p>
+<p><strong>Что делать:</strong> дробное питание малыми порциями, питьевой режим, отказ от жирного и жареного. Обычно проходит за несколько недель.</p>
+</div>
+</div>
+<div class="flag yellow">
+<div class="flag-head">🟡 Жёлтый — позвонить врачу</div>
+<div class="flag-body">
+<p><strong>Симптомы:</strong></p>
+<ul>
+<li>рвота или диарея, из-за которых не удаётся пить;</li>
+<li>сильная или не проходящая боль в животе;</li>
+<li>признаки обезвоживания (головокружение, тёмная моча, сухость во рту);</li>
+<li>боль в правом подреберье после жирной пищи;</li>
+<li>усиленное выпадение волос;</li>
+<li>симптомы дефицитов (слабость, бледность, покалывание в руках/ногах).</li>
+</ul>
+<p><strong>Что делать:</strong> связаться с лечащим врачом в плановом порядке (в течение дня).</p>
+</div>
+</div>
+<div class="flag red">
+<div class="flag-head">🔴 Красный — скорая / неотложка</div>
+<div class="flag-body">
+<p><strong>Симптомы:</strong></p>
+<ul>
+<li>сильная боль в верхней части живота, отдающая в спину (подозрение на панкреатит);</li>
+<li>внезапная безболезненная потеря зрения на одном глазу (НПИОН);</li>
+<li>отёк лица, губ, языка, затруднение дыхания (анафилаксия);</li>
+<li>сильная боль в правом подреберье с температурой и желтушностью (холецистит).</li>
+</ul>
+<p><strong>Что делать:</strong> немедленно вызвать скорую помощь. Прекратить приём препарата до консультации с врачом.</p>
+</div>
+</div>
+</div>
+<div class="callout amber">
+<strong>Отдельно про НПИОН:</strong> связь с семаглутидом изучается. Абсолютная частота остаётся очень низкой (2,3–10,2 случаев на 100 000 человек в год), и даже двукратное повышение относительного риска даёт очень небольшой абсолютный прирост. Но симптом-«красный флаг» — внезапная безболезненная потеря зрения на одном глазу — требует немедленного обращения к офтальмологу или в неотложную помощь. Не ждать «пока пройдёт».
+</div>
+<div class="callout blue">
+<strong>Перед плановой операцией или процедурой под наркозом</strong> обязательно сообщите анестезиологу и хирургу, что вы получаете семаглутид или тирзепатид: из-за замедленного опорожнения желудка есть риск аспирации.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(4)">А что говорят в интернете? →</button>
+<button class="btn btn-secondary" onclick="goTo(2)">← К побочным эффектам</button>
+</div>
+</section>
+<!-- ================= ШАГ 4: МИФЫ / ПУГАЛКИ ================= -->
+<section class="card hidden" id="card-4" tabindex="-1" aria-labelledby="h-4">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag warn">Шаг 4 · Разбор пугалок</span>
+<h2 id="h-4">О «пугалках» в интернете — честно</h2>
+<p>Риски существуют. Мы их не отрицаем и не прячем. Но важно расставить акценты.</p>
+<div class="myth-accordion" id="mythAccordion">
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-1">
+<span>«Препарат вызывает слепоту»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-1" role="region">
+<p>Когда пишут «препарат вызывает слепоту», не уточняют, что речь идёт о единичных случаях на сотни тысяч пациентов, а связь до конца не доказана. НПИОН встречается у 2,3–10,2 человек на 100 000 в год — это очень редкое событие. Мы не игнорируем этот сигнал — мы держим его в поле зрения и наблюдаем за вами.</p>
+<span class="myth-verdict partly">⚠️ Риск реален, но очень низок</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-2">
+<span>«Препарат разрушает поджелудочную»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-2" role="region">
+<p>Панкреатит в исследованиях встречался у десятых долей процента (около 0,2%). Это серьёзное осложнение, которое требует настороженности, но встречается редко. При появлении сильной боли в верхней части живота, отдающей в спину, — немедленно вызвать скорую помощь.</p>
+<span class="myth-verdict partly">⚠️ Риск реален, но низок</span>
+</div>
+</div>
+<div class="myth-item">
+<button class="myth-header" aria-expanded="false" aria-controls="myth-3">
+<span>«Это опасно, лучше не начинать»</span>
+<span class="chev" aria-hidden="true">▼</span>
+</button>
+<div class="myth-body" id="myth-3" role="region">
+<p>Большинство побочных эффектов — управляемы. Тошноту корректируем темпом титрации и питанием. Риск гипогликемии — снижением дозы сопутствующих препаратов. Риск обезвоживания — контролем самочувствия и лабораторных показателей. Для пациента с ожирением и/или диабетом 2 типа снижение веса и улучшение гликемического контроля — это снижение риска инфаркта, инсульта, поражения почек. Эти риски гораздо более реальны и часты, чем редкие осложнения.</p>
+<span class="myth-verdict false">❌ Миф: польза, как правило, превышает риски</span>
+</div>
+</div>
+</div>
+<div class="callout blue">
+<strong>Наша позиция:</strong> риски есть, но большинством из них мы умеем управлять. Польза от лечения, как правило, превышает возможные риски. Мы не игнорируем сигналы — мы держим их в поле зрения и наблюдаем за вами.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(5)">Противопоказания →</button>
+<button class="btn btn-secondary" onclick="goTo(3)">← К красным флагам</button>
+</div>
+</section>
+<!-- ================= ШАГ 5: ПРОТИВОПОКАЗАНИЯ ================= -->
+<section class="card hidden" id="card-5" tabindex="-1" aria-labelledby="h-5">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag contra">Шаг 5 · Противопоказания</span>
+<h2 id="h-5">Когда препараты аГПП-1 и тирзепатид назначать нельзя</h2>
+<p>Перед началом терапии врач обязательно проверяет, нет ли у вас состояний, при которых эти препараты противопоказаны. Некоторые из них — абсолютные (препарат назначать нельзя в принципе), другие — относительные (требуется особая осторожность или дополнительные обследования).</p>
+
+<div class="contra-block">
+<h3>🚫 Абсолютные противопоказания</h3>
+<ul>
+<li><strong>Медуллярный рак щитовидной железы (МРЩЖ) в анамнезе</strong> — у пациента или у близких родственников.</li>
+<li><strong>Синдром множественной эндокринной неоплазии 2 типа (МЭН 2)</strong> — наследственное заболевание, при котором МРЩЖ развивается почти всегда.</li>
+<li><strong>Беременность и планирование беременности.</strong> Препараты отменяют заранее: семаглутид — минимум за <strong>2 месяца</strong> до планируемого зачатия, тирзепатид — минимум за <strong>1 месяц</strong>. Надёжная контрацепция рекомендуется на всё время лечения.</li>
+<li><strong>Грудное вскармливание.</strong> Препараты не исследовались у кормящих женщин, их проникновение в грудное молоко неизвестно.</li>
+<li><strong>Тяжёлая аллергическая реакция</strong> на семаглутид, тирзепатид или любой компонент препарата в анамнезе (анафилаксия, ангионевротический отёк).</li>
+</ul>
+</div>
+
+<div class="contra-block yellow">
+<h3>⚠️ Относительные противопоказания и меры предосторожности</h3>
+<ul>
+<li><strong>Панкреатит в анамнезе.</strong> Пациенты с перенесённым панкреатитом не включались в крупные исследования. Решение о назначении принимает врач индивидуально, с тщательным мониторингом симптомов.</li>
+<li><strong>Тяжёлая гастроэнтеропатия (гастропарез).</strong> Препараты замедляют опорожнение желудка — при исходно нарушенной моторике ЖКТ симптомы могут усугубиться.</li>
+<li><strong>Тяжёлая почечная недостаточность (терминальная стадия, диализ).</strong> Клинические данные ограничены. При умеренном снижении функции почек коррекция дозы обычно не требуется, но нужен контроль креатинина.</li>
+<li><strong>Прогрессирующая диабетическая ретинопатия</strong> (для семаглутида). Быстрое снижение гликемии может временно ухудшить состояние сетчатки. Требуется консультация офтальмолога перед стартом и наблюдение в динамике.</li>
+<li><strong>Детский и подростковый возраст</strong> (для большинства форм препаратов — вне зарегистрированных показаний).</li>
+</ul>
+</div>
+
+<h3>💊 Взаимодействие с другими лекарствами</h3>
+<div class="callout amber">
+<strong>Замедление опорожнения желудка</strong> может влиять на всасывание пероральных препаратов. Это особенно важно для лекарств с узким терапевтическим окном (например, варфарин, дигоксин, некоторые противосудорожные).
+</div>
+<ul>
+<li><strong>Пероральные контрацептивы.</strong> В период титрации дозы и при выраженной тошноте/рвоте рекомендуется дополнительно использовать барьерную контрацепцию в течение 4 недель после начала терапии и после каждого повышения дозы.</li>
+<li><strong>Инсулин и препараты сульфанилмочевины.</strong> Риск гипогликемии возрастает. Врач заранее снижает их дозы.</li>
+<li><strong>Препараты, требующие быстрого всасывания</strong> (например, некоторые антибиотики, левотироксин) — могут потребовать контроля концентрации или изменения времени приёма.</li>
+</ul>
+
+<h3>🔪 Перед плановыми операциями</h3>
+<div class="callout blue">
+<strong>Обязательно сообщите хирургу и анестезиологу</strong>, что вы получаете семаглутид или тирзепатид. Из-за замедленного опорожнения желудка есть риск аспирации во время наркоза.
+</div>
+<p>Современные рекомендации (ASA 2023) предлагают два варианта:</p>
+<ul>
+<li>Отменить препарат на <strong>3 дня</strong> (для ежедневных форм) или на <strong>1 неделю</strong> (для еженедельных форм) перед плановой операцией.</li>
+<li>Либо провести УЗИ желудка перед наркозом для оценки объёма содержимого.</li>
+</ul>
+<p>Решение принимается индивидуально анестезиологом.</p>
+
+<div class="callout">
+<strong>Важно:</strong> этот список — ориентир. Окончательное решение о возможности терапии всегда принимает врач с учётом всей вашей клинической картины. Если у вас есть сомнения — задайте вопросы на приёме (см. Финальный шаг).
+</div>
+
+<details class="sources-toggle">
+<summary>Источники к разделу о противопоказаниях</summary>
+<div class="sources">
+<p class="sources-note">Названия работ приведены на языке оригинала — так их можно найти в медицинских базах.</p>
+<ol>
+<li>Инструкции по медицинскому применению препаратов семаглутид (Оземпик, Вегови, Ребелсас) и тирзепатид (Мунджаро, Зепбонди) — актуальная редакция.</li>
+<li>American Diabetes Association. Standards of Care in Diabetes—2025. <em>Diabetes Care</em>, 2025;48(Suppl 1).</li>
+<li>Davies M.J., Aroda V.R., Collins B.S. et al. Management of Hyperglycemia in Type 2 Diabetes, 2022. A Consensus Report by the ADA and EASD. <em>Diabetes Care</em>, 2022;45(11):2753-2786.</li>
+<li>2025 Focused Update of the 2019 ESC/EAS Guidelines for the management of dyslipidaemias. <em>European Heart Journal</em>, 2025;46:4359-4378.</li>
+<li>American Society of Anesthesiologists (ASA). Guidance on Preoperative Management of GLP-1 Receptor Agonists. 2023.</li>
+<li>EMA. Summary of Product Characteristics — Ozempic / Wegovy / Mounjaro (актуальная редакция).</li>
+</ol>
+</div>
+</details>
+
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(6)">Обследование перед началом →</button>
+<button class="btn btn-secondary" onclick="goTo(4)">← К пугалкам</button>
+</div>
+</section>
+<!-- ================= ШАГ 6: ОБСЛЕДОВАНИЕ ПЕРЕД ================= -->
+<section class="card hidden" id="card-6" tabindex="-1" aria-labelledby="h-6">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Шаг 6 · Обследование перед началом</span>
+<h2 id="h-6">Чек-лист обследования перед назначением препарата</h2>
+<p>Перед началом лечения важно иметь «точку отсчёта» — базовые показатели, с которыми мы будем сравнивать результаты на фоне терапии.</p>
+<h3>Минимум</h3>
+<ul>
+<li>✅ АСТ, АЛТ</li>
+<li>✅ Глюкоза (натощак, при возможности — HbA1c)</li>
+<li>✅ Креатинин (с расчётом СКФ)</li>
+<li>✅ Холестерин (липидограмма)</li>
+<li>✅ Кальцитонин</li>
+<li>✅ УЗИ щитовидной железы</li>
+<li>✅ УЗИ органов брюшной полости (печень, желчный пузырь, поджелудочная железа)</li>
+</ul>
+<h3>Почему именно это</h3>
+<ul>
+<li><strong>Кальцитонин и УЗИ щитовидной железы</strong> — для исключения медуллярного рака щитовидной железы (МРЩЖ). Препараты противопоказаны при наличии в анамнезе МРЩЖ или МЭН 2 типа. Рутинный контроль кальцитонина на фоне лечения не имеет доказанной ценности для раннего выявления, поэтому важно сделать это до старта.</li>
+<li><strong>АСТ, АЛТ, УЗИ брюшной полости</strong> — базовая оценка состояния печени и желчного пузыря до начала терапии, чтобы иметь точку отсчёта.</li>
+<li><strong>Креатинин</strong> — исходная функция почек, чтобы потом понимать, не было ли ухудшения на фоне обезвоживания.</li>
+</ul>
+<div class="callout amber">
+<strong>Для отдельных пациентов план может быть расширен</strong> с учётом сопутствующих заболеваний. В частности, при наличии факторов риска или жалоб со стороны поджелудочной железы (в анамнезе — панкреатит, заболевания желчевыводящих путей, злоупотребление алкоголем, выраженная гипертриглицеридемия) имеет смысл оценить исходное состояние поджелудочной железы: УЗИ, а при необходимости — амилаза/липаза крови, консультация гастроэнтеролога. Также может потребоваться ЭКГ при сердечно-сосудистом риске, консультация офтальмолога при диабетической ретинопатии в анамнезе.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(7)">Обследование на фоне лечения →</button>
+<button class="btn btn-secondary" onclick="goTo(5)">← К противопоказаниям</button>
+</div>
+</section>
+<!-- ================= ШАГ 7: ОБСЛЕДОВАНИЕ НА ФОНЕ ================= -->
+<section class="card hidden" id="card-7" tabindex="-1" aria-labelledby="h-7">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Шаг 7 · Обследование на фоне лечения</span>
+<h2 id="h-7">План обследования на фоне лечения</h2>
+<p>Контроль помогает вовремя заметить изменения и скорректировать терапию.</p>
+<h3>Стандартный контроль через 3 месяца от начала терапии (или достижения поддерживающей дозы)</h3>
+<ul>
+<li>АСТ, АЛТ</li>
+<li>Глюкоза (HbA1c)</li>
+<li>Холестерин (липидограмма)</li>
+<li>Креатинин</li>
+</ul>
+<h3>Дополнительно — при симптомах дефицитов или риске их развития</h3>
+<ul>
+<li>Клинический анализ крови</li>
+<li>Ферритин</li>
+<li>Цинк</li>
+<li>Витамин B12</li>
+<li>Кальций (общий и ионизированный)</li>
+<li>Витамин D (25-OH)</li>
+<li>Общий белок</li>
+<li>ТТГ</li>
+</ul>
+<div class="callout blue">
+<strong>Почему это важно:</strong> на фоне значительного снижения веса и уменьшения объёма питания может развиться дефицит нутриентов. Это не специфическое токсическое действие препарата, а следствие изменившегося рациона. Мы это предвидим и корректируем.
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(8)">Как часто наблюдаться у врача? →</button>
+<button class="btn btn-secondary" onclick="goTo(6)">← К обследованию перед началом</button>
+</div>
+</section>
+<!-- ================= ШАГ 8: ЧАСТОТА НАБЛЮДЕНИЯ ================= -->
+<section class="card hidden" id="card-8" tabindex="-1" aria-labelledby="h-8">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Шаг 8 · Наблюдение</span>
+<h2 id="h-8">Частота наблюдения врачом</h2>
+<p>Регулярные визиты — не формальность. Это возможность вовремя заметить осложнение, скорректировать дозу и оценить эффективность лечения.</p>
+<h3>Зачем нужны регулярные визиты</h3>
+<ul>
+<li><strong>Своевременное выявление осложнений.</strong> Большинство из них на ранней стадии корректируются без отмены препарата.</li>
+<li><strong>Решение об изменении дозы.</strong> Титрация — не гонка. Если побочные эффекты выражены, мы можем задержаться на текущей дозе дольше стандартных 4 недель.</li>
+<li><strong>Контроль побочных эффектов.</strong> Вы сообщаете — мы реагируем. Не нужно терпеть «до последнего».</li>
+<li><strong>Оценка эффективности.</strong> Если через 3–6 месяцев на поддерживающей дозе нет адекватного ответа (по весу или гликемии), план пересматривается.</li>
+<li><strong>Коррекция рациона и физической активности.</strong> Препарат — не замена образу жизни, а инструмент. Рацион и движение нужно адаптировать по мере снижения веса.</li>
+</ul>
+<h3>Ориентировочная частота визитов</h3>
+<ul>
+<li><strong>Первые 3 месяца</strong> — обычно каждый месяц (в том числе для контроля титрации и переносимости).</li>
+<li><strong>Далее в течение первого года</strong> — каждые 3 месяца.</li>
+<li><strong>При продолжающейся терапии</strong> — 1 раз в 6 месяцев.</li>
+<li><strong>Внепланово</strong> — при любых симптомах из «красного» списка, при сильной или не проходящей симптоматике со стороны ЖКТ, при невозможности пить/есть, при внезапном ухудшении зрения.</li>
+</ul>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(9)">К вопросам врачу и памятке →</button>
+<button class="btn btn-secondary" onclick="goTo(7)">← К обследованию на фоне</button>
+</div>
+</section>
+<!-- ================= ФИНАЛ: ПАМЯТКА + ВОПРОСЫ + ИСТОЧНИКИ ================= -->
+<section class="card hidden" id="card-9" tabindex="-1" aria-labelledby="h-9">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag ok">Финал · Памятка</span>
+<h2 id="h-9">Памятка коротко</h2>
+<ol class="summary-list">
+<li><strong>Препарат работает на двух фронтах:</strong> снижает сахар крови (только когда он высокий) и уменьшает аппетит, замедляя опорожнение желудка.</li>
+<li><strong>Частые побочные эффекты — это адаптационный период.</strong> Тошнота, диарея, запор обычно ослабевают за несколько недель. Дробное питание и питьевой режим помогают.</li>
+<li><strong>Гипогликемия возможна только при дополнительном приёме других сахароснижающих препаратов.</strong> Врач заранее корректирует их дозу.</li>
+<li><strong>Редкие, но грозные осложнения:</strong> панкреатит (сильная боль в верхней части живота, отдающая в спину — немедленно скорая), желчнокаменная болезнь, НПИОН (внезапная потеря зрения на одном глазу — немедленно к офтальмологу), тяжёлые аллергические реакции, аспирация при наркозе (сообщите анестезиологу).</li>
+<li><strong>Абсолютные противопоказания:</strong> медуллярный рак щитовидной железы в анамнезе (у пациента или близких родственников), МЭН 2 типа, беременность и планирование беременности, грудное вскармливание, тяжёлая аллергия на препарат.</li>
+<li><strong>Риски есть, но большинством из них мы умеем управлять.</strong> Польза от лечения, как правило, превышает возможные риски. Информация в сети часто подаётся вне контекста.</li>
+<li><strong>Перед началом лечения:</strong> АСТ, АЛТ, глюкоза, креатинин, холестерин, кальцитонин, УЗИ щитовидной железы, УЗИ органов брюшной полости. Для отдельных пациентов план может быть расширен.</li>
+<li><strong>На фоне лечения:</strong> контроль через 3 месяца — АСТ, АЛТ, глюкоза, холестерин, креатинин. При симптомах дефицитов — дополнительно клинический анализ крови, ферритин, цинк, B12, кальций, витамин D, общий белок, ТТГ.</li>
+<li><strong>Частота визитов:</strong> первые 3 месяца — обычно каждый месяц, далее в течение первого года — каждые 3 месяца, при продолжающейся терапии — 1 раз в 6 месяцев. Внепланово — при «красных» симптомах.</li>
+<li><strong>Не бросайте препарат самостоятельно.</strong> Если что-то беспокоит — обсудите с врачом. Риск инфаркта и инсульта на фоне нелеченого ожирения и диабета гораздо реальнее, чем редкие осложнения терапии.</li>
+</ol>
+<div class="questions-block">
+<div class="questions-title">🗣️ Что спросить у врача на приёме</div>
+<ol class="questions-list">
+<li>Какая целевая доза препарата рекомендована именно мне и как быстро мы будем к ней идти?</li>
+<li>Когда мне сдавать контрольные анализы и какие именно?</li>
+<li>Что делать, если я пропустил инъекцию?</li>
+<li>Какие симптомы должны заставить меня позвонить вам, а какие — сразу вызвать скорую?</li>
+<li>Как скорректировать дозы моих других сахароснижающих препаратов?</li>
+<li>Как изменить рацион и физическую активность по мере снижения веса?</li>
+<li>Нужно ли мне дополнительно сдавать какие-то анализы на дефициты (B12, железо, витамин D)?</li>
+<li>Есть ли у меня противопоказания к терапии (МРЩЖ в семье, панкреатит в анамнезе)?</li>
+<li>Что делать, если я планирую операцию или стоматологическое вмешательство под наркозом?</li>
+</ol>
+<p class="questions-note">Совет: запишите свои вопросы заранее — на приёме часто забывается важное.</p>
+</div>
+<div class="callout">
+<strong>Помните:</strong> препарат — это инструмент, а не замена образу жизни. Рацион и физическая активность — ваша база. Мы будем корректировать их вместе с вами по мере снижения веса.
+</div>
+<div class="callout blue">
+<strong>Отлично!</strong> Вы добрались до финальной карточки — теперь вы знаете о терапии препаратами аГПП-1/ГИП больше, чем большинство пациентов, которые начинают эту терапию. Если что-то осталось непонятным — вернитесь к нужному шагу через оглавление в начале или обсудите с врачом.
+</div>
+<details class="sources-toggle">
+<summary>Источники к памятке</summary>
+<div class="sources">
+<p class="sources-note">Названия работ приведены на языке оригинала — так их можно найти в медицинских базах.</p>
+<ol>
+<li>Wilding J.P.H., Batterham R.L., Calanna S. et al. Once-Weekly Semaglutide in Adults with Overweight or Obesity (STEP 1). <em>N Engl J Med</em>, 2021;384:989-1002.</li>
+<li>Jastreboff A.M., Aronne L.J., Ahmad N.N. et al. Tirzepatide Once Weekly for the Treatment of Obesity (SURMOUNT-1). <em>N Engl J Med</em>, 2022;387:205-216.</li>
+<li>Lincoff A.M., Brown-Frandsen K., Colhoun H.M. et al. Semaglutide and Cardiovascular Outcomes in Obesity without Diabetes (SELECT). <em>N Engl J Med</em>, 2023;389:2221-2232.</li>
+<li>Perkovic V., Tuttle K.R., Rossing P. et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). <em>N Engl J Med</em>, 2024;391:109-121.</li>
+<li>Hathaway J.T., Shah M.P., Hathaway D.B. et al. Risk of Nonarteritic Anterior Ischemic Optic Neuropathy in Patients Prescribed Semaglutide. <em>JAMA Ophthalmol</em>, 2024;142(8):732-739.</li>
+<li>American Diabetes Association. Standards of Care in Diabetes—2025. <em>Diabetes Care</em>, 2025;48(Suppl 1).</li>
+<li>Davies M.J., Aroda V.R., Collins B.S. et al. Management of Hyperglycemia in Type 2 Diabetes, 2022. A Consensus Report by the ADA and EASD. <em>Diabetes Care</em>, 2022;45(11):2753-2786.</li>
+<li>EMA. PRAC recommendations on signals: semaglutide and NAION. 2025.</li>
+<li>American Society of Anesthesiologists (ASA). Guidance on Preoperative Management of GLP-1 Receptor Agonists. 2023.</li>
+<li>Инструкции по медицинскому применению препаратов семаглутид и тирзепатид (актуальная редакция).</li>
+</ol>
+</div>
+</details>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="restart()">🔄 Пройти памятку заново</button>
+<button class="btn btn-secondary" onclick="goTo(8)">← Назад</button>
+</div>
+</section>
+<div class="disclaimer" role="note">
+<strong>Дисклеймер.</strong> Материал носит информационный характер и не заменяет консультацию врача. Не занимайтесь самолечением. Обсудите ваши цифры и риски с врачом. При ухудшении самочувствия — обратитесь за медицинской помощью.
+</div>
+</div>
+<script>
+/* ---------- Toast ---------- */
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function showToast(msg) {
+toastEl.textContent = msg;
+toastEl.classList.add('show');
+if (toastTimer) clearTimeout(toastTimer);
+toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
+}
+/* ---------- Печать: текущая страница / вся памятка ---------- */
+const cards = document.querySelectorAll('.card');
+const PRINT_CLASS_CURRENT = 'print-current';
+const PRINT_CLASS_ALL = 'print-all';
+function clearPrintClasses() {
+document.body.classList.remove(PRINT_CLASS_CURRENT, PRINT_CLASS_ALL);
+cards.forEach(c => c.removeAttribute('data-current'));
+}
+function printCurrent() {
+clearPrintClasses();
+const active = document.getElementById('card-' + currentStep);
+if (active) {
+cards.forEach(c => c.classList.add('hidden'));
+active.classList.remove('hidden');
+active.setAttribute('data-current', 'true');
+}
+document.body.classList.add(PRINT_CLASS_CURRENT);
+setTimeout(() => {
+try { window.print(); } catch (e) { showToast('Не удалось открыть печать'); }
+document.body.classList.remove(PRINT_CLASS_CURRENT);
+cards.forEach(c => {
+c.removeAttribute('data-current');
+c.classList.add('hidden');
+});
+if (active) active.classList.remove('hidden');
+}, 60);
+}
+function printAll() {
+clearPrintClasses();
+document.body.classList.add(PRINT_CLASS_ALL);
+document.querySelectorAll('#mythAccordion .myth-item').forEach(item => item.classList.add('open'));
+document.querySelectorAll('#mythAccordion .myth-header').forEach(h => h.setAttribute('aria-expanded', 'true'));
+setTimeout(() => {
+try { window.print(); } catch (e) { showToast('Не удалось открыть печать'); }
+document.body.classList.remove(PRINT_CLASS_ALL);
+document.querySelectorAll('#mythAccordion .myth-item').forEach(item => item.classList.remove('open'));
+document.querySelectorAll('#mythAccordion .myth-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+cards.forEach(c => c.classList.add('hidden'));
+const active = document.getElementById('card-' + currentStep);
+if (active) active.classList.remove('hidden');
+}, 60);
+}
+/* ---------- Навигация ---------- */
+const TOTAL_STEPS = 10;
+const LAST_STEP = TOTAL_STEPS - 1;
+let currentStep = 0;
+function goTo(step) {
+if (step < 0 || step > LAST_STEP) return;
+currentStep = step;
+cards.forEach(c => c.classList.add('hidden'));
+const target = document.getElementById('card-' + step);
+if (target) {
+target.classList.remove('hidden');
+target.focus({ preventScroll: true });
+window.scrollTo({ top: 0, behavior: 'smooth' });
+updateProgress(step);
+const heading = target.querySelector('h2');
+const live = document.getElementById('liveRegion');
+live.textContent = heading ? heading.textContent : '';
+}
+}
+function updateProgress(step) {
+const percent = Math.round((step / LAST_STEP) * 100);
+document.getElementById('progressFill').style.width = percent + '%';
+document.getElementById('progressPercent').textContent = percent + '%';
+document.getElementById('progressBar').setAttribute('aria-valuenow', String(percent));
+document.getElementById('progressText').textContent =
+step === 0 ? 'Старт' :
+step === LAST_STEP ? 'Финал' :
+'Шаг ' + step + ' из ' + (LAST_STEP - 1);
+updateStepper(step);
+}
+/* ---------- Степпер (10 шагов) ---------- */
+const STEP_LABELS = [
+{ caption: 'Старт', full: 'Старт: что это за препараты' },
+{ caption: '1. Механизм', full: 'Как препараты влияют на вес и сахар' },
+{ caption: '2. Побочные', full: 'Побочные эффекты' },
+{ caption: '3. Флаги', full: 'Красные флаги: когда действовать' },
+{ caption: '4. Пугалки', full: 'Разбор пугалок из интернета' },
+{ caption: '5. Противопоказания', full: 'Противопоказания к терапии' },
+{ caption: '6. Перед началом', full: 'Обследование перед началом' },
+{ caption: '7. На фоне', full: 'Обследование на фоне лечения' },
+{ caption: '8. Наблюдение', full: 'Частота наблюдения врачом' },
+{ caption: 'Финал', full: 'Памятка, вопросы врачу и источники' }
+];
+const stepperEl = document.getElementById('stepper');
+function buildStepper() {
+stepperEl.innerHTML = '';
+STEP_LABELS.forEach((label, idx) => {
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'step-item';
+btn.dataset.step = String(idx);
+btn.setAttribute('aria-label', 'Перейти к шагу ' + (idx === 0 ? 'Старт' : idx === LAST_STEP ? 'Финал' : idx) + ': ' + label.full);
+btn.innerHTML =
+'<span class="step-dot" aria-hidden="true"></span>' +
+'<span class="step-caption">' + label.caption + '</span>';
+btn.addEventListener('click', function (e) {
+e.preventDefault();
+goTo(idx);
+});
+stepperEl.appendChild(btn);
+});
+}
+function updateStepper(step) {
+stepperEl.querySelectorAll('.step-item').forEach((btn, idx) => {
+btn.classList.toggle('current', idx === step);
+btn.classList.toggle('done', idx < step);
+if (idx === step) {
+btn.setAttribute('aria-current', 'step');
+} else {
+btn.removeAttribute('aria-current');
+}
+});
+}
+buildStepper();
+function restart() {
+currentStep = 0;
+goTo(0);
+}
+/* ---------- Аккордеон пугалок ---------- */
+document.querySelectorAll('#mythAccordion .myth-header').forEach(header => {
+header.addEventListener('click', () => {
+const item = header.closest('.myth-item');
+const isOpen = item.classList.toggle('open');
+header.setAttribute('aria-expanded', String(isOpen));
+});
+});
+/* ---------- Инициализация ---------- */
+updateProgress(0);
+</script>
+</body>
+</html>
