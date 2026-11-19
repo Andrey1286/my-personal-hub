@@ -1,4 +1,4 @@
-/* Мягкая, профессиональная палитра */
+/* Цветовые переменные: светлая тема (по умолчанию) */
 :root {
     --bg-color: #F7FAFC;
     --card-bg: #FFFFFF;
@@ -6,6 +6,28 @@
     --accent-hover: #2B6CB0;
     --text-primary: #2D3748;
     --text-secondary: #4A5568;
+    --border-color: #E2E8F0;
+    --hero-bg: #F0F2F5;
+    --table-header-bg: #EDF2F7;
+    --table-category-bg: #F7FAFC;
+    --table-row-hover: #EDF2F7;
+    --toggle-bg: #E2E8F0;
+}
+
+/* Цветовые переменные: темная тема */
+[data-theme="dark"] {
+    --bg-color: #1A202C;
+    --card-bg: #2D3748;
+    --accent-blue: #63B3ED;
+    --accent-hover: #4299E1;
+    --text-primary: #E2E8F0;
+    --text-secondary: #CBD5E0;
+    --border-color: #4A5568;
+    --hero-bg: #2D3748;
+    --table-header-bg: #1A202C;
+    --table-category-bg: #232B38;
+    --table-row-hover: #3A4558;
+    --toggle-bg: #4A5568;
 }
 
 body {
@@ -16,6 +38,7 @@ body {
     padding: 0;
     line-height: 1.6;
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Полупрозрачная молекула на фоне */
@@ -34,6 +57,11 @@ body::before {
     pointer-events: none;
 }
 
+[data-theme="dark"] body::before {
+    opacity: 0.06;
+    filter: brightness(1.5);
+}
+
 /* Анимация плавного появления */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -46,7 +74,7 @@ body::before {
 
 /* Шапка */
 .hero {
-    background-color: #F0F2F5;
+    background-color: var(--hero-bg);
     padding: 60px 20px;
     display: flex;
     align-items: center;
@@ -56,30 +84,64 @@ body::before {
     margin: 0 auto;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid #E7EBF0;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .hero-text { flex: 1; text-align: left; }
 .hero h1 { color: var(--accent-blue); font-size: 2.2rem; margin: 0 0 15px 0; font-weight: 600; line-height: 1.2; }
 .hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); margin: 0; line-height: 1.5; }
-.hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid #FFFFFF; flex-shrink: 0; }
+.hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid var(--card-bg); flex-shrink: 0; }
 
-.hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid #E2E8F0; }
+.hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .hero-page h1 { color: var(--accent-blue); font-size: 2rem; margin: 0; font-weight: 600; }
 
 /* Меню */
 .menu {
     background-color: var(--card-bg);
-    padding: 15px 20px;
-    text-align: center;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
 }
-.menu a { color: var(--text-primary); text-decoration: none; margin: 0 15px; font-weight: 500; font-size: 1.05rem; transition: color 0.2s; }
+
+.menu-links {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.menu a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.05rem; transition: color 0.2s; }
 .menu a:hover { color: var(--accent-blue); }
+
+/* Переключатель темы */
+.theme-toggle {
+    background: var(--toggle-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-left: 10px;
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    transform: rotate(20deg) scale(1.05);
+}
 
 /* Основной контент */
 .materials { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
@@ -90,7 +152,7 @@ body::before {
 .section-divider {
     border: 0;
     height: 1px;
-    background: linear-gradient(to right, transparent, #CBD5E0, transparent);
+    background: linear-gradient(to right, transparent, var(--border-color), transparent);
     margin: 50px auto;
     max-width: 200px;
 }
@@ -104,8 +166,8 @@ body::before {
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     text-decoration: none;
     color: var(--text-primary);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid #E2E8F0;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -116,95 +178,109 @@ body::before {
 .card p { margin: 0; font-size: 0.95rem; color: var(--text-secondary); }
 
 /* Текстовые блоки */
-.about-text { background-color: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #E2E8F0; }
+.about-text { background-color: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); transition: background-color 0.3s; }
 .about-text h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 15px; font-size: 1.3rem; font-weight: 600; }
 .about-text h3:first-child { margin-top: 0; }
 .about-text ul { padding-left: 20px; color: var(--text-secondary); }
 .about-text li { margin-bottom: 8px; }
 
-/* Прайс-лист */
-.price-category {
-    color: var(--accent-blue);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-top: 35px;
-    margin-bottom: 15px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #E2E8F0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* ПРАЙС-ЛИСТ: строгий официальный стиль */
+.price-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
 }
 
-.price-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.price-item {
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
     background-color: var(--card-bg);
-    padding: 22px;
-    border-radius: 12px;
-    border: 1px solid #E2E8F0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.price-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(49, 130, 206, 0.1);
-    border-color: var(--accent-blue);
+.price-table thead {
+    background-color: var(--table-header-bg);
 }
 
-.price-item h4 {
-    color: var(--text-primary);
-    margin: 0 0 8px 0;
-    font-size: 1.05rem;
+.price-table th {
+    padding: 14px 18px;
+    text-align: left;
     font-weight: 600;
-    line-height: 1.3;
+    border-bottom: 2px solid var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 0.82rem;
+    color: var(--text-primary);
 }
 
-.price-item p {
+.price-table th:last-child {
+    text-align: right;
+}
+
+.price-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    vertical-align: top;
+}
+
+.price-table td:last-child {
+    text-align: right;
+    font-weight: 700;
+    color: var(--accent-blue);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.price-table .category-row td {
+    background-color: var(--table-category-bg);
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.price-table tbody tr:not(.category-row):hover {
+    background-color: var(--table-row-hover);
+}
+
+.price-table .service-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.price-table .service-desc {
     color: var(--text-secondary);
     font-size: 0.9rem;
-    margin: 0 0 15px 0;
-    line-height: 1.5;
-}
-
-.price-value {
-    color: var(--accent-blue);
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-top: auto;
 }
 
 .price-note {
     text-align: center;
     font-size: 0.9rem;
-    color: #718096;
-    margin-top: 25px;
+    color: var(--text-secondary);
+    margin-top: 20px;
     font-style: italic;
 }
 
 /* Виджет отзывов */
 .widget-container {
-    background-color: #FFFFFF;
+    background-color: var(--card-bg);
     border-radius: 12px;
     padding: 20px;
-    border: 1px dashed #CBD5E0;
+    border: 1px dashed var(--border-color);
     text-align: center;
-    color: #718096;
+    color: var(--text-secondary);
     margin-top: 20px;
 }
 
 /* Кнопки с градиентом */
 .card-button {
     display: inline-block;
-    background: linear-gradient(135deg, #3182CE 0%, #2B6CB0 100%);
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-hover) 100%);
     color: #FFFFFF;
     padding: 14px 28px;
     border-radius: 8px;
@@ -224,7 +300,7 @@ body::before {
     right: 30px;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #3182CE 0%, #2B6CB0 100%);
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-hover) 100%);
     color: white;
     border: none;
     border-radius: 50%;
@@ -243,7 +319,7 @@ body::before {
 #backToTop:hover { transform: translateY(-3px); }
 
 /* Футер */
-footer { text-align: center; padding: 40px 20px; background-color: var(--card-bg); color: var(--text-secondary); margin-top: 60px; border-top: 1px solid #E2E8F0; }
+footer { text-align: center; padding: 40px 20px; background-color: var(--card-bg); color: var(--text-secondary); margin-top: 60px; border-top: 1px solid var(--border-color); transition: background-color 0.3s; }
 footer a { color: var(--accent-blue); text-decoration: none; margin: 0 10px; }
 footer a:hover { text-decoration: underline; }
 footer .offer-link { font-weight: 800 !important; font-size: 1em !important; color: var(--accent-blue) !important; text-decoration: underline !important; display: inline-block; margin-top: 5px; }
@@ -254,8 +330,10 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .hero-text { text-align: center; }
     .hero h1 { font-size: 1.7rem; }
     .hero .photo { width: 200px; height: 200px; order: -1; }
-    .menu { display: flex; flex-direction: column; gap: 12px; }
+    .menu { flex-direction: column; gap: 12px; padding: 15px 20px; }
+    .menu-links { flex-direction: column; gap: 12px; align-items: center; }
+    .theme-toggle { margin-left: 0; }
     .about-text { padding: 25px; }
-    .price-list { grid-template-columns: 1fr; }
     #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 20px; }
+    .price-table th, .price-table td { padding: 12px 14px; font-size: 0.9rem; }
 }
