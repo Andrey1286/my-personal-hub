@@ -34,7 +34,7 @@ body::before {
     pointer-events: none;
 }
 
-/* Шапка с фото СПРАВА и текстом СЛЕВА - светло-синий фон как у ВК */
+/* Шапка с фото СПРАВА и текстом СЛЕВА */
 .hero {
     background-color: #F0F2F5;
     padding: 60px 20px;
@@ -241,6 +241,16 @@ footer a {
 
 footer a:hover {
     text-decoration: underline;
+}
+
+/* Жирная ссылка на договор-оферту */
+footer .offer-link {
+    font-weight: 800 !important;
+    font-size: 1em !important;
+    color: var(--accent-blue) !important;
+    text-decoration: underline !important;
+    display: inline-block;
+    margin-top: 5px;
 }
 
 /* Адаптивность для мобильных */
