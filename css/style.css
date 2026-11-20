@@ -97,6 +97,7 @@ body::before {
 .hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .hero-page h1 { color: var(--accent-blue); font-size: 2rem; margin: 0; font-weight: 600; }
 
+/* Меню с синей градиентной линией */
 .menu {
     background-color: var(--card-bg);
     padding: 15px 25px;
@@ -108,7 +109,8 @@ body::before {
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to right, transparent 0%, var(--accent-blue) 50%, transparent 100%) 1;
     transition: background-color 0.3s ease;
 }
 
