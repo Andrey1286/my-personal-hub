@@ -14,7 +14,7 @@
     
     <meta name="yandex-verification" content="4689ef1ad2a266b6" />
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=9">
+    <link rel="stylesheet" href="css/style.css?v=10">
     
     <script>
         (function() {
@@ -49,10 +49,15 @@
 </head>
 <body>
 
+    <div id="progress-bar"></div>
+
     <header class="hero fade-in">
         <div class="hero-text">
             <h1>Пыстогов Андрей Сергеевич</h1>
             <p class="subtitle">Врач-эндокринолог, клинический нутрициолог, health-коуч (специалист по изменению образа жизни)</p>
+            <div class="hero-actions">
+                <a href="https://calendar.app.google/4ZoGJfDAaB6QFg6z6" class="card-button" target="_blank">Выбрать время консультации</a>
+            </div>
         </div>
         <img src="images/my-photo.jpg" alt="Фото врача Пыстогова Андрея Сергеевича" class="photo">
     </header>
@@ -165,8 +170,17 @@
         });
 
         const backToTopButton = document.getElementById("backToTop");
+        const progressBar = document.getElementById("progress-bar");
+
         window.onscroll = function() {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            // Индикатор прокрутки
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+
+            // Кнопка наверх
+            if (winScroll > 300) {
                 backToTopButton.classList.add("show");
             } else {
                 backToTopButton.classList.remove("show");
