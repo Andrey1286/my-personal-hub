@@ -10,7 +10,7 @@
     <meta property="og:url" content="https://pystogov-doc.ru/about.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=14">
     
     <script>
         (function() {
@@ -96,23 +96,28 @@
             <p>Я веду ограниченное число пациентов персонально. Это позволяет мне уделить максимум внимания каждому, вникнуть в детали истории и не превращать приём в конвейер.</p>
 
             <h3>Дипломы и сертификаты</h3>
-            <p>Постоянное повышение квалификации — залог безопасной и эффективной помощи.</p>
-            <div class="gallery-grid">
-                <a href="images/diploma1.jpg" target="_blank" class="gallery-item">
-                    <img src="images/diploma1.jpg" alt="Документ о квалификации">
-                </a>
-                <a href="images/diploma2.jpg" target="_blank" class="gallery-item">
-                    <img src="images/diploma2.jpg" alt="Документ о квалификации">
-                </a>
-                <a href="images/diploma3.jpg" target="_blank" class="gallery-item">
-                    <img src="images/diploma3.jpg" alt="Документ о квалификации">
-                </a>
-                <a href="images/diploma4.jpg" target="_blank" class="gallery-item">
-                    <img src="images/diploma4.jpg" alt="Документ о квалификации">
-                </a>
-                <a href="images/diploma5.jpg" target="_blank" class="gallery-item">
-                    <img src="images/diploma5.jpg" alt="Документ о квалификации">
-                </a>
+            <p>Постоянное повышение квалификации — залог безопасной и эффективной помощи. Листайте, чтобы увидеть все документы.</p>
+            
+            <div class="carousel-wrapper">
+                <button class="carousel-btn prev" aria-label="Предыдущий документ">‹</button>
+                <div class="carousel-container" id="docCarousel">
+                    <a href="images/diploma1.jpg" target="_blank" class="carousel-item">
+                        <img src="images/diploma1.jpg" alt="Документ о квалификации">
+                    </a>
+                    <a href="images/diploma2.jpg" target="_blank" class="carousel-item">
+                        <img src="images/diploma2.jpg" alt="Документ о квалификации">
+                    </a>
+                    <a href="images/diploma3.jpg" target="_blank" class="carousel-item">
+                        <img src="images/diploma3.jpg" alt="Документ о квалификации">
+                    </a>
+                    <a href="images/diploma4.jpg" target="_blank" class="carousel-item">
+                        <img src="images/diploma4.jpg" alt="Документ о квалификации">
+                    </a>
+                    <a href="images/diploma5.jpg" target="_blank" class="carousel-item">
+                        <img src="images/diploma5.jpg" alt="Документ о квалификации">
+                    </a>
+                </div>
+                <button class="carousel-btn next" aria-label="Следующий документ">›</button>
             </div>
         </div>
     </section>
@@ -166,6 +171,41 @@
             else backToTopButton.classList.remove("show");
         };
         backToTopButton.addEventListener("click", function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // Карусель документов
+        const carousel = document.getElementById('docCarousel');
+        const prevBtn = document.querySelector('.carousel-btn.prev');
+        const nextBtn = document.querySelector('.carousel-btn.next');
+
+        function getScrollAmount() {
+            const item = carousel.querySelector('.carousel-item');
+            if (!item) return 300;
+            const style = window.getComputedStyle(item);
+            const width = item.offsetWidth;
+            const gap = parseInt(style.marginRight) || 20;
+            return width + gap;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        });
+
+        // Скрываем стрелки, когда достигнут край
+        function updateButtons() {
+            const scrollLeft = carousel.scrollLeft;
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            
+            prevBtn.classList.toggle('hidden', scrollLeft <= 0);
+            nextBtn.classList.toggle('hidden', scrollLeft >= maxScroll - 1);
+        }
+
+        carousel.addEventListener('scroll', updateButtons);
+        window.addEventListener('resize', updateButtons);
+        updateButtons();
     </script>
 </body>
 </html>
