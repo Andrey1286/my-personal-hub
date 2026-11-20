@@ -11,7 +11,7 @@
     <meta property="og:url" content="https://pystogov-doc.ru/services.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=9">
+    <link rel="stylesheet" href="css/style.css?v=10">
     
     <script>
         (function() {
@@ -50,6 +50,8 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/114349377" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
 <body>
+
+    <div id="progress-bar"></div>
 
     <header class="hero-page fade-in">
         <h1>Услуги и цены</h1>
@@ -202,8 +204,15 @@
         });
 
         const backToTopButton = document.getElementById("backToTop");
+        const progressBar = document.getElementById("progress-bar");
+
         window.onscroll = function() {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) backToTopButton.classList.add("show");
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + "%";
+
+            if (winScroll > 300) backToTopButton.classList.add("show");
             else backToTopButton.classList.remove("show");
         };
         backToTopButton.addEventListener("click", function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
