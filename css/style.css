@@ -1,4 +1,4 @@
-/* Цветовые переменные: светлая тема (по умолчанию) */
+/* Цветовые переменные: светлая тема */
 :root {
     --bg-color: #F7FAFC;
     --card-bg: #FFFFFF;
@@ -12,6 +12,8 @@
     --table-category-bg: #F7FAFC;
     --table-row-hover: #EDF2F7;
     --toggle-bg: #E2E8F0;
+    --icon-sun: #F6AD55;
+    --icon-moon: #63B3ED;
 }
 
 /* Цветовые переменные: темная тема */
@@ -28,6 +30,8 @@
     --table-category-bg: #232B38;
     --table-row-hover: #3A4558;
     --toggle-bg: #4A5568;
+    --icon-sun: #F6AD55;
+    --icon-moon: #63B3ED;
 }
 
 body {
@@ -41,7 +45,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Полупрозрачная молекула на фоне */
 body::before {
     content: '';
     position: fixed;
@@ -62,7 +65,6 @@ body::before {
     filter: brightness(1.5);
 }
 
-/* Анимация плавного появления */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -72,7 +74,6 @@ body::before {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Шапка */
 .hero {
     background-color: var(--hero-bg);
     padding: 60px 20px;
@@ -96,7 +97,6 @@ body::before {
 .hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .hero-page h1 { color: var(--accent-blue); font-size: 2rem; margin: 0; font-weight: 600; }
 
-/* Меню */
 .menu {
     background-color: var(--card-bg);
     padding: 15px 25px;
@@ -122,33 +122,61 @@ body::before {
 .menu a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.05rem; transition: color 0.2s; }
 .menu a:hover { color: var(--accent-blue); }
 
-/* Переключатель темы */
+/* Переключатель темы с SVG-иконками */
 .theme-toggle {
     background: var(--toggle-bg);
     border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 42px;
     height: 42px;
-    font-size: 1.2rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s, background-color 0.3s;
+    transition: transform 0.3s, background-color 0.3s;
     margin-left: 10px;
     flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .theme-toggle:hover {
-    transform: rotate(20deg) scale(1.05);
+    transform: scale(1.08);
 }
 
-/* Основной контент */
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+    transition: opacity 0.3s, transform 0.5s;
+}
+
+.theme-toggle .icon-sun {
+    color: var(--icon-sun);
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.theme-toggle .icon-moon {
+    color: var(--icon-moon);
+    opacity: 0;
+    transform: rotate(-90deg);
+    position: absolute;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
 .materials { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
 .materials h2 { color: var(--text-primary); text-align: center; font-size: 1.8rem; margin-bottom: 10px; font-weight: 600; }
 .materials > p { text-align: center; margin-bottom: 40px; font-size: 1.05rem; }
 
-/* Разделитель секций */
 .section-divider {
     border: 0;
     height: 1px;
@@ -157,7 +185,6 @@ body::before {
     max-width: 200px;
 }
 
-/* Карточки */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .card {
     background-color: var(--card-bg);
@@ -177,14 +204,12 @@ body::before {
 .card h3 { color: var(--accent-blue); margin: 0 0 10px 0; font-size: 1.15rem; font-weight: 600; }
 .card p { margin: 0; font-size: 0.95rem; color: var(--text-secondary); }
 
-/* Текстовые блоки */
 .about-text { background-color: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); transition: background-color 0.3s; }
 .about-text h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 15px; font-size: 1.3rem; font-weight: 600; }
 .about-text h3:first-child { margin-top: 0; }
 .about-text ul { padding-left: 20px; color: var(--text-secondary); }
 .about-text li { margin-bottom: 8px; }
 
-/* ПРАЙС-ЛИСТ: строгий официальный стиль */
 .price-table-wrapper {
     overflow-x: auto;
     margin-top: 20px;
@@ -266,7 +291,6 @@ body::before {
     font-style: italic;
 }
 
-/* Виджет отзывов */
 .widget-container {
     background-color: var(--card-bg);
     border-radius: 12px;
@@ -277,7 +301,6 @@ body::before {
     margin-top: 20px;
 }
 
-/* Кнопки с градиентом */
 .card-button {
     display: inline-block;
     background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-hover) 100%);
@@ -293,7 +316,6 @@ body::before {
 }
 .card-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3); }
 
-/* Кнопка "Наверх" */
 #backToTop {
     position: fixed;
     bottom: 30px;
@@ -318,13 +340,11 @@ body::before {
 #backToTop.show { opacity: 1; visibility: visible; }
 #backToTop:hover { transform: translateY(-3px); }
 
-/* Футер */
 footer { text-align: center; padding: 40px 20px; background-color: var(--card-bg); color: var(--text-secondary); margin-top: 60px; border-top: 1px solid var(--border-color); transition: background-color 0.3s; }
 footer a { color: var(--accent-blue); text-decoration: none; margin: 0 10px; }
 footer a:hover { text-decoration: underline; }
 footer .offer-link { font-weight: 800 !important; font-size: 1em !important; color: var(--accent-blue) !important; text-decoration: underline !important; display: inline-block; margin-top: 5px; }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     .hero { flex-direction: column; text-align: center; padding: 40px 20px; }
     .hero-text { text-align: center; }
