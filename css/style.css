@@ -45,6 +45,19 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Индикатор прокрутки */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-hover));
+    width: 0%;
+    z-index: 10000;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 1px 4px rgba(49, 130, 206, 0.4);
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -91,8 +104,13 @@ body::before {
 
 .hero-text { flex: 1; text-align: left; }
 .hero h1 { color: var(--accent-blue); font-size: 2.2rem; margin: 0 0 15px 0; font-weight: 600; line-height: 1.2; }
-.hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+.hero .subtitle { font-size: 1.15rem; color: var(--text-secondary); margin: 0 0 25px 0; line-height: 1.5; }
 .hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid var(--card-bg); flex-shrink: 0; }
+
+/* Кнопка в шапке */
+.hero-actions {
+    margin-top: 10px;
+}
 
 .hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .hero-page h1 { color: var(--accent-blue); font-size: 2rem; margin: 0; font-weight: 600; }
@@ -124,7 +142,6 @@ body::before {
 .menu a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.05rem; transition: color 0.2s; }
 .menu a:hover { color: var(--accent-blue); }
 
-/* Переключатель темы с SVG-иконками */
 .theme-toggle {
     background: var(--toggle-bg);
     border: 1px solid var(--border-color);
@@ -142,38 +159,12 @@ body::before {
     overflow: hidden;
 }
 
-.theme-toggle:hover {
-    transform: scale(1.08);
-}
-
-.theme-toggle svg {
-    width: 24px;
-    height: 24px;
-    transition: opacity 0.3s, transform 0.5s;
-}
-
-.theme-toggle .icon-sun {
-    color: var(--icon-sun);
-    opacity: 1;
-    transform: rotate(0deg);
-}
-
-.theme-toggle .icon-moon {
-    color: var(--icon-moon);
-    opacity: 0;
-    transform: rotate(-90deg);
-    position: absolute;
-}
-
-[data-theme="dark"] .theme-toggle .icon-sun {
-    opacity: 0;
-    transform: rotate(90deg);
-}
-
-[data-theme="dark"] .theme-toggle .icon-moon {
-    opacity: 1;
-    transform: rotate(0deg);
-}
+.theme-toggle:hover { transform: scale(1.08); }
+.theme-toggle svg { width: 24px; height: 24px; transition: opacity 0.3s, transform 0.5s; }
+.theme-toggle .icon-sun { color: var(--icon-sun); opacity: 1; transform: rotate(0deg); }
+.theme-toggle .icon-moon { color: var(--icon-moon); opacity: 0; transform: rotate(-90deg); position: absolute; }
+[data-theme="dark"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(90deg); }
+[data-theme="dark"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0deg); }
 
 .materials { max-width: 1000px; margin: 50px auto; padding: 0 20px; }
 .materials h2 { color: var(--text-primary); text-align: center; font-size: 1.8rem; margin-bottom: 10px; font-weight: 600; }
@@ -187,6 +178,7 @@ body::before {
     max-width: 200px;
 }
 
+/* Карточки со стрелочкой */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .card {
     background-color: var(--card-bg);
@@ -200,11 +192,30 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: relative;
 }
 .card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgba(49, 130, 206, 0.12); border-color: var(--accent-blue); }
 .card-icon { font-size: 2rem; margin-bottom: 15px; }
 .card h3 { color: var(--accent-blue); margin: 0 0 10px 0; font-size: 1.15rem; font-weight: 600; }
 .card p { margin: 0; font-size: 0.95rem; color: var(--text-secondary); }
+
+/* Стрелочка-подсказка на карточках */
+.card::after {
+    content: '→';
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+    font-size: 1.8rem;
+    color: var(--accent-blue);
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    line-height: 1;
+}
+.card:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
 
 .about-text { background-color: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); transition: background-color 0.3s; }
 .about-text h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 15px; font-size: 1.3rem; font-weight: 600; }
@@ -212,96 +223,20 @@ body::before {
 .about-text ul { padding-left: 20px; color: var(--text-secondary); }
 .about-text li { margin-bottom: 8px; }
 
-.price-table-wrapper {
-    overflow-x: auto;
-    margin-top: 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
+.price-table-wrapper { overflow-x: auto; margin-top: 20px; border: 1px solid var(--border-color); border-radius: 8px; }
+.price-table { width: 100%; border-collapse: collapse; font-size: 1rem; background-color: var(--card-bg); }
+.price-table thead { background-color: var(--table-header-bg); }
+.price-table th { padding: 14px 18px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--border-color); text-transform: uppercase; letter-spacing: 0.8px; font-size: 0.82rem; color: var(--text-primary); }
+.price-table th:last-child { text-align: right; }
+.price-table td { padding: 14px 18px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; }
+.price-table td:last-child { text-align: right; font-weight: 700; color: var(--accent-blue); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.price-table .category-row td { background-color: var(--table-category-bg); font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; padding: 12px 18px; border-bottom: 1px solid var(--border-color); }
+.price-table tbody tr:not(.category-row):hover { background-color: var(--table-row-hover); }
+.price-table .service-name { color: var(--text-primary); font-weight: 500; }
+.price-table .service-desc { color: var(--text-secondary); font-size: 0.9rem; }
+.price-note { text-align: center; font-size: 0.9rem; color: var(--text-secondary); margin-top: 20px; font-style: italic; }
 
-.price-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-    background-color: var(--card-bg);
-}
-
-.price-table thead {
-    background-color: var(--table-header-bg);
-}
-
-.price-table th {
-    padding: 14px 18px;
-    text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid var(--border-color);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    font-size: 0.82rem;
-    color: var(--text-primary);
-}
-
-.price-table th:last-child {
-    text-align: right;
-}
-
-.price-table td {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    vertical-align: top;
-}
-
-.price-table td:last-child {
-    text-align: right;
-    font-weight: 700;
-    color: var(--accent-blue);
-    white-space: nowrap;
-    font-variant-numeric: tabular-nums;
-}
-
-.price-table .category-row td {
-    background-color: var(--table-category-bg);
-    font-weight: 700;
-    color: var(--text-primary);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
-    padding: 12px 18px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.price-table tbody tr:not(.category-row):hover {
-    background-color: var(--table-row-hover);
-}
-
-.price-table .service-name {
-    color: var(--text-primary);
-    font-weight: 500;
-}
-
-.price-table .service-desc {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-.price-note {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-top: 20px;
-    font-style: italic;
-}
-
-.widget-container {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 20px;
-    border: 1px dashed var(--border-color);
-    text-align: center;
-    color: var(--text-secondary);
-    margin-top: 20px;
-}
+.widget-container { background-color: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px dashed var(--border-color); text-align: center; color: var(--text-secondary); margin-top: 20px; }
 
 .card-button {
     display: inline-block;
@@ -358,4 +293,5 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .about-text { padding: 25px; }
     #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 20px; }
     .price-table th, .price-table td { padding: 12px 14px; font-size: 0.9rem; }
+    .card::after { right: 20px; bottom: 20px; font-size: 1.5rem; }
 }
