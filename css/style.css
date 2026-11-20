@@ -14,6 +14,9 @@
     --toggle-bg: #E2E8F0;
     --icon-sun: #F6AD55;
     --icon-moon: #63B3ED;
+    --warning-bg: #FFF5F5;
+    --warning-border: #FED7D7;
+    --warning-text: #C53030;
 }
 
 /* Цветовые переменные: темная тема */
@@ -32,6 +35,9 @@
     --toggle-bg: #4A5568;
     --icon-sun: #F6AD55;
     --icon-moon: #63B3ED;
+    --warning-bg: #2D1F1F;
+    --warning-border: #742A2A;
+    --warning-text: #FC8181;
 }
 
 body {
@@ -205,7 +211,41 @@ body::before {
 .about-text ul { padding-left: 20px; color: var(--text-secondary); }
 .about-text li { margin-bottom: 8px; }
 
-/* Карточки клиник */
+/* Блок-предупреждение */
+.warning-box {
+    background-color: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    border-radius: 12px;
+    padding: 25px 30px;
+    margin: 25px 0;
+}
+.warning-box h3 {
+    color: var(--warning-text);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.warning-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.warning-list li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+.warning-list li::before {
+    content: '❌';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1rem;
+}
+
 .clinic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 20px; }
 .clinic-card {
     background-color: var(--card-bg);
@@ -222,7 +262,6 @@ body::before {
 .clinic-link { color: var(--accent-blue); text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
 .clinic-link:hover { opacity: 0.8; text-decoration: underline; }
 
-/* Чек-лист подготовки */
 .prep-list { list-style: none; padding: 0; margin: 20px 0; }
 .prep-list li {
     position: relative;
@@ -249,7 +288,6 @@ body::before {
     font-weight: bold;
 }
 
-/* Галерея документов */
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
 .gallery-item {
     display: block;
@@ -361,4 +399,5 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .messenger-btn::before { display: none; }
     .clinic-grid { grid-template-columns: 1fr; }
     .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .warning-box { padding: 20px; }
 }
