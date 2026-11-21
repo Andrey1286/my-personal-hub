@@ -14,7 +14,7 @@
     
     <meta name="yandex-verification" content="4689ef1ad2a266b6" />
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=25">
+    <link rel="stylesheet" href="css/style.css?v=26">
     
     <script>
         (function() {
@@ -384,59 +384,24 @@
                     <hr class="section-divider">
 
                     <h3>Как проходит работа</h3>
-                    <p><strong>1. Запись.</strong> Нажмите кнопку ниже, чтобы выбрать удобное время в календаре, или напишите мне напрямую в мессенджер.</p>
+                    <p><strong>1. Запись.</strong> Выберите удобное время в календаре ниже или напишите мне напрямую в мессенджер.</p>
                     <p><strong>2. Оплата и подготовка.</strong> После записи и оплаты вы заполняете анкету с описанием запроса и присылаете фото анализов, обследований и медицинских заключений (при необходимости).</p>
                     <p><strong>3. Консультация.</strong> В назначенный день я свяжусь с вами, и мы согласуем удобный формат связи (аудио или видео). Длительность встречи 30–60 минут.</p>
 
-                    <!-- ===== КНОПКА ДЛЯ ОТКРЫТИЯ МОДАЛЬНОГО ОКНА ===== -->
+                    <!-- ===== ВСТРОЕННЫЙ КАЛЕНДАРЬ GOOGLE ===== -->
                     <hr class="section-divider">
-                    <div style="text-align: center; margin-top: 30px;">
-                        <h3 style="margin-bottom: 15px;">Онлайн-запись на консультацию</h3>
-                        <p style="margin-bottom: 25px; color: var(--text-secondary);">Выберите удобное для вас время. После записи вы получите подтверждение, и мы согласуем формат связи.</p>
-                        <button id="openBookingBtn" class="card-button" style="font-size: 1.1rem; padding: 16px 32px;">
-                            📅 Выбрать время в календаре
-                        </button>
+                    <h3 id="booking-section">Онлайн-запись на консультацию</h3>
+                    <p>Выберите удобное для вас время прямо на сайте. После записи вы получите подтверждение. Я свяжусь с вами, и мы вместе выберем удобный формат связи.</p>
+                    <div class="booking-wrapper">
+                        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0htlMKudt8Esg9bgUrfWbjMuxqC5Z8ZF81hTjPJZ_pfkHspEQoB3T0XNxosf4cqBZHMur6SqwL?gv=true" style="border: 0" width="100%" height="650" frameborder="0"></iframe>
                     </div>
-                    <!-- ===== КОНЕЦ КНОПКИ ===== -->
+                    <!-- ===== КОНЕЦ КАЛЕНДАРЯ ===== -->
 
                 </div>
             </section>
         </div>
 
     </main>
-
-    <!-- ===== ВСПЛЫВАЮЩЕЕ ОКНО (MODAL) С КАЛЕНДАРЕМ ===== -->
-    <dialog id="bookingModal" class="booking-modal">
-        <div class="modal-header">
-            <h3>Запись на консультацию</h3>
-            <button class="modal-close" id="closeModal" aria-label="Закрыть">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>Загрузка календаря...</p>
-            
-            <!-- Google Calendar Appointment Scheduling begin -->
-            <link href="https://calendar.google.com/calendar/scheduling-button-script.css" rel="stylesheet">
-            <script src="https://calendar.google.com/calendar/scheduling-button-script.js" async></script>
-            <script>
-            (function() {
-              var target = document.currentScript;
-              window.addEventListener('load', function() {
-                if (window.calendar && window.calendar.schedulingButton) {
-                    window.calendar.schedulingButton.load({
-                      url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0htlMKudt8Esg9bgUrfWbjMuxqC5Z8ZF81hTjPJZ_pfkHspEQoB3T0XNxosf4cqBZHMur6SqwL?gv=true',
-                      color: '#3182CE', /* Цвет кнопки под стиль сайта */
-                      label: 'Выбрать время и записаться',
-                      target,
-                    });
-                }
-              });
-            })();
-            </script>
-            <!-- end Google Calendar Appointment Scheduling -->
-            
-        </div>
-    </dialog>
-    <!-- ===== КОНЕЦ ВСПЛЫВАЮЩЕГО ОКНА ===== -->
 
     <!-- ===== СТАТИЧНЫЙ ФУТЕР ===== -->
     <footer>
@@ -494,13 +459,13 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ===== ФУНКЦИЯ ДЛЯ ОТКРЫТИЯ КАЛЕНДАРЯ =====
+        // ===== ФУНКЦИЯ ДЛЯ ПЛАВНОГО ПЕРЕХОДА К КАЛЕНДАРЮ =====
         function goToBooking() {
             showSection('services');
             setTimeout(function() {
-                const modal = document.getElementById('bookingModal');
-                if (modal) {
-                    modal.showModal();
+                const el = document.getElementById('booking-section');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }, 150);
         }
@@ -524,26 +489,6 @@
         }
         window.addEventListener('hashchange', handleHash);
         handleHash();
-
-        // ===== УПРАВЛЕНИЕ МОДАЛЬНЫМ ОКНОМ =====
-        const modal = document.getElementById('bookingModal');
-        const openBtn = document.getElementById('openBookingBtn');
-        const closeBtn = document.getElementById('closeModal');
-
-        if (openBtn && modal) {
-            openBtn.addEventListener('click', () => modal.showModal());
-        }
-        if (closeBtn && modal) {
-            closeBtn.addEventListener('click', () => modal.close());
-        }
-        // Закрытие при клике на затемненный фон (backdrop)
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.close();
-                }
-            });
-        }
 
         // ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ =====
         const themeToggle = document.getElementById("themeToggle");
