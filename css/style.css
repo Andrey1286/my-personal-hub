@@ -49,7 +49,7 @@ body {
     line-height: 1.6;
     position: relative;
     transition: background-color 0.3s ease, color 0.3s ease;
-    scroll-behavior: smooth; /* Плавная прокрутка к якорям */
+    scroll-behavior: smooth;
 }
 
 #progress-bar {
@@ -309,21 +309,6 @@ body::before {
     font-weight: bold;
 }
 
-/* Стили для встроенного календаря */
-.booking-wrapper {
-    margin-top: 30px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    background-color: var(--card-bg);
-}
-.booking-wrapper iframe {
-    display: block;
-    width: 100%;
-    height: 650px;
-}
-
 .carousel-wrapper {
     position: relative;
     margin-top: 20px;
@@ -485,6 +470,64 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 
 .disclaimer { font-size: 0.85rem; color: var(--text-secondary); max-width: 700px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid var(--border-color); line-height: 1.5; font-style: italic; }
 
+/* ===== СТИЛИ ДЛЯ ВСПЛЫВАЮЩЕГО ОКНА (MODAL) ===== */
+.booking-modal {
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+    max-width: 600px;
+    width: 95%;
+    background-color: var(--card-bg);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    color: var(--text-primary);
+}
+.booking-modal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0 8px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover {
+    background: var(--toggle-bg);
+    color: var(--text-primary);
+}
+.modal-body {
+    padding: 24px 20px;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.modal-body p {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+/* Принудительная стилизация кнопки Google под наш дизайн, если нужно, 
+   но Google сам подхватит цвет #3182CE из скрипта */
+
 /* Мобильная адаптация */
 @media (max-width: 768px) {
     .hero { padding: 30px 15px; }
@@ -552,12 +595,9 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .carousel-btn.prev { left: -5px; }
     .carousel-btn.next { right: -5px; }
     
-    /* Календарь на мобильном делаем чуть выше, чтобы было удобно нажимать */
-    .booking-wrapper iframe {
-        height: 750px;
-    }
-    
     footer { padding-bottom: 80px; }
+    
+    .booking-modal { width: 95%; max-width: 95%; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
