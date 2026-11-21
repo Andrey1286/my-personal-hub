@@ -58,7 +58,7 @@
                 <h1>Пыстогов Андрей Сергеевич</h1>
                 <p class="subtitle">Врач-эндокринолог, клинический нутрициолог, health-коуч (специалист по изменению образа жизни)</p>
                 <div class="hero-actions">
-                    <a href="#booking-section" class="card-button">Записаться на консультацию</a>
+                    <a href="javascript:void(0)" onclick="goToBooking()" class="card-button">Записаться на консультацию</a>
                 </div>
             </div>
             <img src="images/my-photo.jpg" alt="Фото врача Пыстогова Андрея Сергеевича" class="photo">
@@ -457,6 +457,19 @@
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== НОВАЯ ФУНКЦИЯ ДЛЯ КНОПКИ В ШАПКЕ =====
+        function goToBooking() {
+            // 1. Сначала открываем раздел "Услуги", где находится календарь
+            showSection('services');
+            // 2. Даем браузеру 150 мс на отрисовку, затем плавно скроллим к календарю
+            setTimeout(function() {
+                const el = document.getElementById('booking-section');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 150);
         }
 
         menuLinks.forEach(function(link) {
