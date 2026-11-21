@@ -49,6 +49,7 @@ body {
     line-height: 1.6;
     position: relative;
     transition: background-color 0.3s ease, color 0.3s ease;
+    scroll-behavior: smooth; /* Плавная прокрутка к якорям */
 }
 
 #progress-bar {
@@ -120,7 +121,7 @@ body::before {
 .hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid var(--card-bg); flex-shrink: 0; }
 .hero-actions { margin-top: 10px; }
 
-/* Меню — обычный flex, всё по центру */
+/* Меню */
 .menu {
     width: 100%;
     background-color: var(--card-bg);
@@ -308,6 +309,21 @@ body::before {
     font-weight: bold;
 }
 
+/* Стили для встроенного календаря */
+.booking-wrapper {
+    margin-top: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background-color: var(--card-bg);
+}
+.booking-wrapper iframe {
+    display: block;
+    width: 100%;
+    height: 650px;
+}
+
 .carousel-wrapper {
     position: relative;
     margin-top: 20px;
@@ -487,7 +503,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     }
     .hero .subtitle { font-size: 0.95rem; line-height: 1.4; }
     .hero .photo { display: none; }
-    /* Кнопка записи: ограниченная ширина, по центру */
     .hero-actions {
         width: 100%;
         display: flex;
@@ -536,6 +551,11 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .carousel-btn { width: 38px; height: 38px; font-size: 1.2rem; }
     .carousel-btn.prev { left: -5px; }
     .carousel-btn.next { right: -5px; }
+    
+    /* Календарь на мобильном делаем чуть выше, чтобы было удобно нажимать */
+    .booking-wrapper iframe {
+        height: 750px;
+    }
     
     footer { padding-bottom: 80px; }
 }
