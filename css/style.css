@@ -92,6 +92,7 @@ body::before {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
+/* Hero-блок с фото (для всех страниц) */
 .hero {
     background-color: var(--hero-bg);
     padding: 60px 20px;
@@ -113,6 +114,7 @@ body::before {
 .hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid var(--card-bg); flex-shrink: 0; }
 .hero-actions { margin-top: 10px; }
 
+/* Упрощенная версия hero для мобильных */
 .hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
 .hero-page h1 { color: var(--accent-blue); font-size: 2rem; margin: 0; font-weight: 600; }
 
@@ -311,7 +313,6 @@ body::before {
     font-weight: bold;
 }
 
-/* Карусель документов */
 .carousel-wrapper {
     position: relative;
     margin-top: 20px;
@@ -472,10 +473,20 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 .disclaimer { font-size: 0.85rem; color: var(--text-secondary); max-width: 700px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid var(--border-color); line-height: 1.5; font-style: italic; }
 
 @media (max-width: 768px) {
-    .hero { flex-direction: column; text-align: center; padding: 40px 20px; }
+    /* На мобильных скрываем фото в hero */
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+    }
     .hero-text { text-align: center; }
     .hero h1 { font-size: 1.7rem; }
-    .hero .photo { width: 200px; height: 200px; order: -1; }
+    .hero .photo { display: none; }
+    .hero .subtitle { font-size: 1rem; }
+    
+    .hero-page { background-color: var(--card-bg); padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border-color); }
+    .hero-page h1 { color: var(--accent-blue); font-size: 1.8rem; margin: 0; font-weight: 600; }
+    
     .menu { flex-direction: column; gap: 12px; padding: 15px 20px; }
     .menu-links { flex-direction: column; gap: 12px; align-items: center; }
     .theme-toggle { margin-left: 0; }
@@ -489,7 +500,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .messenger-btn::before { display: none; }
     .clinic-grid { grid-template-columns: 1fr; }
     .warning-box { padding: 20px; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
     .carousel-wrapper { padding: 0 10px; }
     .carousel-item { flex: 0 0 100%; }
     .carousel-btn { width: 38px; height: 38px; font-size: 1.2rem; }
