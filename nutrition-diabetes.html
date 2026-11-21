@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Интерактивный маршрут по питанию при сахарном диабете 2 типа: персональная памятка, тест и сертификат с экспортом в PDF.">
+<title>Питание при сахарном диабете 2 типа — интерактивный маршрут</title>
+
+<!-- Библиотеки для экспорта в PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+  :root{
+    --bg:#f7faf8;
+    --card:#ffffff;
+    --primary:#2e7d5b;
+    --primary-dark:#1f5a40;
+    --accent:#e8f3ec;
+    --text:#1f2a24;
+    --muted:#5b6b63;
+    --border:#dfe8e2;
+    --green:#2e7d5b;
+    --yellow:#d9a100;
+    --red:#c0392b;
+    --yellow-bg:#fff7e0;
+    --red-bg:#fdecea;
+    --green-bg:#e8f3ec;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    font-size:17px;
+  }
+  .container{max-width:860px;margin:0 auto;padding:32px 20px 80px;min-height:100vh}
+  
+  .progress-wrap{
+    position:sticky;top:0;z-index:100;
+    background:var(--bg);
+    padding:12px 0;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--border);
+  }
+  .progress-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#2e7d5b,#3d9b73);width:0%;transition:width .4s ease}
+  .progress-info{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px}
+  
+  .top-nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .top-nav .nav-label{font-size:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+  .top-nav .btn{padding:8px 16px;font-size:14px}
+
+  .step{display:none;animation:fadeIn .4s ease}
+  .step.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  
+  .welcome{
+    background:linear-gradient(135deg,#2e7d5b 0%,#3d9b73 100%);
+    color:#fff;
+    padding:48px 28px;
+    border-radius:16px;
+    text-align:center;
+    box-shadow:0 8px 24px rgba(46,125,91,.15);
+    margin-bottom:32px;
+  }
+  .welcome h1{font-size:32px;margin:0 0 16px;line-height:1.25;font-weight:700}
+  .welcome p{font-size:18px;opacity:.95;margin:0 0 8px}
+  .welcome .emoji-big{font-size:56px;display:block;margin-bottom:16px}
+  
+  .form-box{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:32px;
+    max-width:480px;
+    margin:24px auto;
+    box-shadow:0 2px 8px rgba(0,0,0,.03);
+  }
+  .form-box label{
+    display:block;
+    font-weight:600;
+    color:var(--primary-dark);
+    margin-bottom:8px;
+    font-size:17px;
+  }
+  .form-box input{
+    width:100%;
+    padding:12px 14px;
+    border:2px solid var(--border);
+    border-radius:8px;
+    font-size:16px;
+    font-family:inherit;
+    transition:border-color .2s;
+  }
+  .form-box input:focus{outline:none;border-color:var(--primary)}
+  .form-box .hint{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .form-box .hint strong{color:var(--text)}
+  
+  .btn{
+    display:inline-block;
+    padding:12px 28px;
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .2s;
+    font-family:inherit;
+    text-decoration:none;
+  }
+  .btn:hover{background:var(--primary-dark);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .btn-secondary{background:#fff;color:var(--primary);border:2px solid var(--primary)}
+  .btn-secondary:hover{background:var(--accent)}
+  .btn-ghost{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{background:var(--bg);color:var(--text)}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .btn-pdf{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+  .btn-pdf:hover{background:linear-gradient(135deg,#a5311f,#c0392b)}
+  
+  .nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:32px;
+    padding-top:24px;
+    border-top:1px solid var(--border);
+  }
+  
+  .form-actions{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top:24px;
+    flex-wrap:wrap;
+  }
+  
+  header.hero{
+    background:linear-gradient(135deg,#2e7d5b 0%,#3d9b73 100%);
+    color:#fff;
+    padding:36px 28px;
+    border-radius:16px;
+    margin-bottom:24px;
+    box-shadow:0 8px 24px rgba(46,125,91,.15);
+  }
+  header.hero h1{font-size:28px;margin:0 0 10px;line-height:1.25;font-weight:700}
+  header.hero p{margin:0;font-size:17px;opacity:.95}
+  h2{font-size:24px;color:var(--primary-dark);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--accent)}
+  h3{font-size:19px;color:var(--primary);margin:24px 0 12px}
+  p{margin:0 0 14px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin:20px 0;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+  .highlight{background:var(--accent);border-left:4px solid var(--primary);padding:16px 20px;border-radius:8px;margin:20px 0}
+  .highlight strong{color:var(--primary-dark)}
+  .guidelines{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:20px 0}
+  .guidelines ul{margin:8px 0 0;padding-left:20px}
+  .guidelines li{margin-bottom:8px}
+  .guidelines .source{display:inline-block;background:var(--accent);color:var(--primary-dark);padding:2px 10px;border-radius:12px;font-size:13px;font-weight:600;margin-right:6px}
+  table{width:100%;border-collapse:collapse;margin:16px 0;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  th{background:var(--primary);color:#fff;padding:12px 14px;text-align:left;font-weight:600;font-size:15px}
+  td{padding:12px 14px;border-top:1px solid var(--border);vertical-align:top}
+  tr:nth-child(even) td{background:#fafcfb}
+  .traffic{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+  .traffic-item{border-radius:12px;padding:20px 24px;border-left:6px solid}
+  .traffic-item h4{margin:0 0 10px;font-size:18px;display:flex;align-items:center;gap:10px}
+  .traffic-item ul{margin:8px 0 0;padding-left:20px}
+  .traffic-item li{margin-bottom:4px}
+  .t-green{background:var(--green-bg);border-color:var(--green)}
+  .t-green h4{color:var(--primary-dark)}
+  .t-yellow{background:var(--yellow-bg);border-color:var(--yellow)}
+  .t-yellow h4{color:#8a6600}
+  .t-red{background:var(--red-bg);border-color:var(--red)}
+  .t-red h4{color:#8b2a20}
+  .plate{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+  .plate-cell{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+  .plate-cell .num{font-size:28px;font-weight:700;color:var(--primary);display:block;margin-bottom:6px}
+  .plate-cell .title{font-weight:600;color:var(--text);margin-bottom:6px}
+  .plate-cell .desc{font-size:14px;color:var(--muted)}
+  .steps-list{counter-reset:step;list-style:none;padding:0;margin:20px 0}
+  .steps-list li{counter-increment:step;position:relative;padding:16px 20px 16px 64px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+  .steps-list li::before{content:counter(step);position:absolute;left:16px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .steps-list li strong{color:var(--primary-dark)}
+  .formula{background:#f0f6f2;border:1px dashed var(--primary);border-radius:10px;padding:16px 20px;text-align:center;font-family:"Courier New",monospace;font-size:16px;margin:16px 0}
+  .burnout{background:linear-gradient(135deg,#fff7e0 0%,#ffeec0 100%);border-radius:12px;padding:24px;margin:24px 0;border-left:4px solid var(--yellow)}
+  .burnout h3{color:#8a6600;margin-top:0}
+  .burnout ul{padding-left:20px}
+  .doctor-note{background:#e8f3ec;border-radius:12px;padding:20px 24px;margin:24px 0;font-style:italic;color:var(--primary-dark)}
+  .doctor-note::before{content:"💬 ";font-style:normal}
+  .glossary{background:#f0f6f2;border:1px solid var(--primary);border-radius:12px;padding:24px;margin:24px 0}
+  .glossary h3{margin-top:0;color:var(--primary-dark)}
+  .glossary p{margin-bottom:12px}
+  .glossary p:last-child{margin-bottom:0}
+  
+  .menu-day{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:16px 0}
+  .menu-day h4{margin:0 0 12px;color:var(--primary-dark);font-size:18px;display:flex;align-items:center;gap:10px}
+  .meal{padding:12px 0;border-bottom:1px dashed var(--border)}
+  .meal:last-child{border-bottom:none}
+  .meal-title{font-weight:600;color:var(--primary);margin-bottom:6px;font-size:15px}
+  .meal-desc{color:var(--text);font-size:15px}
+  .meal-tip{font-size:13px;color:var(--muted);margin-top:6px;font-style:italic}
+  
+  .quiz-question{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:16px 0}
+  .quiz-question .q-num{display:inline-block;background:var(--primary);color:#fff;width:32px;height:32px;border-radius:50%;text-align:center;line-height:32px;font-weight:700;margin-right:10px}
+  .quiz-question .q-text{font-weight:600;color:var(--text);margin-bottom:14px}
+  .quiz-options{display:grid;gap:8px}
+  .quiz-option{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafcfb;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:15px}
+  .quiz-option:hover{border-color:var(--primary);background:var(--accent)}
+  .quiz-option input{margin:0;cursor:pointer;width:18px;height:18px;accent-color:var(--primary)}
+  .quiz-option.selected{border-color:var(--primary);background:var(--accent)}
+  .quiz-option.correct{border-color:var(--green);background:var(--green-bg)}
+  .quiz-option.wrong{border-color:var(--red);background:var(--red-bg)}
+  
+  .result-box{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:32px;text-align:center;margin:24px 0}
+  .result-box.passed{border-color:var(--green);background:var(--green-bg)}
+  .result-box.failed{border-color:var(--yellow);background:var(--yellow-bg)}
+  
+  .certificate{
+    background:#fff;
+    border:3px double var(--primary);
+    border-radius:12px;
+    padding:48px 40px;
+    margin:32px auto;
+    max-width:720px;
+    text-align:center;
+    position:relative;
+    box-shadow:0 4px 20px rgba(46,125,91,.15);
+  }
+  .certificate::before{content:"";position:absolute;inset:12px;border:1px solid var(--primary);border-radius:8px;pointer-events:none}
+  .cert-header{font-size:14px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+  .cert-title{font-size:32px;color:var(--primary-dark);font-weight:700;margin:0 0 24px;font-family:Georgia,serif}
+  .cert-subtitle{font-size:16px;color:var(--muted);margin-bottom:24px}
+  .cert-name{font-size:40px;color:var(--primary);font-weight:700;margin:24px 0;font-family:Georgia,serif;border-bottom:2px solid var(--primary);padding-bottom:12px;display:inline-block;min-width:60%}
+  .cert-text{font-size:16px;color:var(--text);line-height:1.7;margin:20px auto;max-width:560px}
+  .cert-footer{display:flex;justify-content:space-between;margin-top:48px;padding-top:20px;font-size:14px;color:var(--muted)}
+  .cert-footer div{flex:1}
+  .cert-footer .line{border-top:1px solid var(--text);margin-top:40px;padding-top:6px}
+  .cert-seal{position:absolute;top:40px;right:40px;width:80px;height:80px;border:3px solid var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700;font-size:12px;text-align:center;transform:rotate(-15deg);line-height:1.1}
+  
+  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+  
+  .loading-overlay{display:none;position:fixed;inset:0;background:rgba(31,42,36,.7);z-index:1000;align-items:center;justify-content:center;flex-direction:column;color:#fff}
+  .loading-overlay.active{display:flex}
+  .spinner{width:60px;height:60px;border:5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-size:18px;font-weight:600}
+  .loading-sub{font-size:14px;opacity:.8;margin-top:8px}
+  
+  @media (max-width:640px){
+    body{font-size:16px}
+    .welcome{padding:32px 20px}
+    .welcome h1{font-size:26px}
+    h2{font-size:21px}
+    .plate{grid-template-columns:1fr}
+    .container{padding:20px 14px 60px}
+    .card{padding:18px}
+    .certificate{padding:32px 20px}
+    .cert-title{font-size:24px}
+    .cert-name{font-size:28px}
+    .cert-seal{width:60px;height:60px;font-size:10px;top:20px;right:20px}
+    .cert-footer{flex-direction:column;gap:20px}
+    .nav, .top-nav, .form-actions{flex-direction:column;gap:12px}
+    .nav .btn, .top-nav .btn, .form-actions .btn, .actions .btn{width:100%}
+  }
+  
+  @media print{
+    body{background:#fff;font-size:12pt}
+    .container{max-width:100%;padding:0}
+    .progress-wrap,.top-nav,.nav,.no-print{display:none !important}
+    .step{display:none !important}
+    .step.print-only{display:block !important;animation:none}
+    .certificate{box-shadow:none;page-break-inside:avoid;margin:0;max-width:100%;border:3px double #000}
+    .certificate::before{border-color:#000}
+    .cert-seal{border-color:#000;color:#000}
+    .cert-title,.cert-name{color:#000}
+    @page{size:A4 landscape;margin:15mm}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Генерируем PDF...</div>
+  <div class="loading-sub">Это займёт несколько секунд</div>
+</div>
+
+<div class="progress-wrap no-print" id="progressWrap" style="display:none">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-info">
+    <span id="progressText">Шаг 1 из 14</span>
+    <span id="progressPercent">0%</span>
+  </div>
+</div>
+
+<!-- STEP 0: Welcome -->
+<div class="step active" data-step="0">
+  <div class="welcome">
+    <span class="emoji-big">🌿</span>
+    <h1>Питание при сахарном диабете 2 типа</h1>
+    <p>Интерактивный маршрут для пациентов</p>
+    <p style="font-size:15px;opacity:.85;margin-top:16px">Не про запреты — а про управление ресурсами вашего организма</p>
+  </div>
+  <div class="form-box">
+    <p style="text-align:center;color:var(--muted);margin-bottom:20px">Давайте познакомимся. Это займёт меньше минуты — и поможет сделать маршрут персональным. Но если хотите, можно пропустить.</p>
+    <div style="text-align:center">
+      <button class="btn" onclick="goToStep(1)">Начать знакомство →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1: Surname -->
+<div class="step" data-step="1">
+  <div class="form-box">
+    <label for="surname">Укажите вашу фамилию</label>
+    <input type="text" id="surname" placeholder="Например: Иванова" autocomplete="family-name">
+    <div class="hint">Фамилия <strong>используется только для оформления сертификата</strong> в конце маршрута.</div>
+    <div class="form-actions">
+      <button class="btn" onclick="saveSurname()">Далее →</button>
+      <button class="btn btn-ghost" onclick="skipSurname()">Пропустить</button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn btn-secondary" onclick="prevStep()" style="font-size:14px;padding:8px 16px">← Назад</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: Name -->
+<div class="step" data-step="2">
+  <div class="form-box">
+    <label for="firstname">Укажите ваше имя</label>
+    <input type="text" id="firstname" placeholder="Например: Анна" autocomplete="given-name">
+    <div class="hint">Имя будет использоваться <strong>в обращениях на протяжении всего маршрута</strong> — чтобы разговор был более личным.</div>
+    <div class="form-actions">
+      <button class="btn" onclick="saveName()">Перейти к маршруту →</button>
+      <button class="btn btn-ghost" onclick="skipName()">Пропустить</button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn btn-secondary" onclick="prevStep()" style="font-size:14px;padding:8px 16px">← Назад</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: Why nutrition -->
+<div class="step" data-step="3">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <header class="hero">
+    <h1><span data-name></span>, добро пожаловать!</h1>
+    <p>Сегодня мы пройдём вместе маршрут по питанию при сахарном диабете 2 типа. Без запугивания и жёстких диет — только то, что действительно работает.</p>
+  </header>
+  
+  <h2>Почему питание — это главный инструмент</h2>
+  <p><span data-name></span>, диета сама по себе не «лечит» диабет. Но сбалансированное питание достоверно меняет прогноз заболевания — и это подтверждено крупными исследованиями.</p>
+  
+  <div class="highlight">
+    <strong>Что показывают исследования:</strong> при внимательном подходе к выбору еды гликированный гемоглобин (HbA1c) снижается на 0,5–2%. Для сравнения: это сопоставимо с эффектом от некоторых сахароснижающих таблеток.
+  </div>
+
+  <p>В знаменитом британском исследовании <strong>DiRECT (2018)</strong>:</p>
+  <ul>
+    <li>46% участников достигли ремиссии диабета (сахар нормализовался без лекарств) через год — исключительно благодаря изменению питания и снижению веса.</li>
+    <li>Если участникам удавалось сбросить более 15 кг — ремиссия наступала у 86%.</li>
+  </ul>
+  <p>Это не магия, <span data-name></span>. Это физиология. Жировая ткань в печени и поджелудочной железе уменьшается — и органы снова начинают работать так, как задумано природой.</p>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 4: Guidelines -->
+<div class="step" data-step="4">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Что говорят современные рекомендации</h2>
+  <p><span data-name></span>, в этом маршруте использованы согласованные позиции ведущих мировых и российских организаций (актуальны на 2024–2025 гг.):</p>
+
+  <div class="guidelines">
+    <p><span class="source">ADA 2024–2025</span> <strong>American Diabetes Association. Standards of Care in Diabetes.</strong></p>
+    <ul>
+      <li>Единой «диабетической диеты» не существует — питание должно быть индивидуальным.</li>
+      <li>Приоритет — цельные, минимально обработанные продукты: овощи, цельные злаки, бобовые, рыба, растительные масла.</li>
+      <li>Нет доказательств пользы от полного отказа от углеводов — важен их <em>качественный состав</em> и количество.</li>
+      <li>Снижение веса на 5–15% у пациентов с ожирением может привести к ремиссии СД2.</li>
+    </ul>
+  </div>
+
+  <div class="guidelines">
+    <p><span class="source">EASD / ADA 2023–2024</span> <strong>Консенсус по питанию при диабете.</strong></p>
+    <ul>
+      <li>Средиземноморский, DASH и растительно-ориентированные паттерны питания достоверно снижают HbA1c и сердечно-сосудистый риск.</li>
+      <li>Рекомендуется ограничить ультра-обработанные продукты, добавленный сахар, красное и переработанное мясо.</li>
+      <li>Алкоголь: <strong>безопасной дозы алкоголя не существует</strong>. При его употреблении рекомендуется строгое ограничение (не более 1 порции в день для женщин и 2 для мужчин, обязательно с едой), но полный отказ является наилучшим выбором для здоровья сосудов.</li>
+    </ul>
+  </div>
+
+  <div class="guidelines">
+    <p><span class="source">ВОЗ 2023</span> <strong>Рекомендации по питанию для профилактики диабета и ССЗ.</strong></p>
+    <ul>
+      <li>Не менее 400 г овощей и фруктов в день (исключая картофель и другие крахмалистые корнеплоды).</li>
+      <li>Свободные сахара — менее 10% от общей калорийности, в идеале — менее 5%.</li>
+      <li>Соль — менее 5 г в день.</li>
+      <li>Насыщенные жиры — менее 10% от энергии, трансжиры — менее 1%.</li>
+    </ul>
+  </div>
+
+  <div class="guidelines">
+    <p><span class="source">РАЭ 2022–2024</span> <strong>Российская ассоциация эндокринологов. Алгоритмы ведения СД2.</strong></p>
+    <ul>
+      <li>Модификация образа жизни — основа терапии на всех этапах заболевания.</li>
+      <li>Цель снижения веса — не менее 5–10% от исходной массы тела.</li>
+      <li>Обязателен контроль не только углеводов, но и соли, насыщенных жиров, алкоголя.</li>
+    </ul>
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 5: COM-B & Glossary -->
+<div class="step" data-step="5">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Модель COM-B: три фактора устойчивых изменений</h2>
+  <p><span data-name></span>, в поведенческой медицине мы используем модель <strong>COM-B</strong>. Изменения в питании будут устойчивыми только если они учитывают три фактора:</p>
+  <div class="card">
+    <h3>1. Знания</h3>
+    <p>Вы понимаете, как еда влияет на сахар. Углеводы дают энергию, но в избытке вызывают скачки глюкозы. Белки и клетчатка эти скачки «смягчают». Жиры важны, но приоритет — за растительными маслами и рыбой.</p>
+    <h3>2. Возможности</h3>
+    <p>Изменения должны вписываться в вашу реальность. Не каждый может готовить по два часа в день. Не у всех одинаковый бюджет. Важно, чтобы еда оставалась вкусной и доступной — иначе вы сорвётесь.</p>
+    <h3>3. Мотивация</h3>
+    <p>Вы делаете это не «потому что врач велел», а потому что хотите играть с детьми или внуками без одышки. Хотите меньше таблеток и уколов. Хотите чувствовать контроль не над тарелкой, а над собственной жизнью.</p>
+  </div>
+
+  <div class="glossary">
+    <h3>📖 Краткий словарь: чтобы всё было понятно</h3>
+    <p><strong>HbA1c (Гликированный гемоглобин)</strong> — это анализ крови, который показывает ваш <em>средний</em> уровень сахара за последние 2–3 месяца. В отличие от обычного глюкометра, он не зависит от того, поели вы сегодня или нет. Это главный ориентир эффективности лечения.</p>
+    <p><strong>Гликемический индекс (ГИ)</strong> — это «карта скоростей». Он показывает, как быстро углеводы из конкретного продукта превращаются в сахар в крови (где чистая глюкоза принята за 100).</p>
+    <p><strong>Гликемическая нагрузка (ГН)</strong> — это более точный инструмент. Он учитывает не только скорость (ГИ), но и реальное количество углеводов в вашей порции. Именно ГН лучше всего предсказывает реальный скачок сахара после еды.</p>
+    <p style="margin-bottom:0; font-size:15px;">💡 <em>Где посмотреть ГИ и ГН продуктов?</em> Используйте удобный онлайн-калькулятор: <a href="https://medvisor.ru/services/kalkulyator-gl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600">Калькулятор ГИ и ГН (Medvisor)</a>.</p>
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 6: Food X-ray -->
+<div class="step" data-step="6">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 1. Пищевой «рентген»</h2>
+  <p><span data-name></span>, мы не «садимся на диету с понедельника». Мы начинаем с наблюдения — без осуждения.</p>
+  <div class="card">
+    <p><strong>Задача:</strong> сфотографируйте или запишите всё, что вы едите и пьёте, в течение 3–4 дней (обязательно включите хотя бы один выходной). Для этого удобны приложения: «Я ем», «FatSecret», «I Feel Food» — достаточно просто сделать фото.</p>
+    <p>К каждому приёму пищи добавьте две короткие пометки:</p>
+    <ol>
+      <li><strong>Голод/сытость</strong> (по шкале от 1 до 10: 1 — «голоден как волк», 10 — «переел, тяжело дышать»).</li>
+      <li><strong>Эмоции и контекст</strong> (спокойно / на бегу / стресс / от скуки / за компанию).</li>
+    </ol>
+  </div>
+  <div class="highlight">
+    Это не тотальный контроль. Это панорамный снимок вашей жизни. Исследования подтверждают: люди, которые 1–2 недели ведут такой дневник, самопроизвольно снижают HbA1c на 0,3–0,5% просто за счёт того, что начинают осознавать свои привычки.
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 7: Add, not remove -->
+<div class="step" data-step="7">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 2. Не «убирать», а добавлять</h2>
+  <p>Жёсткие запреты вызывают психологическое сопротивление. Добавления дают чувство компетентности.</p>
+  <table>
+    <tr>
+      <th>Вместо ❌</th>
+      <th>Говорим ✅</th>
+    </tr>
+    <tr>
+      <td>«Нельзя сладкое!»</td>
+      <td>«Можно кусочек торта. Но добавьте к нему ложку творога или горсть ягод. Белок и клетчатка не дадут сахару в крови взлететь».</td>
+    </tr>
+    <tr>
+      <td>«Не ешьте после 18:00!»</td>
+      <td>«Если ужин поздний, сделайте его лёгким: рыба или курица + овощи. А крупы и картофель оставим на обед — так и сон будет спокойнее, и сахар утром ниже».</td>
+    </tr>
+  </table>
+  <p><strong>Почему это работает?</strong> Белок и клетчатка увеличивают время переваривания. Глюкоза поступает в кровь медленно, без пиков. Меньше скачков сахара — меньше приступов голода и раздражения.</p>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 8: GI/GL -->
+<div class="step" data-step="8">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 3. Гликемический индекс и нагрузка</h2>
+  <p><span data-name></span>, как мы уже отметили в словаре, <strong>гликемический индекс (ГИ)</strong> — это не шкала «хорошо/плохо». Это карта скоростей.</p>
+  <p>Но сам по себе ГИ обманчив — он рассчитан на порцию, содержащую 50 г чистых углеводов. В реальной жизни вы редко съедаете 50 г углеводов в виде, например, арбуза.</p>
+  <p>Здесь на помощь приходит <strong>гликемическая нагрузка (ГН)</strong> — она учитывает и ГИ, и реальную порцию:</p>
+  <div class="formula">ГН = (ГИ × граммы углеводов в порции) ÷ 100</div>
+  <ul>
+    <li><strong>Низкая ГН:</strong> ≤ 10</li>
+    <li><strong>Средняя ГН:</strong> 11–19</li>
+    <li><strong>Высокая ГН:</strong> ≥ 20</li>
+  </ul>
+  <div class="highlight">
+    Диеты с низкой ГН достоверно снижают HbA1c на 0,3–0,5% по сравнению с диетами с высокой ГН — даже при одинаковом количестве углеводов.
+  </div>
+
+  <h3>Два правила применения</h3>
+  <p><strong>1. «Тормозим» высокий ГИ парой «белок + клетчатка»:</strong></p>
+  <ul>
+    <li>Арбуз (ГИ = 76). Порция 150 г — это ~9 г углеводов, ГН ≈ 7 (низкая). Но если съесть 400 г, ГН станет 18 (средняя). Добавьте горсть грецких орехов — жир и клетчатка замедлят всасывание.</li>
+    <li>Манная каша на воде (ГИ = 65). Порция 150 г — ГН ≈ 16. Добавьте 1 яйцо или 50 г творога — белок выровняет выброс глюкозы.</li>
+  </ul>
+  <p><strong>2. Меняем «один к одному» внутри группы:</strong></p>
+  <ul>
+    <li>Вместо белого риса (ГИ = 73) → бурый рис (ГИ = 68) или чечевица (ГИ = 32).</li>
+    <li>Вместо свежевыжатого апельсинового сока (ГИ = 50, ГН = 11) → целый апельсин (ГИ = 43, ГН = 5). Та же польза, но нагрузка в 2 раза ниже.</li>
+  </ul>
+  <p style="font-size:15px;color:var(--muted)">💡 <em>Напоминание:</em> Оценить ГИ и ГН любого продукта вы всегда можете в <a href="https://medvisor.ru/services/kalkulyator-gl/" target="_blank" rel="noopener" style="color:var(--primary)">Калькуляторе ГИ и ГН</a>.</p>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 9: Traffic light -->
+<div class="step" data-step="9">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 4. Светофор продуктов</h2>
+  <p><span data-name></span>, чтобы не считать ГИ в голове, используйте правило светофора при составлении меню.</p>
+
+  <div class="traffic">
+    <div class="traffic-item t-green">
+      <h4>🟢 ЗЕЛЁНЫЙ — основа рациона</h4>
+      <p><em>Ешьте спокойно, формируйте из них тарелку.</em></p>
+      <ul>
+        <li><strong>Овощи и зелень:</strong> все виды капусты, огурцы, помидоры, кабачки, баклажаны, болгарский перец, листовая зелень, стручковая фасоль, грибы.</li>
+        <li><strong>Белок:</strong> курица, индейка, кролик, нежирная говядина, белая и красная рыба, морепродукты, яйца, тофу.</li>
+        <li><strong>Молочные продукты:</strong> творог до 5%, натуральный йогурт без добавок, кефир, ряженка.</li>
+        <li><strong>Жиры:</strong> оливковое, льняное масло, масло авокадо, орехи (миндаль, грецкий, фундук) и семена (чиа, лён) — в умеренных количествах.</li>
+      </ul>
+    </div>
+
+    <div class="traffic-item t-yellow">
+      <h4>🟡 ЖЁЛТЫЙ — контролируйте порции</h4>
+      <p><em>Ешьте осознанно, вписывайте в ¼ тарелки.</em></p>
+      <ul>
+        <li><strong>Сложные углеводы:</strong> гречка, перловка, киноа, бурый рис, овсянка долгой варки, цельнозерновой хлеб, макароны из твёрдых сортов пшеницы.</li>
+        <li><strong>Крахмалистые овощи:</strong> картофель (лучше запечённый в мундире или отварной охлаждённый), свёкла, варёная морковь, тыква, кукуруза.</li>
+        <li><strong>Фрукты и ягоды:</strong> яблоки, груши, цитрусовые, киви, все виды ягод. Сладкие фрукты (виноград, хурма, бананы) — ближе к красному.</li>
+        <li><strong>Бобовые:</strong> фасоль, чечевица, нут, горох — отличный источник белка и клетчатки, но дают углеводную нагрузку.</li>
+      </ul>
+    </div>
+
+    <div class="traffic-item t-red">
+      <h4>🔴 КРАСНЫЙ — минимизируйте</h4>
+      <p><em>Это «быстрые» углеводы и скрытые жиры, которые ломают метаболизм.</em></p>
+      <ul>
+        <li><strong>Сахар и сладости:</strong> конфеты, молочный шоколад, варенье, мёд, сиропы.</li>
+        <li><strong>Выпечка и белый хлеб:</strong> батоны, булочки, круассаны, блины, пельмени, вареники из белой муки.</li>
+        <li><strong>Переработанное мясо:</strong> сосиски, колбасы, ветчина, бекон, мясные полуфабрикаты.</li>
+        <li><strong>Напитки:</strong> пакетированные соки, газировка, сладкий чай, энергетики. <strong>Алкоголь</strong> (безопасной дозы не существует; он повышает сахар, триглицериды и риск осложнений).</li>
+        <li><strong>Промышленные соусы:</strong> майонез, кетчуп, сладкие barbecue-соусы.</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 10: Plate method -->
+<div class="step" data-step="10">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 5. Метод тарелки</h2>
+  <p><span data-name></span>, не нужно взвешивать еду на весах и считать калории. Возьмите стандартную тарелку диаметром 22–24 см и мысленно разделите её:</p>
+
+  <div class="plate">
+    <div class="plate-cell" style="background:var(--green-bg)">
+      <span class="num">½</span>
+      <div class="title">Овощи и зелень</div>
+      <div class="desc">Сырые или приготовленные. Клетчатка даёт объём, сытость и замедляет повышение сахара.</div>
+    </div>
+    <div class="plate-cell">
+      <span class="num">¼</span>
+      <div class="title">Белок</div>
+      <div class="desc">Рыба, птица, яйца, тофу, бобовые, нежирное мясо. Стабилизирует глюкозу, снижает аппетит.</div>
+    </div>
+    <div class="plate-cell" style="background:var(--yellow-bg)">
+      <span class="num">¼</span>
+      <div class="title">Сложные углеводы</div>
+      <div class="desc">Крупы, цельнозерновой хлеб, картофель. Главный источник энергии — но нужен строгий контроль порции.</div>
+    </div>
+  </div>
+
+  <p style="font-size:15px;text-align:center;margin:20px 0;">
+    📚 <a href="https://nutritionsource.hsph.harvard.edu/healthy-eating-plate/translations/russian/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--primary)">Подробная инструкция по методу тарелки (Гарвардская школа общественного здравоохранения)</a>
+  </p>
+
+  <h3>Как внедрять по неделям, без стресса</h3>
+  <ol class="steps-list">
+    <li><strong>Недели 1–2:</strong> добавьте овощи ко всем приёмам пищи. Это самый простой шаг, дающий быстрое насыщение и контроль гликемии.</li>
+    <li><strong>Недели 3–4:</strong> переходите на цельнозерновые продукты. Вместо белого хлеба — цельнозерновой, вместо белого риса — гречка, булгур, киноа.</li>
+    <li><strong>Месяц 2:</strong> оптимизируйте белок. Минимизируйте колбасы и сосиски, выбирайте нежирные сорта мяса, чаще добавляйте бобовые и рыбу.</li>
+    <li><strong>Месяц 3:</strong> стремитесь к тому, чтобы каждый приём пищи визуально соответствовал методу тарелки. Это формирует привычку и уверенность: «я умею».</li>
+  </ol>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 11: Deficit + Salt -->
+<div class="step" data-step="11">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 6. Лёгкий дефицит — не голод, а баланс</h2>
+  <p>Большинство пациентов с СД2 имеют избыточный вес. Даже небольшое снижение массы тела (0,5 кг в неделю) приносит колоссальную пользу:</p>
+  <ul>
+    <li>Дефицит в 300–500 ккал в день = минус ~0,5 кг в неделю.</li>
+    <li>При потере 5–10% массы тела уже улучшается чувствительность клеток к инсулину.</li>
+    <li>При потере &gt;15 кг — высокий шанс на ремиссию (см. исследование DiRECT).</li>
+  </ul>
+  <div class="highlight">
+    Метод тарелки сам по себе не создаёт жёсткого дефицита, но он естественным образом снижает калораж: овощи занимают объём в желудке, белок даёт долгую сытость, а порции углеводов остаются умеренными. Вы не голодаете. Вы просто едите по-другому.
+  </div>
+
+  <h2>Шаг 7. Соль — скрытый враг сосудов</h2>
+  <p>У людей с СД2 выше риск гипертонии, хронической болезни почек (ХБП), инсульта и инфаркта.</p>
+  <p><strong>Что доказано:</strong> снижение потребления соли на 2–2,5 г/сутки приводит к снижению риска инсульта на 20% и прогрессирования нефропатии на 20%.</p>
+  <div class="highlight">
+    <strong>Рекомендация ВОЗ и РАЭ:</strong> менее 5 г соли в день (≈ 1 чайная ложка без горки на всю еду, включая ту, что уже есть в продуктах).
+  </div>
+  <h3>Как это сделать</h3>
+  <ol>
+    <li><strong>Уберите солонку со стола.</strong> Это автоматически снижает потребление соли на 30–40%.</li>
+    <li><strong>Читайте этикетки.</strong> Если в продукте &gt;1 г соли на 100 г — это много (особенно в колбасах, сыре, хлебе, готовых соусах).</li>
+    <li><strong>Замените вкус солью на аромат специй:</strong> чеснок, лимонный сок, базилик, розмарин, куркума, кориандр.</li>
+  </ol>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 12: Sugar + substitutes + Alcohol warning -->
+<div class="step" data-step="12">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 8. Сахар и сахарозаменители</h2>
+  <p><span data-name></span>, <strong>можно ли сахар?</strong> Да, можно. ВОЗ рекомендует: менее 10% калорий из добавленного сахара (в идеале — менее 5%). Это примерно 25–50 г в день при рационе в 2000 ккал (5–10 чайных ложек).</p>
+  <p>ADA и Минздрав РФ не запрещают сахар, но советуют минимизировать его: он не даёт витаминов, вызывает быстрый подъём глюкозы и часто вытесняет из рациона полезные продукты.</p>
+  <div class="highlight">
+    <strong>Важно:</strong> добавленный сахар (в йогуртах, напитках, выпечке) ≠ сахар, который естественно есть во фруктах или молоке.
+  </div>
+
+  <h3>Сахарозаменители: безопасно, но с оговорками</h3>
+  <table>
+    <tr>
+      <th>Группа</th>
+      <th>Примеры</th>
+      <th>Особенности</th>
+    </tr>
+    <tr>
+      <td>Некалорийные</td>
+      <td>Стевия, сукралоза, аспартам, ацесульфам-К, сахарин</td>
+      <td>Безопасны в пределах допустимой суточной дозы (ADI). Не повышают сахар.</td>
+    </tr>
+    <tr>
+      <td>Сахарные спирты (полиолы)</td>
+      <td>Сорбит, ксилит, мальтит, изомальт</td>
+      <td>Частично усваиваются, дают 2–2,5 ккал/г. При избытке вызывают вздутие, метеоризм, диарею.</td>
+    </tr>
+  </table>
+  <p><strong>Правило:</strong> если сахарозаменитель помогает вам не срываться на обычный сахар — используйте его. Но если вы можете заменить «диетическую колу» на обычную воду с лимоном — это будет ещё лучше для организма.</p>
+
+  <div class="burnout" style="margin-top:32px">
+    <h3>⚠️ Важное примечание об алкоголе</h3>
+    <p>Современная кардиология и эндокринология сходятся во мнении: <strong>безопасной дозы алкоголя не существует</strong>. Алкоголь:</p>
+    <ul>
+      <li>Повышает уровень триглицеридов и артериальное давление.</li>
+      <li>Может вызывать опасные гипогликемии (падения сахара), особенно на фоне приёма сахароснижающих препаратов.</li>
+      <li>Содержит «пустые» калории, способствующие набору веса.</li>
+    </ul>
+    <p>Если вы всё же употребляете алкоголь, строго ограничивайте его количество и никогда не пейте натощак. Но полный отказ — это лучший подарок вашим сосудам.</p>
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 13: Menu 3 days -->
+<div class="step" data-step="13">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 9. Меню на 3 дня — пример из реальной жизни</h2>
+  <p><span data-name></span>, теория — это хорошо, но на практике всегда возникает вопрос: «А что конкретно готовить?». Вот пример меню на 3 дня, которое соответствует всем принципам выше: метод тарелки, низкая/средняя ГН, достаточно белка и клетчатки, умеренная калорийность.</p>
+  <p>Это не жёсткий план — а ориентир. Меняйте продукты внутри «зелёного» и «жёлтого» светофора по своему вкусу.</p>
+
+  <div class="menu-day">
+    <h4>📅 День 1</h4>
+    <div class="meal">
+      <div class="meal-title">🌅 Завтрак</div>
+      <div class="meal-desc">Омлет из 2 яиц со шпинатом и помидорами + 1 кусочек цельнозернового хлеба + ¼ авокадо. Чай или кофе без сахара.</div>
+      <div class="meal-tip">Белок + клетчатка с утра = стабильный сахар до обеда.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">☀️ Обед</div>
+      <div class="meal-desc">Большая миска салата (огурцы, помидоры, зелень, 1 ч.л. оливкового масла) + запечённая куриная грудка (150 г) + 4 ст. ложки гречки.</div>
+      <div class="meal-tip">½ тарелки — овощи, ¼ — белок, ¼ — сложные углеводы.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🍎 Перекус</div>
+      <div class="meal-desc">1 яблоко + 10–15 г миндаля (примерно 10 штук).</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🌙 Ужин</div>
+      <div class="meal-desc">Запечённая белая рыба (150 г) + тушёные кабачки и болгарский перец. Без круп и хлеба.</div>
+      <div class="meal-tip">Лёгкий белково-овощной ужин = хороший сахар натощак утром.</div>
+    </div>
+  </div>
+
+  <div class="menu-day">
+    <h4>📅 День 2</h4>
+    <div class="meal">
+      <div class="meal-title">🌅 Завтрак</div>
+      <div class="meal-desc">Овсянка долгой варки (4 ст. ложки сухой) на воде или молоке 1,5% + горсть ягод + 1 ст. ложка семян чиа + 5 грецких орехов.</div>
+      <div class="meal-tip">Бета-глюканы из овса помогают снижать холестерин.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">☀️ Обед</div>
+      <div class="meal-desc">Суп-пюре из чечевицы (250 мл) + салат из свежих овощей + 1 кусочек цельнозернового хлеба.</div>
+      <div class="meal-tip">Бобовые — отличный источник белка и клетчатки одновременно.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🍎 Перекус</div>
+      <div class="meal-desc">Натуральный йогурт без добавок (150 г) + 1 ч.л. льняного масла.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🌙 Ужин</div>
+      <div class="meal-desc">Индейка тушёная (150 г) + брокколи и цветная капуста на пару + 3 ст. ложки киноа или бурого риса.</div>
+    </div>
+  </div>
+
+  <div class="menu-day">
+    <h4>📅 День 3</h4>
+    <div class="meal">
+      <div class="meal-title">🌅 Завтрак</div>
+      <div class="meal-desc">Творог 5% (150 г) + 1 груша, нарезанная кубиками + 1 ст. ложка семян льна + корица по вкусу.</div>
+      <div class="meal-tip">Корица может немного улучшать чувствительность к инсулину.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">☀️ Обед</div>
+      <div class="meal-desc">Запечённый лосось (150 г) + большая порция овощей (салат, огурцы, помидоры) + 4 ст. ложки отварной перловки или булгура.</div>
+      <div class="meal-tip">Жирная рыба 1–2 раза в неделю — источник омега-3, полезно для сосудов.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🍎 Перекус</div>
+      <div class="meal-desc">Морковные палочки и сельдерей + 2 ст. ложки хумуса.</div>
+    </div>
+    <div class="meal">
+      <div class="meal-title">🌙 Ужин</div>
+      <div class="meal-desc">Куриные котлеты на пару (150 г) + рагу из баклажанов, кабачков и томатов. Без гарнира.</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Общие принципы этого меню:</strong> в каждом приёме пищи есть белок и клетчатка. Углеводы — в первой половине дня и в обед. Ужин — лёгкий, белково-овощной. Соль — минимум, вкус дают специи, лимон, травы. Сахар добавленный — отсутствует.
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+</div>
+
+<!-- STEP 14: Burnout -->
+<div class="step" data-step="14">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>Шаг 10. Выгорание при диабете</h2>
+  <div class="burnout">
+    <h3>Это не «лень» и не «слабость характера»</h3>
+    <p><span data-name></span>, выгорание при диабете (Diabetes Burnout) — состояние хронической усталости от:</p>
+    <ul>
+      <li>постоянного контроля сахара;</li>
+      <li>чувства вины после «неидеального» приёма пищи;</li>
+      <li>страха перед осложнениями;</li>
+      <li>ощущения, что «я не справляюсь».</li>
+    </ul>
+    <p>Если вы узнали себя — это нормально. Это сигнал, что нужна передышка, а не ещё больше самоконтроля.</p>
+  </div>
+
+  <div class="doctor-note">
+    Я, как ваш врач, не буду усиливать давление. Если вам сейчас тяжело — мы замедлимся. Я замечаю и отмечаю даже маленькие шаги. «Вы впервые записали приём пищи — это уже прорыв». «Вы выбрали овощи вместо картошки — вы слушаете своё тело». Мы будем искать вашу личную мотивацию, а не навязывать чужие стандарты.
+  </div>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="nextStep()">Перейти к тесту →</button>
+  </div>
+</div>
+
+<!-- STEP 15: Quiz -->
+<div class="step" data-step="15">
+  <div class="top-nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <span class="nav-label">Маршрут пациента</span>
+    <button class="btn" onclick="nextStep()">Далее →</button>
+  </div>
+  <h2>📝 Мини-экзамен по пройденному материалу</h2>
+  <p><span data-name></span>, давайте проверим, как усвоился материал. 10 вопросов, 4 варианта ответа в каждом. Чтобы получить сертификат, нужно правильно ответить минимум на 7 из 10 (70%).</p>
+  <p>Не торопитесь — подумайте над каждым вопросом. Если не уверены, можно вернуться к нужному шагу через кнопку «Назад».</p>
+  
+  <form id="quizForm">
+    <div class="quiz-question" data-correct="2">
+      <div class="q-text"><span class="q-num">1</span>На сколько можно снизить гликированный гемоглобин (HbA1c) при внимательном подходе к питанию?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q1" value="1"> На 0,1–0,2%</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="2"> На 0,5–2%</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="3"> На 3–5%</label>
+        <label class="quiz-option"><input type="radio" name="q1" value="4"> Питание не влияет на HbA1c</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <div class="q-text"><span class="q-num">2</span>Какой процент участников исследования DiRECT достиг ремиссии диабета через год?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q2" value="1"> 12%</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="2"> 46%</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="3"> 70%</label>
+        <label class="quiz-option"><input type="radio" name="q2" value="4"> 95%</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <div class="q-text"><span class="q-num">3</span>Какие три фактора включает модель COM-B для устойчивых изменений?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q3" value="1"> Диета, спорт, сон</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="2"> Белки, жиры, углеводы</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="3"> Знания, возможности, мотивация</label>
+        <label class="quiz-option"><input type="radio" name="q3" value="4"> Воля, контроль, ограничения</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <div class="q-text"><span class="q-num">4</span>Сколько дней рекомендуется вести пищевой дневник для «пищевого рентгена»?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q4" value="1"> 1 день</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="2"> 3–4 дня</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="3"> 7 дней</label>
+        <label class="quiz-option"><input type="radio" name="q4" value="4"> 14 дней</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <div class="q-text"><span class="q-num">5</span>Какая формула соответствует гликемической нагрузке (ГН)?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q5" value="1"> ГИ ÷ 100</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="2"> ГИ × граммы белка</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="3"> (ГИ × граммы углеводов в порции) ÷ 100</label>
+        <label class="quiz-option"><input type="radio" name="q5" value="4"> ГИ + калорийность</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="1">
+      <div class="q-text"><span class="q-num">6</span>Какую часть тарелки по «методу тарелки» должны занимать овощи и зелень?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q6" value="1"> ½ тарелки</label>
+        <label class="quiz-option"><input type="radio" name="q6" value="2"> ¼ тарелки</label>
+        <label class="quiz-option"><input type="radio" name="q6" value="3"> ⅓ тарелки</label>
+        <label class="quiz-option"><input type="radio" name="q6" value="4"> Всю тарелку</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="2">
+      <div class="q-text"><span class="q-num">7</span>Сколько соли в день рекомендуют ВОЗ и РАЭ для пациентов с СД2?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q7" value="1"> Менее 2 г</label>
+        <label class="quiz-option"><input type="radio" name="q7" value="2"> Менее 5 г</label>
+        <label class="quiz-option"><input type="radio" name="q7" value="3"> Менее 10 г</label>
+        <label class="quiz-option"><input type="radio" name="q7" value="4"> Соль можно не ограничивать</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <div class="q-text"><span class="q-num">8</span>Какой процент калорий из добавленного сахара рекомендует максимально ограничить ВОЗ?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q8" value="1"> Менее 25%</label>
+        <label class="quiz-option"><input type="radio" name="q8" value="2"> Менее 20%</label>
+        <label class="quiz-option"><input type="radio" name="q8" value="3"> Менее 10% (в идеале — менее 5%)</label>
+        <label class="quiz-option"><input type="radio" name="q8" value="4"> Сахар нужно полностью исключить</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="4">
+      <div class="q-text"><span class="q-num">9</span>Что такое Diabetes Burnout?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q9" value="1"> Острое осложнение диабета</label>
+        <label class="quiz-option"><input type="radio" name="q9" value="2"> Резкое падение сахара</label>
+        <label class="quiz-option"><input type="radio" name="q9" value="3"> Непереносимость сахарозаменителей</label>
+        <label class="quiz-option"><input type="radio" name="q9" value="4"> Состояние хронической усталости от постоянного контроля диабета</label>
+      </div>
+    </div>
+
+    <div class="quiz-question" data-correct="3">
+      <div class="q-text"><span class="q-num">10</span>Какая гликемическая нагрузка (ГН) считается высокой?</div>
+      <div class="quiz-options">
+        <label class="quiz-option"><input type="radio" name="q10" value="1"> ≤ 10</label>
+        <label class="quiz-option"><input type="radio" name="q10" value="2"> 11–19</label>
+        <label class="quiz-option"><input type="radio" name="q10" value="3"> ≥ 20</label>
+        <label class="quiz-option"><input type="radio" name="q10" value="4"> ≥ 50</label>
+      </div>
+    </div>
+  </form>
+  
+  <div class="nav no-print">
+    <button class="btn btn-secondary" onclick="prevStep()">← Назад</button>
+    <button class="btn" onclick="submitQuiz()">Завершить тест →</button>
+  </div>
+</div>
+
+<!-- STEP 16: Result - passed -->
+<div class="step" data-step="16">
+  <div class="result-box passed">
+    <div style="font-size:48px">🎉</div>
+    <h2 style="border:none;margin:12px 0">Отлично, <span data-name></span>!</h2>
+    <p style="font-size:18px">Вы правильно ответили на <strong><span id="scorePassed">0</span> из 10</strong> вопросов.</p>
+    <p>Вы успешно прошли маршрут и заслужили персональный сертификат.</p>
+  </div>
+  
+  <div class="certificate" id="certificate">
+    <div class="cert-seal">СД2<br>МАРАФОН<br>2026</div>
+    <div class="cert-header">СЕРТИФИКАТ</div>
+    <div class="cert-title">об успешном прохождении маршрута</div>
+    <div class="cert-subtitle">«Питание при сахарном диабете 2 типа»</div>
+    <div>выдан</div>
+    <div class="cert-name" id="certFullName">—</div>
+    <div class="cert-text">
+      за внимательное изучение современных рекомендаций по питанию при сахарном диабете 2 типа, 
+      освоение метода тарелки, гликемической нагрузки и принципов устойчивых изменений образа жизни.
+    </div>
+    <div class="cert-footer">
+      <div>
+        <div class="line">Дата прохождения</div>
+        <div id="certDate" style="font-weight:600;color:var(--text)">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="line">Статус</div>
+        <div style="font-weight:600;color:var(--green)">Успешно пройден</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="actions no-print">
+    <button class="btn btn-pdf" onclick="exportPDF()">📥 Скачать PDF</button>
+    <button class="btn" onclick="printCertificate()">🖨️ Распечатать</button>
+    <button class="btn btn-secondary" onclick="restart()">Пройти заново</button>
+  </div>
+  
+  <div class="doctor-note no-print">
+    <span data-name></span>, сертификат — это приятный символ, но главное — это ваши реальные шаги на кухне и в магазине. Если что-то осталось непонятным — вернитесь к нужному шагу или обсудите со своим лечащим врачом. Я рядом.
+  </div>
+</div>
+
+<!-- STEP 17: Result - failed -->
+<div class="step" data-step="17">
+  <div class="result-box failed">
+    <div style="font-size:48px">📚</div>
+    <h2 style="border:none;margin:12px 0;color:#8a6600"><span data-name></span>, пока не получилось</h2>
+    <p style="font-size:18px">Вы правильно ответили на <strong><span id="scoreFailed">0</span> из 10</strong> вопросов.</p>
+    <p>Для сертификата нужно минимум 7 правильных ответов (70%). Но это не повод расстраиваться — просто пройдите маршрут ещё раз, внимательнее.</p>
+  </div>
+  
+  <div class="card">
+    <h3>Что можно сделать:</h3>
+    <ul>
+      <li>Пройти маршрут заново — обращайте внимание на блоки, которые вызвали вопросы.</li>
+      <li>Возвращаться к памятке как к шпаргалке в магазине или на кухне.</li>
+      <li>Обсудить сложные моменты с вашим лечащим врачом.</li>
+    </ul>
+  </div>
+  
+  <div class="actions">
+    <button class="btn" onclick="restart()">🔄 Пройти маршрут заново</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+  const GUEST_NAME = 'Дорогой гость';
+  
+  let currentStep = 0;
+  let userData = { surname: '', firstname: '' };
+  
+  function goToStep(n){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`.step[data-step="${n}"]`);
+    if(target){
+      target.classList.add('active');
+      currentStep = n;
+      updateProgress();
+      window.scrollTo({top:0, behavior:'smooth'});
+      
+      const pw = document.getElementById('progressWrap');
+      if(n >= 3 && n <= 15){
+        pw.style.display = 'block';
+      } else {
+        pw.style.display = 'none';
+      }
+    }
+  }
+  
+  function nextStep(){ goToStep(currentStep + 1); }
+  function prevStep(){ 
+    if(currentStep > 0) goToStep(currentStep - 1); 
+  }
+  
+  function updateProgress(){
+    if(currentStep >= 3 && currentStep <= 15){
+      const contentIndex = currentStep - 3;
+      const total = 13;
+      const percent = Math.round((contentIndex / (total - 1)) * 100);
+      document.getElementById('progressFill').style.width = percent + '%';
+      document.getElementById('progressText').textContent = `Шаг ${contentIndex + 1} из ${total}`;
+      document.getElementById('progressPercent').textContent = percent + '%';
+    }
+  }
+  
+  function applyNameToDocument(){
+    const displayName = userData.firstname || GUEST_NAME;
+    document.querySelectorAll('[data-name]').forEach(el => {
+      el.textContent = displayName;
+    });
+  }
+  
+  function getCertificateFullName(){
+    const hasSurname = userData.surname.trim() !== '';
+    const hasName = userData.firstname.trim() !== '';
+    
+    if(hasSurname && hasName) return userData.surname.trim() + ' ' + userData.firstname.trim();
+    if(hasName) return userData.firstname.trim();
+    if(hasSurname) return userData.surname.trim();
+    return 'Участник маршрута';
+  }
+  
+  function saveSurname(){
+    const v = document.getElementById('surname').value.trim();
+    userData.surname = v;
+    goToStep(2);
+  }
+  
+  function skipSurname(){
+    userData.surname = '';
+    goToStep(2);
+  }
+  
+  function saveName(){
+    const v = document.getElementById('firstname').value.trim();
+    userData.firstname = v;
+    applyNameToDocument();
+    goToStep(3);
+  }
+  
+  function skipName(){
+    userData.firstname = '';
+    applyNameToDocument();
+    goToStep(3);
+  }
+  
+  document.addEventListener('change', function(e){
+    if(e.target.matches('.quiz-option input')){
+      const question = e.target.closest('.quiz-question');
+      question.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+      e.target.closest('.quiz-option').classList.add('selected');
+    }
+  });
+  
+  function submitQuiz(){
+    const questions = document.querySelectorAll('.quiz-question');
+    let correct = 0;
+    let allAnswered = true;
+    
+    questions.forEach((q, i) => {
+      const correctVal = q.dataset.correct;
+      const selected = q.querySelector('input:checked');
+      if(!selected){
+        allAnswered = false;
+        return;
+      }
+      if(selected.value === correctVal){
+        correct++;
+        selected.closest('.quiz-option').classList.add('correct');
+      } else {
+        selected.closest('.quiz-option').classList.add('wrong');
+        q.querySelectorAll('.quiz-option').forEach(opt => {
+          const input = opt.querySelector('input');
+          if(input.value === correctVal) opt.classList.add('correct');
+        });
+      }
+    });
+    
+    if(!allAnswered){
+      alert('Пожалуйста, ответьте на все 10 вопросов.');
+      return;
+    }
+    
+    setTimeout(() => {
+      if(correct >= 7){
+        document.getElementById('scorePassed').textContent = correct;
+        document.getElementById('certFullName').textContent = getCertificateFullName();
+        const today = new Date();
+        const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+        document.getElementById('certDate').textContent = today.getDate() + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
+        goToStep(16);
+      } else {
+        document.getElementById('scoreFailed').textContent = correct;
+        goToStep(17);
+      }
+    }, 1200);
+  }
+  
+  function printCertificate(){
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('print-only'));
+    document.querySelector('.step[data-step="16"]').classList.add('print-only');
+    window.print();
+    setTimeout(() => {
+      document.querySelector('.step[data-step="16"]').classList.remove('print-only');
+    }, 500);
+  }
+  
+  function transliterate(text){
+    const map = {
+      'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'e','ж':'zh','з':'z',
+      'и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r',
+      'с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch',
+      'ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',' ':'_'
+    };
+    return text.toLowerCase().split('').map(c => map[c] !== undefined ? map[c] : c).join('');
+  }
+  
+  async function exportPDF(){
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.classList.add('active');
+    
+    try{
+      const cert = document.getElementById('certificate');
+      const canvas = await html2canvas(cert, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false,
+        windowWidth: cert.scrollWidth,
+        windowHeight: cert.scrollHeight
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const pageWidth = 297;
+      const pageHeight = 210;
+      const margin = 10;
+      const maxWidth = pageWidth - margin * 2;
+      const maxHeight = pageHeight - margin * 2;
+      
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(maxWidth / imgWidth, maxHeight / imgHeight);
+      
+      const finalWidth = imgWidth * ratio;
+      const finalHeight = imgHeight * ratio;
+      const x = (pageWidth - finalWidth) / 2;
+      const y = (pageHeight - finalHeight) / 2;
+      
+      pdf.addImage(imgData, 'JPEG', x, y, finalWidth, finalHeight);
+      
+      const certName = getCertificateFullName();
+      const fileNameBase = transliterate(certName) || 'uchastnik';
+      const today = new Date();
+      const dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+      const fileName = `Sertifikat_${fileNameBase}_${dateStr}.pdf`;
+      
+      pdf.save(fileName);
+      
+    } catch(err){
+      console.error('Ошибка генерации PDF:', err);
+      alert('Не удалось сгенерировать PDF. Попробуйте использовать кнопку "Распечатать" и сохранить как PDF через диалог печати.');
+    } finally {
+      overlay.classList.remove('active');
+    }
+  }
+  
+  function restart(){
+    document.querySelectorAll('.quiz-option').forEach(o => {
+      o.classList.remove('selected','correct','wrong');
+    });
+    document.querySelectorAll('.quiz-option input').forEach(i => i.checked = false);
+    userData = { surname: '', firstname: '' };
+    document.getElementById('surname').value = '';
+    document.getElementById('firstname').value = '';
+    applyNameToDocument();
+    goToStep(0);
+  }
+  
+  document.getElementById('surname').addEventListener('keypress', e => {
+    if(e.key === 'Enter') saveSurname();
+  });
+  document.getElementById('firstname').addEventListener('keypress', e => {
+    if(e.key === 'Enter') saveName();
+  });
+</script>
+</body>
+</html>
