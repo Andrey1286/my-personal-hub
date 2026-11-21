@@ -2,8 +2,15 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Памятка пациенту: аГПП-1 (семаглутид) и двойные агонисты (тирзепатид)</title>
+<meta name="description" content="Практическое руководство для пациентов, которым назначены семаглутид или тирзепатид: механизм действия, побочные эффекты, красные флаги, противопоказания, обследование, питание и сохранение мышечной массы.">
+<meta property="og:title" content="Памятка: семаглутид и тирзепатид — Пыстогов Андрей Сергеевич">
+<meta property="og:description" content="Честный разбор препаратов для снижения веса: что важно знать, чего бояться не стоит, как сохранить мышцы и кости.">
+<meta property="og:image" content="https://pystogov-doc.ru/images/my-photo.jpg">
+<meta property="og:url" content="https://pystogov-doc.ru/glp.html">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -29,6 +36,8 @@
 --tag-warn-ink: #b02a1f;
 --tag-ok-bg: #e6f6ea;
 --tag-ok-ink: #1e8449;
+--tag-contra-bg: #fff5f5;
+--tag-contra-ink: #742a2a;
 --callout-bg: #eaf7ea;
 --callout-border: #2e8b57;
 --callout-red-bg: #fdf0ef;
@@ -74,101 +83,9 @@
 --contra-yellow-bg: #fffbeb;
 --contra-yellow-border: #d69e2e;
 --contra-yellow-ink: #744210;
-}
-@media (prefers-color-scheme: dark) {
-:root {
---bg-grad-1: #0f172a;
---bg-grad-2: #1e293b;
---ink: #e2e8f0;
---ink-soft: #cbd5e1;
---ink-head: #93c5fd;
---brand: #60a5fa;
---brand-dark: #3b82f6;
---muted: #94a3b8;
---card-bg: #1e293b;
---card-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
---card-border: #334155;
---progress-bg: #334155;
---progress-fill-a: #60a5fa;
---progress-fill-b: #3b82f6;
---tag-bg: #1e3a5f;
---tag-ink: #93c5fd;
---tag-neutral-bg: #334155;
---tag-neutral-ink: #cbd5e1;
---tag-warn-bg: #4a1c1c;
---tag-warn-ink: #fca5a5;
---tag-ok-bg: #14532d;
---tag-ok-ink: #86efac;
---callout-bg: #143322;
---callout-border: #4ade80;
---callout-red-bg: #3a1414;
---callout-red-border: #f87171;
---callout-blue-bg: #142a3e;
---callout-blue-border: #60a5fa;
---callout-amber-bg: #3a2e10;
---callout-amber-border: #fbbf24;
---btn-secondary-bg: #334155;
---btn-secondary-ink: #cbd5e1;
---btn-secondary-hover: #475569;
---btn-print-bg: #1e293b;
---btn-print-border: #475569;
---btn-print-ink: #cbd5e1;
---myth-border: #334155;
---myth-hover: rgba(96,165,250,0.1);
---sources-border: #475569;
---sources-bg: #1e293b;
---sources-ink: #cbd5e1;
---sources-muted: #94a3b8;
---disclaimer-bg: #3a2e10;
---disclaimer-border: #b45309;
---disclaimer-ink: #fbbf24;
---red-flags-green-bg: #143322;
---red-flags-green-border: #4ade80;
---red-flags-yellow-bg: #3a2e10;
---red-flags-yellow-border: #fbbf24;
---red-flags-red-bg: #3a1414;
---red-flags-red-border: #f87171;
---toc-bg: #1e3a5f;
---toc-border: #334155;
---toc-ink: #93c5fd;
---toc-hover: #334155;
---toc-arrow: #60a5fa;
---questions-bg: #2a2140;
---questions-border: #6d4fa1;
---questions-ink: #c4b5fd;
---storage-bg: #142a3e;
---storage-border: #60a5fa;
---contra-bg: #3a1414;
---contra-border: #f87171;
---contra-ink: #fecaca;
---contra-yellow-bg: #3a2e10;
---contra-yellow-border: #fbbf24;
---contra-yellow-ink: #fde68a;
-}
-body { background: linear-gradient(160deg, var(--bg-grad-1) 0%, var(--bg-grad-2) 100%); }
-.step-dot { background: var(--progress-bg); border-color: var(--btn-print-border); }
-.step-item.done .step-dot { background: var(--brand); border-color: var(--brand); }
-.step-item.current .step-dot { background: var(--card-bg); border-color: var(--brand); }
-th { background: #0f172a; }
-td { border-bottom-color: #334155; }
-tr:nth-child(even) { background: #243447; }
-.row-esc { background: #1e3a5f !important; }
-.row-extreme { background: #3a1414 !important; }
-.btn-print.primary { background: var(--brand); border-color: var(--brand); color: #0f172a; }
-.btn-print.primary:hover { background: var(--brand-dark); }
-.btn-primary { background: var(--brand); color: #0f172a; }
-.btn-primary:hover { background: var(--brand-dark); }
-.summary-list li::before { background: var(--brand); color: #0f172a; }
-.callout strong, .disclaimer strong { color: inherit; }
-.myth-header { color: var(--ink-head); }
-.myth-header .chev { color: var(--brand); }
-.card h2 { color: var(--ink-head); }
-.card h3 { color: var(--brand); }
-.card-tag { background: var(--tag-bg); color: var(--tag-ink); }
-.card-tag.neutral { background: var(--tag-neutral-bg); color: var(--tag-neutral-ink); }
-.card-tag.warn { background: var(--tag-warn-bg); color: var(--tag-warn-ink); }
-.card-tag.ok { background: var(--tag-ok-bg); color: var(--tag-ok-ink); }
-.toast { background: #0f172a; border: 1px solid #334155; }
+--nutrition-bg: #f0f7fb;
+--nutrition-border: #1e6fa8;
+--nutrition-ink: #143a5a;
 }
 @media (prefers-reduced-motion: reduce) {
 * { animation: none !important; transition: none !important; }
@@ -296,7 +213,7 @@ border-radius: 40px; margin-bottom: 18px; letter-spacing: 0.3px;
 .card-tag.warn { background: var(--tag-warn-bg); color: var(--tag-warn-ink); }
 .card-tag.ok   { background: var(--tag-ok-bg); color: var(--tag-ok-ink); }
 .card-tag.neutral { background: var(--tag-neutral-bg); color: var(--tag-neutral-ink); }
-.card-tag.contra { background: var(--contra-bg); color: var(--contra-ink); }
+.card-tag.contra { background: var(--tag-contra-bg); color: var(--tag-contra-ink); }
 .card h2 { font-size: 1.8rem; line-height: 1.3; color: var(--ink-head); margin-bottom: 20px; }
 .card h3 { font-size: 1.2rem; color: var(--brand); margin: 26px 0 12px; }
 .card p  { font-size: 1.08rem; line-height: 1.75; margin-bottom: 16px; color: var(--ink-soft); }
@@ -332,7 +249,7 @@ box-shadow: 0 6px 18px rgba(30, 111, 168, 0.35);
 .btn-primary:hover { background: var(--brand-dark); }
 .btn-secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-ink); }
 .btn-secondary:hover { background: var(--btn-secondary-hover); }
-/* ---------- Кнопки печати внутри карточки ---------- */
+/* ---------- Кнопки печати ---------- */
 .print-row {
 display: flex; gap: 10px; flex-wrap: wrap;
 margin: 0 0 22px;
@@ -377,7 +294,7 @@ transition: background 0.2s, border-color 0.2s;
 .toc-link:hover { background: var(--toc-hover); border-color: var(--brand); }
 .toc-link .num { color: var(--muted); font-weight: 700; }
 .toc-link .arrow { color: var(--toc-arrow); }
-/* ---------- Красные флаги (светофор) ---------- */
+/* ---------- Красные флаги ---------- */
 .flag-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 18px 0 8px; }
 @media (min-width: 720px) { .flag-grid { grid-template-columns: repeat(3, 1fr); } }
 .flag {
@@ -429,6 +346,24 @@ color: var(--ink-soft);
 .storage-block strong { color: var(--ink-head); }
 .storage-block ul { margin: 8px 0 0; padding-left: 20px; }
 .storage-block li { font-size: 0.98rem; margin-bottom: 6px; }
+/* ---------- Питание и мышцы ---------- */
+.nutrition-block {
+background: var(--nutrition-bg);
+border: 1px solid var(--nutrition-border);
+border-radius: 16px;
+padding: 20px 22px;
+margin: 18px 0 8px;
+}
+.nutrition-block h3 { color: var(--nutrition-ink); margin-top: 0; }
+.nutrition-block ul { padding-left: 22px; }
+.nutrition-block li { margin-bottom: 12px; line-height: 1.6; }
+.nutrition-block li strong { color: var(--nutrition-ink); }
+.nutrition-note {
+font-size: 0.92rem; color: var(--muted);
+margin-top: 14px; padding-top: 14px;
+border-top: 1px dashed var(--toc-border);
+font-style: italic;
+}
 /* ---------- Что спросить у врача ---------- */
 .questions-block {
 background: var(--questions-bg);
@@ -547,8 +482,8 @@ body { padding: 20px 12px 48px; }
 @media print {
 @page { margin: 15mm; }
 body { background: #fff; padding: 0; display: block; }
-.progress-wrap, .btn-row, .controls, .compare-toggle, .toast, .stepper,
-.print-row, .icon-btn { display: none !important; }
+.progress-wrap, .btn-row, .controls, .toast, .stepper,
+.print-row { display: none !important; }
 .card { box-shadow: none; padding: 20px; border-radius: 0; animation: none; border: 1px solid #ddd; }
 .myth-body { display: block !important; }
 details.sources-toggle > summary { display: none; }
@@ -576,11 +511,11 @@ body.print-all .card.hidden { display: block !important; }
 <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
 <div class="progress-fill" id="progressFill"></div>
 </div>
-<!-- Степпер -->
 <nav class="stepper" id="stepper" aria-label="Навигация по шагам памятки"></nav>
 </div>
 <div id="liveRegion" aria-live="polite" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <!-- ================= СТАРТ ================= -->
 <section class="card" id="card-0" tabindex="-1" aria-labelledby="h-0">
 <div class="print-row">
@@ -589,8 +524,7 @@ body.print-all .card.hidden { display: block !important; }
 </div>
 <span class="card-tag neutral">Старт</span>
 <h2 id="h-0">Вам назначен семаглутид или тирзепатид. Что это за препараты?</h2>
-<p>Семаглутид — это агонист рецепторов ГПП-1 (глюкагоноподобного пептида-1). Тирзепатид — двойной агонист: он действует и на рецепторы ГПП-1, и на рецепторы ГИП (глюкозозависимого инсулинотропного полипептида). Оба препарата имитируют действие естественных гормонов кишечника, которые выделяются после еды.</p>
-<!-- Оглавление -->
+<p><strong>Семаглутид</strong> — это агонист рецепторов ГПП-1 (глюкагоноподобного пептида-1). <strong>Тирзепатид</strong> — двойной агонист: он действует и на рецепторы ГПП-1, и на рецепторы ГИП (глюкозозависимого инсулинотропного полипептида). Оба препарата имитируют действие естественных гормонов кишечника, которые выделяются после еды.</p>
 <div class="toc" aria-label="Оглавление памятки">
 <div class="toc-title">Оглавление</div>
 <ul class="toc-list">
@@ -599,10 +533,11 @@ body.print-all .card.hidden { display: block !important; }
 <li><a class="toc-link" href="#card-3" onclick="event.preventDefault(); goTo(3);"><span class="num">3</span> Красные флаги <span class="arrow">→</span></a></li>
 <li><a class="toc-link" href="#card-4" onclick="event.preventDefault(); goTo(4);"><span class="num">4</span> Разбор пугалок <span class="arrow">→</span></a></li>
 <li><a class="toc-link" href="#card-5" onclick="event.preventDefault(); goTo(5);"><span class="num">5</span> Противопоказания <span class="arrow">→</span></a></li>
-<li><a class="toc-link" href="#card-6" onclick="event.preventDefault(); goTo(6);"><span class="num">6</span> Обследование перед началом <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-6" onclick="event.preventDefault(); goTo(6);"><span class="num">6</span> Обследование перед <span class="arrow">→</span></a></li>
 <li><a class="toc-link" href="#card-7" onclick="event.preventDefault(); goTo(7);"><span class="num">7</span> Обследование на фоне <span class="arrow">→</span></a></li>
-<li><a class="toc-link" href="#card-8" onclick="event.preventDefault(); goTo(8);"><span class="num">8</span> Наблюдение <span class="arrow">→</span></a></li>
-<li><a class="toc-link" href="#card-9" onclick="event.preventDefault(); goTo(9);"><span class="num">9</span> Вопросы врачу и памятка <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-8" onclick="event.preventDefault(); goTo(8);"><span class="num">8</span> Питание и мышцы <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-9" onclick="event.preventDefault(); goTo(9);"><span class="num">9</span> Наблюдение <span class="arrow">→</span></a></li>
+<li><a class="toc-link" href="#card-10" onclick="event.preventDefault(); goTo(10);"><span class="num">10</span> Памятка и вопросы <span class="arrow">→</span></a></li>
 </ul>
 </div>
 <div class="callout">
@@ -613,6 +548,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-primary" onclick="goTo(1)">Понятно, что дальше? →</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 1: МЕХАНИЗМ + ХРАНЕНИЕ ================= -->
 <section class="card hidden" id="card-1" tabindex="-1" aria-labelledby="h-1">
 <div class="print-row">
@@ -647,6 +583,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(0)">← Назад</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 2: ПОБОЧНЫЕ ЭФФЕКТЫ ================= -->
 <section class="card hidden" id="card-2" tabindex="-1" aria-labelledby="h-2">
 <div class="print-row">
@@ -700,6 +637,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(1)">← К механизму</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 3: КРАСНЫЕ ФЛАГИ ================= -->
 <section class="card hidden" id="card-3" tabindex="-1" aria-labelledby="h-3">
 <div class="print-row">
@@ -757,6 +695,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(2)">← К побочным эффектам</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 4: МИФЫ / ПУГАЛКИ ================= -->
 <section class="card hidden" id="card-4" tabindex="-1" aria-labelledby="h-4">
 <div class="print-row">
@@ -806,6 +745,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(3)">← К красным флагам</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 5: ПРОТИВОПОКАЗАНИЯ ================= -->
 <section class="card hidden" id="card-5" tabindex="-1" aria-labelledby="h-5">
 <div class="print-row">
@@ -883,6 +823,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(4)">← К пугалкам</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 6: ОБСЛЕДОВАНИЕ ПЕРЕД ================= -->
 <section class="card hidden" id="card-6" tabindex="-1" aria-labelledby="h-6">
 <div class="print-row">
@@ -916,6 +857,7 @@ body.print-all .card.hidden { display: block !important; }
 <button class="btn btn-secondary" onclick="goTo(5)">← К противопоказаниям</button>
 </div>
 </section>
+
 <!-- ================= ШАГ 7: ОБСЛЕДОВАНИЕ НА ФОНЕ ================= -->
 <section class="card hidden" id="card-7" tabindex="-1" aria-labelledby="h-7">
 <div class="print-row">
@@ -947,18 +889,73 @@ body.print-all .card.hidden { display: block !important; }
 <strong>Почему это важно:</strong> на фоне значительного снижения веса и уменьшения объёма питания может развиться дефицит нутриентов. Это не специфическое токсическое действие препарата, а следствие изменившегося рациона. Мы это предвидим и корректируем.
 </div>
 <div class="btn-row">
-<button class="btn btn-primary" onclick="goTo(8)">Как часто наблюдаться у врача? →</button>
+<button class="btn btn-primary" onclick="goTo(8)">Питание и сохранение мышц →</button>
 <button class="btn btn-secondary" onclick="goTo(6)">← К обследованию перед началом</button>
 </div>
 </section>
-<!-- ================= ШАГ 8: ЧАСТОТА НАБЛЮДЕНИЯ ================= -->
+
+<!-- ================= ШАГ 8: ПИТАНИЕ И МЫШЦЫ/КОСТИ ================= -->
 <section class="card hidden" id="card-8" tabindex="-1" aria-labelledby="h-8">
 <div class="print-row">
 <button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
 <button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
 </div>
-<span class="card-tag neutral">Шаг 8 · Наблюдение</span>
-<h2 id="h-8">Частота наблюдения врачом</h2>
+<span class="card-tag neutral">Шаг 8 · Питание и мышцы</span>
+<h2 id="h-8">Сохранение мышечной и костной ткани при снижении веса</h2>
+<p>При быстром снижении веса — независимо от того, достигается ли оно строгой диетой или препаратами аГПП-1/ГИП — существует риск потери не только жировой, но и <strong>мышечной ткани</strong>, а также снижения <strong>минеральной плотности костей</strong>. Это может привести к физической слабости, замедлению метаболизма в долгосрочной перспективе и повышенному риску переломов.</p>
+
+<div class="callout amber">
+<strong>Хорошая новость:</strong> этих рисков можно успешно избежать, если с самого начала сделать акцент на качестве питания и физической активности. Наша цель — потеря именно жировой ткани, а не мышечной.
+</div>
+
+<h3>Как предотвратить потерю мышечной и костной ткани</h3>
+<div class="nutrition-block">
+<h3>🥩 1. Достаточное количество белка</h3>
+<p>Это главный строительный материал для мышц. Рекомендуется потреблять <strong>1,2–1,6 г белка на 1 кг желаемой массы тела</strong> в сутки (или на 1 кг текущей, если ожирение не морбидное).</p>
+<p>Важно распределять белок равномерно: <strong>25–30 г на каждый основной приём пищи</strong>. Источники: яйца, рыба, птица, нежирное мясо, творог, бобовые, тофу.</p>
+</div>
+
+<div class="nutrition-block">
+<h3>💪 2. Силовые (резистентные) тренировки</h3>
+<p>Питание без нагрузки не даст организму сигнал сохранять мышцы. Достаточно <strong>2–3 тренировок в неделю</strong>: занятия в зале, домашние упражнения с гантелями или фитнес-резинками, пилатес, работа с собственным весом.</p>
+<p>Даже лёгкие нагрузки (ходьба с утяжелителями, подъёмы по лестнице) лучше, чем их отсутствие.</p>
+</div>
+
+<div class="nutrition-block">
+<h3>🦴 3. Кальций и витамин D</h3>
+<p>Критически важны для здоровья костей. Включайте в рацион молочные продукты, зелёные листовые овощи, кунжут, рыбу.</p>
+<p>Обязательно проверьте уровень витамина D (25-OH) и при дефиците обсудите с врачом приём добавок. Целевой уровень — не ниже 30 нг/мл.</p>
+</div>
+
+<div class="nutrition-block">
+<h3>⚖️ 4. Избегайте экстремального дефицита калорий</h3>
+<p>Препарат и так значительно снижает аппетит. Ваша задача — не есть «как можно меньше», а есть <strong>«достаточно качественно»</strong>.</p>
+<p>Не рекомендуется опускаться ниже <strong>1200–1400 ккал в сутки</strong> без строгого контроля врача. Слишком агрессивный дефицит ускоряет потерю мышечной массы и замедляет метаболизм.</p>
+</div>
+
+<div class="nutrition-block">
+<h3>💧 5. Адекватный питьевой режим</h3>
+<p>Не менее <strong>30 мл воды на 1 кг массы тела</strong>. Обезвоживание усугубляет потерю мышечной массы и усиливает побочные эффекты со стороны ЖКТ (тошноту, запоры).</p>
+</div>
+
+<div class="callout blue">
+<strong>Резюме:</strong> препарат берёт на себя контроль над аппетитом, но качество состава тела (соотношение мышц и жира) зависит от вашей тарелки и движения. Мы обязательно обсудим эти детали на консультации.
+</div>
+
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goTo(9)">Как часто наблюдаться у врача? →</button>
+<button class="btn btn-secondary" onclick="goTo(7)">← К обследованию на фоне</button>
+</div>
+</section>
+
+<!-- ================= ШАГ 9: ЧАСТОТА НАБЛЮДЕНИЯ ================= -->
+<section class="card hidden" id="card-9" tabindex="-1" aria-labelledby="h-9">
+<div class="print-row">
+<button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
+<button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
+</div>
+<span class="card-tag neutral">Шаг 9 · Наблюдение</span>
+<h2 id="h-9">Частота наблюдения врачом</h2>
 <p>Регулярные визиты — не формальность. Это возможность вовремя заметить осложнение, скорректировать дозу и оценить эффективность лечения.</p>
 <h3>Зачем нужны регулярные визиты</h3>
 <ul>
@@ -967,29 +964,31 @@ body.print-all .card.hidden { display: block !important; }
 <li><strong>Контроль побочных эффектов.</strong> Вы сообщаете — мы реагируем. Не нужно терпеть «до последнего».</li>
 <li><strong>Оценка эффективности.</strong> Если через 3–6 месяцев на поддерживающей дозе нет адекватного ответа (по весу или гликемии), план пересматривается.</li>
 <li><strong>Коррекция рациона и физической активности.</strong> Препарат — не замена образу жизни, а инструмент. Рацион и движение нужно адаптировать по мере снижения веса.</li>
+<li><strong>Контроль состава тела.</strong> На каждом визите мы обсуждаем, как идёт потеря веса: уходит ли жир, сохраняются ли мышцы, нет ли признаков дефицитов.</li>
 </ul>
 <h3>Ориентировочная частота визитов</h3>
 <ul>
 <li><strong>Первые 3 месяца</strong> — обычно каждый месяц (в том числе для контроля титрации и переносимости).</li>
 <li><strong>Далее в течение первого года</strong> — каждые 3 месяца.</li>
 <li><strong>При продолжающейся терапии</strong> — 1 раз в 6 месяцев.</li>
-<li><strong>Внепланово</strong> — при любых симптомах из «красного» списка, при сильной или не проходящей симптоматике со стороны ЖКТ, при невозможности пить/есть, при внезапном ухудшении зрения.</li>
+<li><strong>Внепланово</strong> — при любых симптомах из «красного» списка, при сильной или не проходящей симптоматике со стороны ЖКТ, при невозможности пить/есть, при внезапном ухудшении зрения, при признаках дефицитов (слабость, выпадение волос, покалывание в конечностях).</li>
 </ul>
 <div class="btn-row">
-<button class="btn btn-primary" onclick="goTo(9)">К вопросам врачу и памятке →</button>
-<button class="btn btn-secondary" onclick="goTo(7)">← К обследованию на фоне</button>
+<button class="btn btn-primary" onclick="goTo(10)">К памятке и вопросам врачу →</button>
+<button class="btn btn-secondary" onclick="goTo(8)">← К питанию и мышцам</button>
 </div>
 </section>
+
 <!-- ================= ФИНАЛ: ПАМЯТКА + ВОПРОСЫ + ИСТОЧНИКИ ================= -->
-<section class="card hidden" id="card-9" tabindex="-1" aria-labelledby="h-9">
+<section class="card hidden" id="card-10" tabindex="-1" aria-labelledby="h-10">
 <div class="print-row">
 <button class="btn-print" onclick="printCurrent()"><span class="ico">🖨️</span> Распечатать страницу</button>
 <button class="btn-print primary" onclick="printAll()"><span class="ico">📄</span> Распечатать всю памятку</button>
 </div>
 <span class="card-tag ok">Финал · Памятка</span>
-<h2 id="h-9">Памятка коротко</h2>
+<h2 id="h-10">Памятка коротко</h2>
 <ol class="summary-list">
-<li><strong>Препарат работает на двух фронтах:</strong> снижает сахар крови (только когда он высокий) и уменьшает аппетит, замедляя опорожнение желудка.</li>
+<li><strong>Препарат работает на двух фронтах:</strong> снижает сахар крови (только когда он высокий) и уменьшает аппетит, замедляя опорожнение желудка и действуя на центры насыщения в мозге.</li>
 <li><strong>Частые побочные эффекты — это адаптационный период.</strong> Тошнота, диарея, запор обычно ослабевают за несколько недель. Дробное питание и питьевой режим помогают.</li>
 <li><strong>Гипогликемия возможна только при дополнительном приёме других сахароснижающих препаратов.</strong> Врач заранее корректирует их дозу.</li>
 <li><strong>Редкие, но грозные осложнения:</strong> панкреатит (сильная боль в верхней части живота, отдающая в спину — немедленно скорая), желчнокаменная болезнь, НПИОН (внезапная потеря зрения на одном глазу — немедленно к офтальмологу), тяжёлые аллергические реакции, аспирация при наркозе (сообщите анестезиологу).</li>
@@ -997,9 +996,11 @@ body.print-all .card.hidden { display: block !important; }
 <li><strong>Риски есть, но большинством из них мы умеем управлять.</strong> Польза от лечения, как правило, превышает возможные риски. Информация в сети часто подаётся вне контекста.</li>
 <li><strong>Перед началом лечения:</strong> АСТ, АЛТ, глюкоза, креатинин, холестерин, кальцитонин, УЗИ щитовидной железы, УЗИ органов брюшной полости. Для отдельных пациентов план может быть расширен.</li>
 <li><strong>На фоне лечения:</strong> контроль через 3 месяца — АСТ, АЛТ, глюкоза, холестерин, креатинин. При симптомах дефицитов — дополнительно клинический анализ крови, ферритин, цинк, B12, кальций, витамин D, общий белок, ТТГ.</li>
+<li><strong>Сохраняйте мышцы и кости:</strong> 1,2–1,6 г белка на кг массы тела в сутки, силовые тренировки 2–3 раза в неделю, кальций и витамин D, не опускайтесь ниже 1200–1400 ккал в сутки, пейте не менее 30 мл воды на кг массы тела.</li>
 <li><strong>Частота визитов:</strong> первые 3 месяца — обычно каждый месяц, далее в течение первого года — каждые 3 месяца, при продолжающейся терапии — 1 раз в 6 месяцев. Внепланово — при «красных» симптомах.</li>
 <li><strong>Не бросайте препарат самостоятельно.</strong> Если что-то беспокоит — обсудите с врачом. Риск инфаркта и инсульта на фоне нелеченого ожирения и диабета гораздо реальнее, чем редкие осложнения терапии.</li>
 </ol>
+
 <div class="questions-block">
 <div class="questions-title">🗣️ Что спросить у врача на приёме</div>
 <ol class="questions-list">
@@ -1008,19 +1009,23 @@ body.print-all .card.hidden { display: block !important; }
 <li>Что делать, если я пропустил инъекцию?</li>
 <li>Какие симптомы должны заставить меня позвонить вам, а какие — сразу вызвать скорую?</li>
 <li>Как скорректировать дозы моих других сахароснижающих препаратов?</li>
-<li>Как изменить рацион и физическую активность по мере снижения веса?</li>
-<li>Нужно ли мне дополнительно сдавать какие-то анализы на дефициты (B12, железо, витамин D)?</li>
+<li>Сколько белка мне нужно в сутки и как его равномерно распределить по приёмам пищи?</li>
+<li>Какие силовые тренировки мне подходят с учётом моего состояния?</li>
+<li>Нужно ли мне дополнительно сдавать анализы на дефициты (B12, железо, витамин D, цинк)?</li>
 <li>Есть ли у меня противопоказания к терапии (МРЩЖ в семье, панкреатит в анамнезе)?</li>
 <li>Что делать, если я планирую операцию или стоматологическое вмешательство под наркозом?</li>
 </ol>
 <p class="questions-note">Совет: запишите свои вопросы заранее — на приёме часто забывается важное.</p>
 </div>
+
 <div class="callout">
 <strong>Помните:</strong> препарат — это инструмент, а не замена образу жизни. Рацион и физическая активность — ваша база. Мы будем корректировать их вместе с вами по мере снижения веса.
 </div>
+
 <div class="callout blue">
 <strong>Отлично!</strong> Вы добрались до финальной карточки — теперь вы знаете о терапии препаратами аГПП-1/ГИП больше, чем большинство пациентов, которые начинают эту терапию. Если что-то осталось непонятным — вернитесь к нужному шагу через оглавление в начале или обсудите с врачом.
 </div>
+
 <details class="sources-toggle">
 <summary>Источники к памятке</summary>
 <div class="sources">
@@ -1039,15 +1044,18 @@ body.print-all .card.hidden { display: block !important; }
 </ol>
 </div>
 </details>
+
 <div class="btn-row">
 <button class="btn btn-primary" onclick="restart()">🔄 Пройти памятку заново</button>
-<button class="btn btn-secondary" onclick="goTo(8)">← Назад</button>
+<button class="btn btn-secondary" onclick="goTo(9)">← Назад</button>
 </div>
 </section>
+
 <div class="disclaimer" role="note">
 <strong>Дисклеймер.</strong> Материал носит информационный характер и не заменяет консультацию врача. Не занимайтесь самолечением. Обсудите ваши цифры и риски с врачом. При ухудшении самочувствия — обратитесь за медицинской помощью.
 </div>
 </div>
+
 <script>
 /* ---------- Toast ---------- */
 const toastEl = document.getElementById('toast');
@@ -1058,7 +1066,7 @@ toastEl.classList.add('show');
 if (toastTimer) clearTimeout(toastTimer);
 toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3000);
 }
-/* ---------- Печать: текущая страница / вся памятка ---------- */
+/* ---------- Печать ---------- */
 const cards = document.querySelectorAll('.card');
 const PRINT_CLASS_CURRENT = 'print-current';
 const PRINT_CLASS_ALL = 'print-all';
@@ -1101,7 +1109,7 @@ if (active) active.classList.remove('hidden');
 }, 60);
 }
 /* ---------- Навигация ---------- */
-const TOTAL_STEPS = 10;
+const TOTAL_STEPS = 11;
 const LAST_STEP = TOTAL_STEPS - 1;
 let currentStep = 0;
 function goTo(step) {
@@ -1130,7 +1138,7 @@ step === LAST_STEP ? 'Финал' :
 'Шаг ' + step + ' из ' + (LAST_STEP - 1);
 updateStepper(step);
 }
-/* ---------- Степпер (10 шагов) ---------- */
+/* ---------- Степпер ---------- */
 const STEP_LABELS = [
 { caption: 'Старт', full: 'Старт: что это за препараты' },
 { caption: '1. Механизм', full: 'Как препараты влияют на вес и сахар' },
@@ -1140,7 +1148,8 @@ const STEP_LABELS = [
 { caption: '5. Противопоказания', full: 'Противопоказания к терапии' },
 { caption: '6. Перед началом', full: 'Обследование перед началом' },
 { caption: '7. На фоне', full: 'Обследование на фоне лечения' },
-{ caption: '8. Наблюдение', full: 'Частота наблюдения врачом' },
+{ caption: '8. Питание', full: 'Питание и сохранение мышц и костей' },
+{ caption: '9. Наблюдение', full: 'Частота наблюдения врачом' },
 { caption: 'Финал', full: 'Памятка, вопросы врачу и источники' }
 ];
 const stepperEl = document.getElementById('stepper');
