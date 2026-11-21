@@ -11,7 +11,7 @@
     <meta property="og:url" content="https://pystogov-doc.ru/services.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=16">
     
     <script>
         (function() {
@@ -61,7 +61,7 @@
         <div class="menu-links">
             <a href="index.html">Главная</a>
             <a href="about.html">Обо мне</a>
-            <a href="services.html">Услуги</a>
+            <a href="services.html" class="menu-active">Услуги</a>
         </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -171,7 +171,6 @@
 
             <hr class="section-divider">
 
-            <!-- Блок-предупреждение -->
             <div class="warning-box">
                 <h3>Кому онлайн-консультация точно не подойдет</h3>
                 <ul class="warning-list">
@@ -185,18 +184,18 @@
             <hr class="section-divider">
 
             <h3>Очный прием в Краснодаре</h3>
-            <p>Для тех, кто предпочитает личные встречи, я веду прием в двух клиниках.</p>
+            <p>Для тех, кто предпочитает личные встречи, я веду прием в двух клиниках. <strong>Нажмите на карточку, чтобы перейти на сайт клиники.</strong></p>
             <div class="clinic-grid">
-                <div class="clinic-card">
+                <div class="clinic-card" data-link="https://bestmedgroup.ru">
                     <h4>🏥 Best Clinic</h4>
                     <div class="clinic-info">
-                        <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Артюшкова,+3" target="_blank" class="clinic-link">г. Краснодар, ул. Артюшкова, 3</a>
+                        <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Артюшкова,+3" target="_blank" class="clinic-link" onclick="event.stopPropagation()">г. Краснодар, ул. Артюшкова, 3</a>
                     </div>
                     <div class="clinic-info">
-                        <strong>Телефон:</strong> <a href="tel:+78612050112" class="clinic-link">+7 (861) 205-0-112</a>
+                        <strong>Телефон:</strong> <a href="tel:+78612050112" class="clinic-link" onclick="event.stopPropagation()">+7 (861) 205-0-112</a>
                     </div>
                     <div class="clinic-info">
-                        <strong>Сайт:</strong> <a href="https://bestmedgroup.ru" target="_blank" class="clinic-link">bestmedgroup.ru</a>
+                        <strong>Сайт:</strong> <a href="https://bestmedgroup.ru" target="_blank" class="clinic-link" onclick="event.stopPropagation()">bestmedgroup.ru</a>
                     </div>
                     <div class="clinic-info">
                         <strong>График приема:</strong><br>
@@ -205,16 +204,16 @@
                         Сб: 14:30 – 18:00
                     </div>
                 </div>
-                <div class="clinic-card">
+                <div class="clinic-card" data-link="https://avatclinic.ru">
                     <h4>🏥 Клиника "АВАТ"</h4>
                     <div class="clinic-info">
-                        <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Российская,+257/7" target="_blank" class="clinic-link">г. Краснодар, ул. Российская, 257/7, литер 3</a>
+                        <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Российская,+257/7" target="_blank" class="clinic-link" onclick="event.stopPropagation()">г. Краснодар, ул. Российская, 257/7, литер 3</a>
                     </div>
                     <div class="clinic-info">
-                        <strong>Телефон:</strong> <a href="tel:+79180738899" class="clinic-link">+7 (918) 073-88-99</a>
+                        <strong>Телефон:</strong> <a href="tel:+79180738899" class="clinic-link" onclick="event.stopPropagation()">+7 (918) 073-88-99</a>
                     </div>
                     <div class="clinic-info">
-                        <strong>Сайт:</strong> <a href="https://avatclinic.ru" target="_blank" class="clinic-link">avatclinic.ru</a>
+                        <strong>Сайт:</strong> <a href="https://avatclinic.ru" target="_blank" class="clinic-link" onclick="event.stopPropagation()">avatclinic.ru</a>
                     </div>
                     <div class="clinic-info">
                         <strong>График приема:</strong><br>
@@ -243,7 +242,6 @@
 
             <div style="text-align: center; margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
                 <a href="https://calendar.app.google/4ZoGJfDAaB6QFg6z6" class="card-button" target="_blank">Заявка на консультацию</a>
-                <a href="https://max.ru/u/f9LHodD0cOIwd5iSD2n_pCuLBZJlBy1OhJFJv6uYXerlUNM49s83I0X_vfY" class="card-button" target="_blank">Написать в Max</a>
             </div>
         </div>
     </section>
@@ -297,6 +295,16 @@
             else backToTopButton.classList.remove("show");
         };
         backToTopButton.addEventListener("click", function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+        // Кликабельные карточки клиник
+        document.querySelectorAll('.clinic-card').forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                // Если клик был по внутренней ссылке — не переходим на сайт клиники
+                if (e.target.closest('a')) return;
+                const url = card.getAttribute('data-link');
+                if (url) window.open(url, '_blank');
+            });
+        });
     </script>
 </body>
 </html>
