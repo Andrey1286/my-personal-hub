@@ -11,7 +11,7 @@
     <meta property="og:url" content="https://pystogov-doc.ru/services.html">
     
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=16">
+    <link rel="stylesheet" href="css/style.css?v=17">
     
     <script>
         (function() {
@@ -53,8 +53,12 @@
 
     <div id="progress-bar"></div>
 
-    <header class="hero-page fade-in">
-        <h1>Услуги и цены</h1>
+    <header class="hero fade-in">
+        <div class="hero-text">
+            <h1>Услуги и цены</h1>
+            <p class="subtitle">Консультации эндокринолога, нутрициолога и health-коуча</p>
+        </div>
+        <img src="images/my-photo.jpg" alt="Фото врача Пыстогова Андрея Сергеевича" class="photo">
     </header>
 
     <nav class="menu">
@@ -299,7 +303,6 @@
         // Кликабельные карточки клиник
         document.querySelectorAll('.clinic-card').forEach(function(card) {
             card.addEventListener('click', function(e) {
-                // Если клик был по внутренней ссылке — не переходим на сайт клиники
                 if (e.target.closest('a')) return;
                 const url = card.getAttribute('data-link');
                 if (url) window.open(url, '_blank');
