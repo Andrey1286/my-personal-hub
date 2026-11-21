@@ -14,7 +14,7 @@
     
     <meta name="yandex-verification" content="4689ef1ad2a266b6" />
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=16">
+    <link rel="stylesheet" href="css/style.css?v=19">
     
     <script>
         (function() {
@@ -51,6 +51,7 @@
 
     <div id="progress-bar"></div>
 
+    <!-- ===== СТАТИЧНАЯ ШАПКА (никогда не перерисовывается) ===== -->
     <header class="hero fade-in">
         <div class="hero-text">
             <h1>Пыстогов Андрей Сергеевич</h1>
@@ -62,11 +63,12 @@
         <img src="images/my-photo.jpg" alt="Фото врача Пыстогова Андрея Сергеевича" class="photo">
     </header>
 
+    <!-- ===== СТАТИЧНОЕ МЕНЮ ===== -->
     <nav class="menu">
         <div class="menu-links">
-            <a href="index.html" class="menu-active">Главная</a>
-            <a href="about.html">Обо мне</a>
-            <a href="services.html">Услуги</a>
+            <a href="#home" class="menu-link" data-section="home">Главная</a>
+            <a href="#about" class="menu-link" data-section="about">Обо мне</a>
+            <a href="#services" class="menu-link" data-section="services">Услуги</a>
         </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -87,86 +89,309 @@
         </button>
     </nav>
 
-    <!-- Новый блок: О приеме -->
-    <section class="materials fade-in">
-        <div class="about-text">
-            <h3>Прием врача-эндокринолога и нутрициолога в Краснодаре и онлайн</h3>
-            <p>Веду очный прием пациентов в клиниках <strong>Best Clinic</strong> и <strong>АВАТ</strong> (г. Краснодар), а также провожу подробные онлайн-консультации для жителей любого города.</p>
-            <p>Помогаю взрослым людям разобраться с заболеваниями щитовидной железы, сахарным диабетом, повышенным холестерином и вопросами коррекции веса.</p>
-            <p>Мой подход — это <strong>медицина как диалог</strong>: мы вместе анализируем ваши симптомы и анализы, чтобы выстроить понятный, комфортный и эффективный план заботы о здоровье, основанный на принципах доказательной медицины.</p>
+    <!-- ===== ПЕРЕКЛЮЧАЕМЫЙ КОНТЕНТ ===== -->
+    <main id="main-content">
+
+        <!-- СЕКЦИЯ: ГЛАВНАЯ -->
+        <div id="section-home" class="page-section">
+            <section class="materials fade-in">
+                <div class="about-text">
+                    <h3>Прием врача-эндокринолога и нутрициолога в Краснодаре и онлайн</h3>
+                    <p>Веду очный прием пациентов в клиниках <strong>Best Clinic</strong> и <strong>АВАТ</strong> (г. Краснодар), а также провожу подробные онлайн-консультации для жителей любого города.</p>
+                    <p>Помогаю взрослым людям разобраться с заболеваниями щитовидной железы, сахарным диабетом, повышенным холестерином и вопросами коррекции веса.</p>
+                    <p>Мой подход — это <strong>медицина как диалог</strong>: мы вместе анализируем ваши симптомы и анализы, чтобы выстроить понятный, комфортный и эффективный план заботы о здоровье, основанный на принципах доказательной медицины.</p>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="materials fade-in">
+                <h2>Полезные материалы</h2>
+                <p>Статьи и памятки, которые я подготовил для пациентов.</p>
+                <div class="cards">
+                    <a href="riski.html" class="card" target="_blank">
+                        <span class="card-icon">📊</span>
+                        <h3>Оценка рисков заболеваний</h3>
+                        <p>Интерактивный калькулятор: SCORE2, FINDRISC, FIB-4, СКФ, биологический возраст</p>
+                    </a>
+                    <a href="GB.html" class="card" target="_blank">
+                        <span class="card-icon">❤️</span>
+                        <h3>Повышенное давление</h3>
+                        <p>Маршрут пациента: как правильно измерять, когда идти к врачу, что делать при скачке</p>
+                    </a>
+                    <a href="dislipidemia.html" class="card" target="_blank">
+                        <span class="card-icon">🧬</span>
+                        <h3>Повышенный холестерин</h3>
+                        <p>Памятка: просто о дислипидемии и липидном профиле</p>
+                    </a>
+                    <a href="glp.html" class="card" target="_blank">
+                        <span class="card-icon">💊</span>
+                        <h3>Препараты для снижения веса</h3>
+                        <p>Самая важная информация для безопасного применения</p>
+                    </a>
+                    <a href="pitanie.html" class="card" target="_blank">
+                        <span class="card-icon">🥗</span>
+                        <h3>Осознанное питание</h3>
+                        <p>Руководство по формированию здоровых отношений с едой</p>
+                    </a>
+                    <a href="nutrition-diabetes.html" class="card" target="_blank">
+                        <span class="card-icon">🍽️</span>
+                        <h3>Питание при диабете</h3>
+                        <p>Практическое руководство: что есть при сахарном диабете</p>
+                    </a>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section class="materials fade-in">
+                <h2>Отзывы пациентов</h2>
+                <p>Мнение тех, кто уже прошел путь к здоровью вместе со мной.</p>
+                
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" class="card-button">
+                        ✍️ Оставить отзыв о моей работе
+                    </a>
+                </div>
+
+                <div class="widget-container">
+                    <div id="pd_widget_big" data-doctor="936440" hidden>
+                      <div class="pd_rate_header">
+                        Отзывы о враче Пыстогов А. С.
+                        <br>
+                        <a target="_blank" class="pd_rate_new" href="https://prodoctorov.ru/new/rate/doctor/936440/">Оставить отзыв</a>
+                      </div>
+                      <div id="pd_widget_big_content"></div>
+                      <a target="_blank" href="https://prodoctorov.ru/krasnodar/vrach/936440-pystogov/#otzivi" class="pd_read_all">Читать все отзывы</a>
+                      <span id="pd_powered_by">
+                        <a target="_blank" href="https://prodoctorov.ru">
+                          <img class="pd_logo" src="https://prodoctorov.ru/static/_v1/pd/logos/logo-pd-widget.png" alt="ПроДокторов">
+                        </a>
+                      </span>
+                    </div>
+                    <script defer src="https://prodoctorov.ru/static/js/widget_big.js?v07"></script>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <hr class="section-divider">
+        <!-- СЕКЦИЯ: ОБО МНЕ -->
+        <div id="section-about" class="page-section" style="display:none;">
+            <section class="materials fade-in">
+                <div class="about-text">
+                    <h3>Кто я</h3>
+                    <p>Врач-терапевт и эндокринолог с опытом более 15 лет. Прошёл путь от работы в государственном стационаре и поликлинике до частной практики.</p>
+                    <p>Специализируюсь на проведении информационных консультаций по эндокринной патологии в рамках российского законодательства. Имею большой опыт консультирования русскоязычных пациентов из разных стран на ведущих телемедицинских платформах, где провел более 1000 консультаций.</p>
 
-    <section class="materials fade-in">
-        <h2>Полезные материалы</h2>
-        <p>Статьи и памятки, которые я подготовил для пациентов.</p>
-        <div class="cards">
-            <a href="riski.html" class="card" target="_blank">
-                <span class="card-icon">📊</span>
-                <h3>Оценка рисков заболеваний</h3>
-                <p>Интерактивный калькулятор: SCORE2, FINDRISC, FIB-4, СКФ, биологический возраст</p>
-            </a>
-            <a href="GB.html" class="card" target="_blank">
-                <span class="card-icon">❤️</span>
-                <h3>Повышенное давление</h3>
-                <p>Маршрут пациента: как правильно измерять, когда идти к врачу, что делать при скачке</p>
-            </a>
-            <a href="dislipidemia.html" class="card" target="_blank">
-                <span class="card-icon">🧬</span>
-                <h3>Повышенный холестерин</h3>
-                <p>Памятка: просто о дислипидемии и липидном профиле</p>
-            </a>
-            <a href="glp.html" class="card" target="_blank">
-                <span class="card-icon">💊</span>
-                <h3>Препараты для снижения веса</h3>
-                <p>Самая важная информация для безопасного применения</p>
-            </a>
-            <a href="pitanie.html" class="card" target="_blank">
-                <span class="card-icon">🥗</span>
-                <h3>Осознанное питание</h3>
-                <p>Руководство по формированию здоровых отношений с едой</p>
-            </a>
-            <a href="nutrition-diabetes.html" class="card" target="_blank">
-                <span class="card-icon">🍽️</span>
-                <h3>Питание при диабете</h3>
-                <p>Практическое руководство: что есть при сахарном диабете</p>
-            </a>
+                    <h3>Кому и чем я помогаю</h3>
+                    <p>Взрослым людям, которые хотят разобраться в вопросах здоровья без лишней суеты и формализма.</p>
+                    <ul>
+                        <li>Заболевания щитовидной железы</li>
+                        <li>Сахарный диабет и предиабет</li>
+                        <li>Повышенный холестерин и нарушения липидного обмена</li>
+                        <li>Коррекция веса, налаживание питания и профилактика возрастных изменений</li>
+                    </ul>
+
+                    <h3>Мой подход</h3>
+                    <p>Медицина как диалог, а не диктат. Я ценю партнёрское взаимодействие и работу в команде с пациентом.</p>
+                    <p>В своей практике я объединяю классическую доказательную медицину с нутрициологией и техниками health-коучинга. Это позволяет не просто выписать рецепт, а помочь внедрить устойчивые изменения: наладить сон, питание и управление стрессом.</p>
+
+                    <h3>Формат работы</h3>
+                    <p>Я веду ограниченное число пациентов персонально. Это позволяет мне уделить максимум внимания каждому, вникнуть в детали истории и не превращать приём в конвейер.</p>
+
+                    <h3>Дипломы и сертификаты</h3>
+                    <p>Постоянное повышение квалификации — залог безопасной и эффективной помощи. Листайте, чтобы увидеть все документы.</p>
+                    
+                    <div class="carousel-wrapper">
+                        <button class="carousel-btn prev" aria-label="Предыдущий документ">‹</button>
+                        <div class="carousel-container" id="docCarousel">
+                            <a href="images/diploma1.jpg" target="_blank" class="carousel-item">
+                                <img src="images/diploma1.jpg" alt="Документ о квалификации">
+                            </a>
+                            <a href="images/diploma2.jpg" target="_blank" class="carousel-item">
+                                <img src="images/diploma2.jpg" alt="Документ о квалификации">
+                            </a>
+                            <a href="images/diploma3.jpg" target="_blank" class="carousel-item">
+                                <img src="images/diploma3.jpg" alt="Документ о квалификации">
+                            </a>
+                            <a href="images/diploma4.jpg" target="_blank" class="carousel-item">
+                                <img src="images/diploma4.jpg" alt="Документ о квалификации">
+                            </a>
+                            <a href="images/diploma5.jpg" target="_blank" class="carousel-item">
+                                <img src="images/diploma5.jpg" alt="Документ о квалификации">
+                            </a>
+                        </div>
+                        <button class="carousel-btn next" aria-label="Следующий документ">›</button>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
 
-    <hr class="section-divider">
+        <!-- СЕКЦИЯ: УСЛУГИ -->
+        <div id="section-services" class="page-section" style="display:none;">
+            <section class="materials fade-in">
+                <div class="about-text">
+                    <h3>Чем я могу помочь</h3>
+                    <div class="cards">
+                        <div class="card">
+                            <span class="card-icon">🩺</span>
+                            <h3>Консультация эндокринолога</h3>
+                            <p>Диагностика и лечение заболеваний щитовидной железы, диабета, нарушений обмена веществ.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">🥗</span>
+                            <h3>Сопровождение нутрициолога</h3>
+                            <p>Составление плана питания, коррекция веса, работа с дефицитами микроэлементов.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">🧠</span>
+                            <h3>Health-коучинг</h3>
+                            <p>Внедрение здоровых привычек, управление стрессом и энергией.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">🔬</span>
+                            <h3>Интерпретация анализов</h3>
+                            <p>Разбор лабораторных показателей с точки зрения доказательной медицины.</p>
+                        </div>
+                    </div>
 
-    <section class="materials fade-in">
-        <h2>Отзывы пациентов</h2>
-        <p>Мнение тех, кто уже прошел путь к здоровью вместе со мной.</p>
-        
-        <div style="text-align: center; margin-bottom: 25px;">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank" class="card-button">
-                ✍️ Оставить отзыв о моей работе
-            </a>
+                    <hr class="section-divider">
+
+                    <h3>Прайс-лист</h3>
+
+                    <div class="price-table-wrapper">
+                        <table class="price-table">
+                            <thead>
+                                <tr>
+                                    <th>Услуга</th>
+                                    <th>Формат / длительность</th>
+                                    <th>Стоимость</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="category-row">
+                                    <td colspan="3">Эндокринология</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Первичная консультация эндокринолога</td>
+                                    <td class="service-desc">Информационная услуга, 60 минут</td>
+                                    <td>3 000 ₽</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Повторная консультация эндокринолога</td>
+                                    <td class="service-desc">Информационная услуга, 30–60 минут</td>
+                                    <td>2 000 ₽</td>
+                                </tr>
+
+                                <tr class="category-row">
+                                    <td colspan="3">Нутрициология</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Консультация нутрициолога</td>
+                                    <td class="service-desc">Разовая встреча, 60 минут</td>
+                                    <td>3 000 ₽</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Сопровождение нутрициолога</td>
+                                    <td class="service-desc">3 месяца, встречи по 30–60 минут, 2 раза в месяц</td>
+                                    <td>15 000 ₽</td>
+                                </tr>
+
+                                <tr class="category-row">
+                                    <td colspan="3">Health-коучинг</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Онлайн-сессия health-коуча</td>
+                                    <td class="service-desc">Модификация образа жизни, 60 минут</td>
+                                    <td>2 500 ₽</td>
+                                </tr>
+                                <tr>
+                                    <td class="service-name">Сопровождение health-коуча</td>
+                                    <td class="service-desc">6 месяцев, сессии по 30–60 минут, 1 раз в неделю</td>
+                                    <td>30 000 ₽</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="price-note">Все консультации оказываются в формате информационно-консультационных услуг.</p>
+
+                    <hr class="section-divider">
+
+                    <div class="warning-box">
+                        <h3>Кому онлайн-консультация точно не подойдет</h3>
+                        <ul class="warning-list">
+                            <li>Острая боль или резкое ухудшение самочувствия</li>
+                            <li>Любые острые состояния/заболевания, состояния, требующие неотложной помощи (высокая температура, затруднение дыхания, потеря сознания, сильное кровотечение, резкое ухудшение самочувствия)</li>
+                            <li>Необходимость физикального осмотра, УЗИ или других исследований, которые можно провести только очно</li>
+                            <li>Вам нужны официальное заключение/выписка, рецепт на лекарственный препарат</li>
+                        </ul>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3>Очный прием в Краснодаре</h3>
+                    <p>Для тех, кто предпочитает личные встречи, я веду прием в двух клиниках.</p>
+                    <div class="clinic-grid">
+                        <div class="clinic-card">
+                            <h4>🏥 Best Clinic</h4>
+                            <div class="clinic-info">
+                                <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Артюшкова,+3" target="_blank" class="clinic-link">г. Краснодар, ул. Артюшкова, 3</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>Телефон:</strong> <a href="tel:+78612050112" class="clinic-link">+7 (861) 205-0-112</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>Сайт:</strong> <a href="https://bestmedgroup.ru" target="_blank" class="clinic-link">bestmedgroup.ru</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>График приема:</strong><br>
+                                Пн, Пт: 8:00 – 15:00<br>
+                                Вт, Чт: 8:00 – 14:00<br>
+                                Сб: 14:30 – 18:00
+                            </div>
+                        </div>
+                        <div class="clinic-card">
+                            <h4>🏥 Клиника "АВАТ"</h4>
+                            <div class="clinic-info">
+                                <strong>Адрес:</strong> <a href="https://yandex.ru/maps/?text=Краснодар,+ул.+Российская,+257/7" target="_blank" class="clinic-link">г. Краснодар, ул. Российская, 257/7, литер 3</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>Телефон:</strong> <a href="tel:+79180738899" class="clinic-link">+7 (918) 073-88-99</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>Сайт:</strong> <a href="https://avatclinic.ru" target="_blank" class="clinic-link">avatclinic.ru</a>
+                            </div>
+                            <div class="clinic-info">
+                                <strong>График приема:</strong><br>
+                                Пн, Пт: 17:00 – 19:00
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <h3>Как подготовиться к консультации</h3>
+                    <p>Чтобы наша встреча прошла максимально эффективно, пожалуйста, подготовьте следующее:</p>
+                    <ul class="prep-list">
+                        <li>Результаты последних анализов и обследований (фото или сканы).</li>
+                        <li>Список всех принимаемых препаратов, БАДов и витаминов с дозировками.</li>
+                        <li>Четко сформулированную основную жалобу или цель обращения (1-2 предложения).</li>
+                        <li>Дневник симптомов или питания (если вы его ведете).</li>
+                    </ul>
+
+                    <hr class="section-divider">
+
+                    <h3>Как проходит работа</h3>
+                    <p><strong>1. Запись.</strong> Нажмите кнопку «Выбрать время консультации» в шапке сайта, чтобы выбрать удобное время в моем календаре, или напишите мне напрямую в мессенджере.</p>
+                    <p><strong>2. Оплата и подготовка.</strong> После записи и оплаты вы заполняете анкету с описанием запроса и присылаете фото анализов, обследований и медицинских заключений (при необходимости).</p>
+                    <p><strong>3. Консультация.</strong> В назначенный день созваниваемся в удобном для вас формате — аудио или видео (обычно используем «Телемост» от Яндекс). Длительность встречи 30–60 минут.</p>
+                </div>
+            </section>
         </div>
 
-        <div class="widget-container">
-            <div id="pd_widget_big" data-doctor="936440" hidden>
-              <div class="pd_rate_header">
-                Отзывы о враче Пыстогов А. С.
-                <br>
-                <a target="_blank" class="pd_rate_new" href="https://prodoctorov.ru/new/rate/doctor/936440/">Оставить отзыв</a>
-              </div>
-              <div id="pd_widget_big_content"></div>
-              <a target="_blank" href="https://prodoctorov.ru/krasnodar/vrach/936440-pystogov/#otzivi" class="pd_read_all">Читать все отзывы</a>
-              <span id="pd_powered_by">
-                <a target="_blank" href="https://prodoctorov.ru">
-                  <img class="pd_logo" src="https://prodoctorov.ru/static/_v1/pd/logos/logo-pd-widget.png" alt="ПроДокторов">
-                </a>
-              </span>
-            </div>
-            <script defer src="https://prodoctorov.ru/static/js/widget_big.js?v07"></script>
-        </div>
-    </section>
+    </main>
 
+    <!-- ===== СТАТИЧНЫЙ ФУТЕР ===== -->
     <footer>
         <p>Каналы: <a href="https://dzen.ru/endo_dok" target="_blank">Дзен</a> · <a href="https://max.ru/channel_endo_doc" target="_blank">Макс</a> · <a href="https://docs.google.com/forms/d/e/1FAIpQLSfxWYJy4x3XiROKaLwMvARUJ2qMFI4n06b686T5ciM0N2pcDw/viewform?usp=publish-editor" target="_blank">Оставить отзыв</a></p>
         <p style="margin-top: 15px; font-size: 0.9em;">
@@ -192,34 +417,113 @@
     </div>
 
     <button id="backToTop" title="Наверх">↑</button>
+
     <script>
+        // ===== ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ =====
+        const sections = {
+            home: document.getElementById('section-home'),
+            about: document.getElementById('section-about'),
+            services: document.getElementById('section-services')
+        };
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        function showSection(name) {
+            // Скрываем все секции
+            Object.keys(sections).forEach(function(key) {
+                sections[key].style.display = 'none';
+            });
+            // Показываем нужную
+            if (sections[name]) {
+                sections[name].style.display = 'block';
+            }
+            // Обновляем активный пункт меню
+            menuLinks.forEach(function(link) {
+                link.classList.remove('menu-active');
+                if (link.getAttribute('data-section') === name) {
+                    link.classList.add('menu-active');
+                }
+            });
+            // Прокрутка вверх при переключении
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Обработка кликов по меню
+        menuLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                showSection(section);
+                history.pushState(null, '', '#' + section);
+            });
+        });
+
+        // Обработка hash при загрузке и изменении
+        function handleHash() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && sections[hash]) {
+                showSection(hash);
+            } else {
+                showSection('home');
+            }
+        }
+        window.addEventListener('hashchange', handleHash);
+        handleHash();
+
+        // ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ =====
         const themeToggle = document.getElementById("themeToggle");
         const html = document.documentElement;
-
         themeToggle.addEventListener("click", function() {
             const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
             html.setAttribute("data-theme", next);
             try { localStorage.setItem("theme", next); } catch(e) {}
         });
 
+        // ===== КНОПКА НАВЕРХ + ПРОГРЕСС-БАР =====
         const backToTopButton = document.getElementById("backToTop");
         const progressBar = document.getElementById("progress-bar");
-
         window.onscroll = function() {
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             progressBar.style.width = scrolled + "%";
-
-            if (winScroll > 300) {
-                backToTopButton.classList.add("show");
-            } else {
-                backToTopButton.classList.remove("show");
-            }
+            if (winScroll > 300) backToTopButton.classList.add("show");
+            else backToTopButton.classList.remove("show");
         };
         backToTopButton.addEventListener("click", function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // ===== КАРУСЕЛЬ ДОКУМЕНТОВ =====
+        const carousel = document.getElementById('docCarousel');
+        if (carousel) {
+            const prevBtn = document.querySelector('.carousel-btn.prev');
+            const nextBtn = document.querySelector('.carousel-btn.next');
+
+            function getScrollAmount() {
+                const item = carousel.querySelector('.carousel-item');
+                if (!item) return 300;
+                return item.offsetWidth + 20;
+            }
+
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+            });
+
+            function updateButtons() {
+                const scrollLeft = carousel.scrollLeft;
+                const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+                prevBtn.classList.toggle('hidden', scrollLeft <= 0);
+                nextBtn.classList.toggle('hidden', scrollLeft >= maxScroll - 1);
+            }
+
+            carousel.addEventListener('scroll', updateButtons);
+            window.addEventListener('resize', updateButtons);
+            updateButtons();
+        }
     </script>
 
 </body>
