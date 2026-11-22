@@ -1018,7 +1018,7 @@ li strong{color:var(--primary)}
     <div class="doctor-note">
       <div class="ico">🩺</div>
       <div>
-        <p><strong>Записка от врача:</strong> <span class="name-place">здравствуйте</span>, я создал этот материал, потому что в практике часто вижу, как строгие ограничения приводят к срывам. Моя цель — не дать вам новую диету, а помочь восстановить доверие к сигналам собственного тела.</p>
+        <p><strong>Записка от врача:</strong> <span class="name-place">Здравствуйте</span>, я создал этот материал, потому что в практике часто вижу, как строгие ограничения приводят к срывам. Моя цель — не дать вам новую диету, а помочь восстановить доверие к сигналам собственного тела.</p>
       </div>
     </div>
 
@@ -1095,7 +1095,7 @@ li strong{color:var(--primary)}
 
       <div class="rpp-warning" id="rppWarning">
         <h3>⚠️ Важный сигнал</h3>
-        <p><span class="name-place">здравствуйте</span>, ваши ответы указывают на возможные сложности в отношениях с едой или телом. Это <strong>не диагноз</strong>, но серьёзный повод обратиться к специалисту.</p>
+        <p><span class="name-place">Здравствуйте</span>, ваши ответы указывают на возможные сложности в отношениях с едой или телом. Это <strong>не диагноз</strong>, но серьёзный повод обратиться к специалисту.</p>
         <p>В такой ситуации практика осознанного питания без сопровождения может усиливать тревогу, чувство вины или навязчивый контроль.</p>
         <p>Пожалуйста, обсудите это с врачом или психологом, который работает с пищевым поведением.</p>
         <div class="btn-group"><button class="btn btn-ghost" onclick="resetRPP()">Пройти снова</button></div>
@@ -1103,7 +1103,7 @@ li strong{color:var(--primary)}
 
       <div class="rpp-ok" id="rppOk">
         <h3>✓ Можно продолжать</h3>
-        <p><span class="name-place">здравствуйте</span>, ваши ответы не выявили выраженных тревожных сигналов. Можно перейти к основному тесту.</p>
+        <p><span class="name-place">Здравствуйте</span>, ваши ответы не выявили выраженных тревожных сигналов. Можно перейти к основному тесту.</p>
         <div class="btn-group">
           <button class="btn btn-ghost" onclick="resetRPP()">Пройти снова</button>
           <button class="btn" onclick="goToStep(6)">Перейти к тесту →</button>
@@ -1577,7 +1577,7 @@ li strong{color:var(--primary)}
 
     <div class="feedback-block">
       <h2>💬 Поделитесь впечатлениями</h2>
-      <p><span class="name-place">здравствуйте</span>, ваше мнение очень важно. Расскажите, что было полезным, а что хотелось бы улучшить.</p>
+      <p><span class="name-place">Здравствуйте</span>, ваше мнение очень важно. Расскажите, что было полезным, а что хотелось бы улучшить.</p>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLScMNhOBWKb8whOd4asF2tPWgT2FnzFlbHAz1eriLanIyVP-fw/viewform?usp=publish-editor" target="_blank" class="btn-feedback">✍️ Оставить отзыв</a>
       <p style="margin-top:15px;font-size:13px;color:var(--text-light)">Это займёт 2–3 минуты.</p>
     </div>
@@ -1763,7 +1763,7 @@ function saveName(){
 
 function updateName(){
   document.querySelectorAll('.name-place').forEach(el=>{
-    el.textContent = firstName ? firstName : 'здравствуйте';
+    el.textContent = firstName ? firstName : 'Здравствуйте';
   });
   document.getElementById('passportTitle').textContent = firstName ? `Ваш персональный паспорт, ${firstName}` : 'Ваш персональный паспорт';
   document.getElementById('celebrationTitle').textContent = firstName ? `Поздравляем, ${firstName}!` : 'Поздравляем!';
