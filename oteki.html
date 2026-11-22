@@ -1,1 +1,911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Маршрут пациента: почему возникают отеки</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f5f7fa;
+    color: #1f2937;
+    line-height: 1.7;
+    padding: 20px;
+  }
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 36px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  h1 { font-size: 28px; color: #1e3a5f; margin-bottom: 8px; }
+  h3 { color: #1e3a5f; margin: 18px 0 8px; }
+  .subtitle { color: #6b7280; font-size: 15px; margin-bottom: 24px; }
+  .progress-bar { width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4); transition: width 0.4s ease; }
+  .steps-nav { display: flex; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 6px; }
+  .step-dot {
+    width: 32px; height: 32px; border-radius: 50%; background: #e5e7eb; color: #6b7280;
+    display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .step-dot.active { background: #3b82f6; color: #fff; }
+  .step-dot.done { background: #10b981; color: #fff; }
+  .step { display: none; }
+  .step.active { display: block; animation: fadeIn 0.4s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .step-title { font-size: 22px; color: #1e3a5f; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+  .step-number { color: #3b82f6; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  p { margin-bottom: 14px; }
+  ul, ol { margin: 12px 0 16px 24px; }
+  li { margin-bottom: 8px; }
+  .highlight-box { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px 20px; border-radius: 8px; margin: 20px 0; }
+  .warning-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 20px; border-radius: 8px; margin: 20px 0; }
+  .success-box { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 20px 0; }
+  .mechanism { background: #f9fafb; border-radius: 10px; padding: 16px 20px; margin-bottom: 14px; border: 1px solid #e5e7eb; }
+  .mechanism-title { font-weight: 700; color: #1e3a5f; margin-bottom: 6px; font-size: 16px; }
+  .mechanism-num { display: inline-block; background: #3b82f6; color: #fff; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 14px; margin-right: 8px; }
+  .med-note { font-size: 12px; color: #6b7280; font-style: italic; margin-top: 6px; padding-left: 12px; border-left: 2px solid #f59e0b; line-height: 1.4; }
+  .myth { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .myth-header { padding: 14px 18px; cursor: pointer; font-weight: 600; color: #1e3a5f; display: flex; justify-content: space-between; align-items: center; background: #f9fafb; }
+  .myth-header:hover { background: #f3f4f6; }
+  .myth-header .arrow { transition: transform 0.2s; color: #3b82f6; }
+  .myth-header.open .arrow { transform: rotate(180deg); }
+  .myth-body { padding: 16px 18px; display: none; border-top: 1px solid #e5e7eb; }
+  .myth-body.open { display: block; }
+  .verdict { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-top: 8px; }
+  .verdict-ok { background: #d1fae5; color: #065f46; }
+  .verdict-warn { background: #fef3c7; color: #92400e; }
+  .verdict-bad { background: #fee2e2; color: #991b1b; }
+  .nav-buttons { display: flex; justify-content: space-between; margin-top: 32px; gap: 12px; }
+  .btn { padding: 12px 24px; border-radius: 8px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-back { background: #f3f4f6; color: #4b5563; }
+  .btn-back:hover { background: #e5e7eb; }
+  .btn-next { background: #3b82f6; color: #fff; }
+  .btn-next:hover { background: #2563eb; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { padding: 10px 12px; border: 1px solid #e5e7eb; text-align: left; vertical-align: top; }
+  th { background: #f3f4f6; font-weight: 600; color: #1e3a5f; }
+  .emoji-big { font-size: 32px; margin-bottom: 12px; display: block; }
+  .sources { background: #f9fafb; padding: 14px 18px; border-radius: 10px; margin-top: 22px; font-size: 13px; color: #6b7280; }
+  .sources h4 { color: #1e3a5f; margin-bottom: 8px; font-size: 14px; }
+  .sources ul { margin: 6px 0 0 20px; }
+  .sources li { margin-bottom: 4px; }
+  .disclaimer { background: #fffbeb; border: 1px solid #fde68a; padding: 14px 18px; border-radius: 8px; font-size: 13px; color: #92400e; margin-top: 24px; }
+  .check-list li { list-style: none; position: relative; padding-left: 28px; }
+  .check-list li::before { content: "✓"; position: absolute; left: 0; color: #10b981; font-weight: 700; font-size: 18px; }
+  .red-flag-list li { list-style: none; position: relative; padding-left: 28px; }
+  .red-flag-list li::before { content: "🚨"; position: absolute; left: 0; }
+  
+  .quiz-container { background: #f0f9ff; border: 2px solid #3b82f6; border-radius: 12px; padding: 24px; margin: 20px 0; }
+  .quiz-question { font-size: 18px; font-weight: 600; color: #1e3a5f; margin-bottom: 16px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .quiz-option {
+    padding: 12px 16px;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 15px;
+  }
+  .quiz-option:hover { border-color: #3b82f6; background: #eff6ff; }
+  .quiz-option.selected { border-color: #3b82f6; background: #dbeafe; font-weight: 600; }
+  .quiz-result { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin-top: 20px; display: none; }
+  .quiz-result.show { display: block; animation: fadeIn 0.4s; }
+  .quiz-result h4 { color: #065f46; margin-bottom: 10px; font-size: 18px; }
+  .quiz-result p { margin-bottom: 8px; }
+  .doctor-recommendation { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin-top: 16px; }
+  .doctor-recommendation strong { color: #92400e; }
+  
+  .name-input-container { 
+    background: #f0f9ff; 
+    border: 1px solid #bfdbfe; 
+    border-radius: 10px; 
+    padding: 16px 20px; 
+    margin-bottom: 20px; 
+  }
+  .name-input-label { font-size: 14px; color: #4b5563; margin-bottom: 8px; }
+  .name-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .name-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 14px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.2s;
+  }
+  .name-input:focus { outline: none; border-color: #3b82f6; }
+  .name-submit {
+    padding: 10px 18px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .name-submit:hover { background: #2563eb; }
+  .name-skip {
+    padding: 10px 18px;
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .name-skip:hover { background: #f3f4f6; color: #374151; }
+  .greeting { font-size: 18px; color: #1e3a5f; font-weight: 600; margin-bottom: 16px; }
+  .name-saved { font-size: 13px; color: #10b981; margin-top: 8px; display: none; }
+  .name-saved.show { display: block; }
+  
+  @media (max-width: 600px) {
+    .container { padding: 20px; }
+    h1 { font-size: 22px; }
+    .step-title { font-size: 18px; }
+    table { font-size: 12px; }
+    .name-input-row { flex-direction: column; align-items: stretch; }
+    .name-input, .name-submit, .name-skip { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
 
+  <h1>Маршрут пациента: почему возникают отеки</h1>
+  <p class="subtitle">Разбираемся с причинами, механизмами и тем, когда стоит беспокоиться</p>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+  <div class="steps-nav" id="stepsNav"></div>
+
+  <!-- 0 START -->
+  <div class="step active" data-step="0">
+    <div class="step-number">Старт</div>
+    <span class="emoji-big">💧</span>
+    <h2 class="step-title">У вас бывают отеки. Что это вообще такое?</h2>
+    
+    <div class="name-input-container" id="nameInputContainer">
+      <div class="name-input-label">👋 Хотите, чтобы материал обращался к вам по имени? Введите его ниже (необязательно):</div>
+      <div class="name-input-row">
+        <input type="text" class="name-input" id="patientName" placeholder="Ваше имя" maxlength="30">
+        <button class="name-submit" id="nameSubmit">Сохранить</button>
+        <button class="name-skip" id="nameSkip">Пропустить</button>
+      </div>
+      <div class="name-saved" id="nameSaved">✓ Имя сохранено</div>
+    </div>
+
+    <p class="greeting" id="greetingText">Дорогой гость!</p>
+    <p>Отек — это скопление лишней жидкости в межклеточном пространстве, то есть там, где ее в норме почти нет.</p>
+    <p>Кровь течет по сосудам, и между сосудом и клетками постоянно идет обмен: часть жидкости уходит в ткани, часть возвращается обратно. Когда этот баланс нарушается, жидкость задерживается — появляется отек.</p>
+    <div class="highlight-box">
+      <strong>Важно понимать:</strong> отек — это не диагноз, а симптом. Он может быть как безобидным (после соленого ужина или долгого перелета), так и сигналом о серьезном заболевании. Задача этого маршрута — помочь вам разобраться, где какая ситуация, и снять лишнюю тревогу.
+    </div>
+    <p>Понятно, что дальше? →</p>
+  </div>
+
+  <!-- 1 MECHANISMS -->
+  <div class="step" data-step="1">
+    <div class="step-number">Шаг 1</div>
+    <span class="emoji-big">⚙️</span>
+    <h2 class="step-title">Как образуется отек: 5 основных механизмов</h2>
+    <p>Чтобы понять причины, важно знать, как жидкость вообще «убегает» из сосудов. Врачи выделяют пять базовых механизмов. В реальной жизни они часто работают вместе.</p>
+
+    <div class="mechanism">
+      <div class="mechanism-title"><span class="mechanism-num">1</span>Повышение давления внутри сосуда</div>
+      <p>Представьте шланг с водой: если пережать его конец, давление растет и вода начинает просачиваться через стенки. То же происходит при венозной недостаточности, сердечной недостаточности, беременности.</p>
+    </div>
+    <div class="mechanism">
+      <div class="mechanism-title"><span class="mechanism-num">2</span>Снижение «удерживающей силы» крови</div>
+      <p>Главный «удерживатель» жидкости в сосуде — белок альбумин. Когда его мало (при болезнях печени, почек, недоедании), жидкость уходит в ткани.</p>
+    </div>
+    <div class="mechanism">
+      <div class="mechanism-title"><span class="mechanism-num">3</span>Повышенная проницаемость стенки сосуда</div>
+      <p>При воспалении клетки эндотелия «раздвигаются», чтобы пропустить иммунные клетки к очагу. Заодно уходит и жидкость — так возникает отек вокруг воспаленного сустава, при аллергии, инфекциях.</p>
+    </div>
+    <div class="mechanism">
+      <div class="mechanism-title"><span class="mechanism-num">4</span>Нарушение лимфатического оттока (лимфостаз)</div>
+      <p>Лимфатическая система — это не просто «дренаж», а полноценная транспортная и иммунная сеть. Она выполняет несколько важнейших функций: возвращает белки и лишнюю жидкость из тканей обратно в кровоток, участвует в усвоении жиров и защищает организм от инфекций. От её бесперебойной работы напрямую зависит, будет ли жидкость задерживаться в организме или нет. Если лимфатические сосуды повреждены, заблокированы или перегружены (например, после операций на лимфоузлах, из-за воспаления или врождённых особенностей), система не справляется с откачкой. В результате жидкость накапливается в тканях, формируя стойкий отёк (лимфедему).</p>
+    </div>
+    <div class="mechanism">
+      <div class="mechanism-title"><span class="mechanism-num">5</span>Микседема при гипотиреозе</div>
+      <p>Особый вид отека: в тканях накапливаются не просто вода, а специфические вещества (гликозаминогликаны), которые притягивают и удерживают жидкость. Такой отек плотный, при нажатии ямка не остается.</p>
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>Hall J.E., Guyton A.C. Guyton and Hall Textbook of Medical Physiology. — базовые механизмы обмена жидкости (силы Старлинга).</li>
+        <li>Engberink R.H.G.O. et al. Clinical impact of tissue sodium storage. PMC, 2019. — о роли гликозаминогликанов кожи.</li>
+      </ul>
+    </div>
+    <p>Дальше разберем, какие отеки бывают у здоровых людей, а какие — признак болезни.</p>
+  </div>
+
+  <!-- 2 PHYSIOLOGICAL -->
+  <div class="step" data-step="2">
+    <div class="step-number">Шаг 2</div>
+    <span class="emoji-big">🌿</span>
+    <h2 class="step-title">Физиологические отеки — когда не страшно</h2>
+    <p>Это отеки у здоровых людей, которые проходят сами или при небольшом изменении образа жизни. Их причина — не болезнь, а реакция организма на обычные жизненные ситуации.</p>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🌙 Утренние отеки у здоровых девушек</div>
+      <p>С этим сталкивается очень много женщин — особенно в молодом и среднем возрасте. Просыпаетесь, смотрите в зеркало: лицо «помятое», веки припухшие, под глазами мешки. Через час-два — как огурчик.</p>
+      <p><strong>Почему так происходит:</strong></p>
+      <ul>
+        <li><strong>Недосып и переутомление.</strong> При недостатке сна повышается кортизол — гормон стресса. Он задерживает натрий, а натрий тянет за собой воду. Плюс нарушается вегетативная регуляция сосудов — лимфодренаж работает хуже.</li>
+        <li><strong>Положение во сне.</strong> Если вы спите на животе или на низкой подушке, жидкость перераспределяется к лицу. Днем, когда вы находитесь вертикально, она «стекает» вниз под действием гравитации.</li>
+        <li><strong>Ночной застой.</strong> Во сне мы не двигаемся — мышечный насос голени не работает, лимфоток замедлен. За 7–8 часов накапливается небольшой избыток жидкости в тканях.</li>
+        <li><strong>Вечерние «триггеры».</strong> Соленый ужин, бокал вина, сладкое на ночь, большое количество воды перед сном — все это усиливает утреннюю припухлость.</li>
+      </ul>
+      <p><strong>Как отличить от патологического:</strong> симметричный, мягкий, проходит за 1–2 часа после пробуждения, не сопровождается одышкой, болью, изменением цвета кожи.</p>
+      <div class="success-box">
+        <strong>Что помогает:</strong> спать 7–8 часов, приподнимать изголовье кровати на 5–10 см, не пить много жидкости за 2 часа до сна, ограничить соль и алкоголь вечером, утренняя легкая зарядка или контрастное умывание.
+      </div>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🪑 Длительное сидение или стояние</div>
+      <p>За 8 часов сидя в ногах может задержаться до 10% дополнительной жидкости. Мышцы голени работают как насос для вен — если они не двигаются, венозный возврат падает, давление в капиллярах растет.</p>
+      <p><strong>Решение:</strong> двигаться каждые 40–60 минут, подъемы на носки, короткая прогулка.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">📅 Вторая половина менструального цикла</div>
+      <p>В лютеиновую фазу (после овуляции, перед менструацией) под действием прогестерона и эстрогенов организм задерживает до 0,5–1 кг жидкости. Прогестерон конкурирует с альдостероном на уровне почки, запуская компенсаторную активацию РААС; эстроген смещает осморегуляторные установки. При этом у заметной части женщин ежедневное взвешивание вообще не фиксирует разницу.</p>
+      <p>Это норма, проходит с началом менструации.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🍷 Алкоголь</div>
+      <p>Сначала алкоголь подавляет вазопрессин и вызывает диурез — организм теряет воду. Через несколько часов система «перекомпенсирует»: вазопрессин восстанавливается с избытком, начинается задержка натрия и воды. Отсюда отечное лицо утром.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🧂 Соленая еда</div>
+      <p>Острая солевая нагрузка может задержать до 1,5–2 кг жидкости за несколько дней. Часть натрия уходит в «депо» в коже (в гликозаминогликаны), часть воды распределяется в тканях — особенно заметно на лице, где ткани тонкие. Зависит от индивидуальной солечувствительности. Почки обычно компенсируют это за день-два.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">☀️ Жара</div>
+      <p>В тепле сосуды кожи расширяются, чтобы отдать тепло, — гидростатическое давление в капиллярах растет, жидкость уходит в ткани. Особенно заметно к вечеру, в области стоп и голеней.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">✈️ Перелеты и долгая дорога</div>
+      <p>Сочетание гиподинамии, сухого воздуха в салоне, изменения атмосферного давления и часто — соленой еды в аэропорту. Отеки ног после перелета — обычная история.</p>
+    </div>
+
+    <p>Эти отеки симметричные, не сопровождаются болью, одышкой и проходят после отдыха, ограничения соли или смены фазы цикла.</p>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>Wenstedt E.F.E. et al. Distinct osmoregulatory responses to sodium loading. PMC, 2021. — натрий как «депо» в коже.</li>
+        <li>Hanson P. et al. Sodium in the dermis colocates to glycosaminoglycan scaffold. PMC, 2021.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3 DRUGS -->
+  <div class="step" data-step="3">
+    <div class="step-number">Шаг 3</div>
+    <span class="emoji-big">💊</span>
+    <h2 class="step-title">Лекарства, которые дают отеки</h2>
+    <p>Очень частая ситуация, о которой пациенты не догадываются: отек — это не болезнь, а побочный эффект препарата. Если вы недавно начали новую таблетку, а к вечеру «налились» лодыжки — велика вероятность, что причина вот она.</p>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🔴 Дигидропиридиновые блокаторы кальциевых каналов (амлодипин, нифедипин, лерканидипин)</div>
+      <p>Это препараты от давления. Они расширяют мелкие артериолы перед капиллярами, из-за чего давление внутри капилляров растет и жидкость уходит в ткани — тот самый механизм №1. По инструкции периферические отеки лодыжек и стоп возникают «часто» — не более чем у 1 человека из 10, и их частота растет с дозой. В прямых сравнениях амлодипин дает отеки примерно в два раза чаще лерканидипина.</p>
+      <p><strong>Важно:</strong> это не признак больных почек или сердца. Обычные мочегонные тут почти не помогают — проблему решает врач, изменив схему (например, добавив иАПФ/БРА или заменив препарат).</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🔴 НПВС (ибупрофен, диклофенак, нимесулид и др.)</div>
+      <p>Обезболивающие из группы НПВС снижают почечный кровоток, задерживают натрий и воду, повышают давление и ослабляют действие мочегонных и гипотензивных. Риск растет при частом приеме — например, когда ибупрофен пьют больше 8–10 дней в месяц.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🔴 Гормоны и другие</div>
+      <ul>
+        <li><strong>Глюкокортикоиды</strong> (преднизолон и др.) — задержка натрия и воды.</li>
+        <li><strong>Габапентин / прегабалин</strong> — периферические отеки довольно частый эффект.</li>
+        <li><strong>Некоторые сахароснижающие</strong> (тиазолидиндионы) и <strong>эстрогены / КОК</strong> у части женщин.</li>
+        <li><strong>Инсулин</strong> — редко, обычно транзиторно в начале лечения.</li>
+      </ul>
+    </div>
+
+    <div class="warning-box">
+      <strong>Главное правило:</strong> не отменяйте и не меняйте препарат сами. Запишите, что и когда начали принимать, и обсудите с врачом — чаще всего достаточно скорректировать схему.
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>Листок-вкладыш «Амлодипин» — периферические отеки, дозозависимость.</li>
+        <li>Сравнительные данные по дигидропиридинам (амлодипин vs лерканидипин), 2026.</li>
+        <li>Листок-вкладыш «Ибупрофен» — задержка жидкости, повышение АД, отеки.</li>
+        <li>Консенсус экспертов по рациональному использованию НПВС, 2024.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4 PATHOLOGICAL -->
+  <div class="step" data-step="4">
+    <div class="step-number">Шаг 4</div>
+    <span class="emoji-big">🏥</span>
+    <h2 class="step-title">Патологические отеки — при каких заболеваниях бывают</h2>
+    <p>В отличие от физиологических, эти отеки не проходят сами, нарастают и сопровождаются другими симптомами. Локализация и время появления часто подсказывают причину.</p>
+
+    <h3>Отеки ног (чаще симметричные, к вечеру)</h3>
+    <ul>
+      <li>Хроническая венозная недостаточность, варикоз</li>
+      <li>Хроническая сердечная недостаточность</li>
+      <li>Заболевания почек с потерей белка (нефротический синдром)</li>
+      <li>Цирроз печени</li>
+    </ul>
+
+    <h3>Отеки лица, особенно по утрам</h3>
+    <ul>
+      <li>Заболевания почек</li>
+      <li>Гипотиреоз (микседематозный отек — плотный, без ямки при нажатии)</li>
+      <li>Аллергические реакции</li>
+    </ul>
+
+    <h3>Односторонний отек ноги или руки</h3>
+    <ul>
+      <li>Тромбоз глубоких вен</li>
+      <li>Лимфедема (первичная — врожденный дефект лимфатических сосудов/узлов; вторичная — после операций, лучевой терапии, инфекций, травмы)</li>
+      <li>Целлюлит (инфекция мягких тканей)
+        <div class="med-note">⚠️ Важное уточнение: в медицине термин «целлюлит» означает острое гнойное воспаление подкожной жировой клетчатки (инфекцию мягких тканей), а не косметическую «апельсиновую корку» на бёдрах, которую в быту называют целлюлитом (по-научному — гиноидная липодистрофия).</div>
+      </li>
+    </ul>
+
+    <h3>Генерализованные отеки (анасарка)</h3>
+    <ul>
+      <li>Тяжелая сердечная, почечная или печеночная недостаточность</li>
+      <li>Выраженная гипоальбуминемия</li>
+    </ul>
+
+    <h3>Системные воспалительные заболевания</h3>
+    <p>Иногда отёк (например, плотный отёк кистей рук по утрам, периорбитальный отёк или симметричные отёки ног) становится самым первым, а иногда и единственным начальным проявлением системных аутоиммунных и воспалительных заболеваний (системная красная волчанка, ревматоидный артрит, системная склеродермия, дерматомиозит). Механизм тот же: системное воспаление повышает проницаемость сосудистой стенки, и жидкость выходит в ткани.</p>
+    <div class="highlight-box">
+      <strong>На что обратить внимание:</strong> если отёки сопровождаются утренней скованностью в суставах, необъяснимой лихорадкой, сыпью, выпадением волос или выраженной слабостью — это повод для углублённого обследования у ревматолога.
+    </div>
+
+    <h3>Короткая шпаргалка: где и когда</h3>
+    <table>
+      <tr><th>Как выглядит</th><th>Чаще похоже на</th><th>Что проверить</th></tr>
+      <tr><td>Лицо и веки утром, бледность, пенистая моча</td><td>Почки</td><td>ОАМ (белок), альбумин, креатинин</td></tr>
+      <tr><td>Стопы и голени к вечеру, симметрично, одышка, тяжесть лежа</td><td>Сердце</td><td>NT-proBNP, ЭхоКГ, ЭКГ</td></tr>
+      <tr><td>Стопы и голени к вечеру, тяжесть, «звездочки», варикоз</td><td>Вены</td><td>УЗИ вен ног</td></tr>
+      <tr><td>Плотный, без ямки, тыл стопы/пальцы, после операций или лучевой</td><td>Лимфедема</td><td>Осмотр + УЗИ/лимфосцинтиграфия</td></tr>
+      <tr><td>Плотный, без ямки, сухая кожа, зябкость, набор веса</td><td>Гипотиреоз</td><td>ТТГ</td></tr>
+      <tr><td>Отёк кистей/лица + скованность суставов, сыпь, лихорадка</td><td>Системное воспаление</td><td>Ревмопробы (АНФ, РФ, С-реактивный белок)</td></tr>
+    </table>
+
+    <div class="warning-box">
+      <strong>Важно:</strong> если отек появился внезапно, нарастает, асимметричен (только на одной стороне), сопровождается болью, покраснением или одышкой — это повод не ждать, а обратиться к врачу.
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>Клинические рекомендации «Лимфедема конечностей», 2025.</li>
+        <li>Обзоры дифференциальной диагностики отечного синдрома (почечные vs сердечные vs венозные отеки).</li>
+        <li>ACR/EULAR критерии классификации системных воспалительных заболеваний.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5 SELF-CHECK -->
+  <div class="step" data-step="5">
+    <div class="step-number">Шаг 5</div>
+    <span class="emoji-big">🔎</span>
+    <h2 class="step-title">Что можно проверить дома</h2>
+    <p>Несколько простых приемов, которые помогают понять, в какую сторону копать, — и не перепутать отек с чем-то другим.</p>
+
+    <div class="mechanism">
+      <div class="mechanism-title">👆 Тест с ямкой</div>
+      <p>Надавите большим пальцем на переднюю поверхность голени (над косткой) примерно на 5 секунд и отпустите.</p>
+      <ul>
+        <li><strong>Осталась ямка</strong> (восстанавливается медленно) — «питтинговый» отек. Характерен для венозных, сердечных, почечных отеков, а также лимфедемы на ранних стадиях.</li>
+        <li><strong>Ямки нет, кожа плотная</strong> — «непиттинговый» отек. Это может быть лимфедема на поздних стадиях или микседема при гипотиреозе. Это <strong>не «безопасно»</strong>, а как раз повод показаться врачу.</li>
+      </ul>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">🦶 Симптом Стеммера</div>
+      <p>Попробуйте собрать кожу у основания второго пальца стопы в складку. Если кожа не оттягивается и складку собрать не удается — это характерный признак лимфедемы.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">⚖️ Липедема, лимфедема, ожирение — не путайте</div>
+      <p>Очень частая история у женщин: «у меня отекают ноги» на самом деле оказывается не отеком.</p>
+      <ul>
+        <li><strong>Липедема</strong> — болезненное симметричное утолщение ног из-за жировой ткани; стопы обычно <strong>не</strong> вовлечены, ямки при надавливании нет, не уходит при похудении.</li>
+        <li><strong>Лимфедема</strong> — именно отек из-за плохого лимфооттока; часто вовлекает пальцы и тыл стопы, симптом Стеммера положителен.</li>
+        <li><strong>Ожирение</strong> — жир распределяется равномерно по всему телу, включая стопы.</li>
+      </ul>
+      <p>Разобраться между ними должен врач — от этого зависит тактика.</p>
+    </div>
+
+    <div class="mechanism">
+      <div class="mechanism-title">↔️ Симметричность</div>
+      <p>Обе ноги к вечеру → чаще вены, сердце, лекарства, гиподинамия. Только одна нога или рука → тромбоз, воспаление, лимфа — это нужно проверить быстрее.</p>
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>Goss J.A. et al. Sensitivity and Specificity of the Stemmer Sign for Lymphedema. PMC, 2019.</li>
+        <li>Physio-pedia. Stemmer's Sign.</li>
+        <li>Клинические рекомендации «Лимфедема конечностей», 2025 (стадии и ямка).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6 RED FLAGS -->
+  <div class="step" data-step="6">
+    <div class="step-number">Шаг 6</div>
+    <span class="emoji-big">🚨</span>
+    <h2 class="step-title">Красные флаги — когда нужно срочно к врачу</h2>
+    <p>Немедленно обратитесь за медицинской помощью, если отек сопровождается хотя бы одним из признаков:</p>
+
+    <ul class="red-flag-list">
+      <li><strong>Односторонний отек ноги</strong> с болью, покраснением, чувством распирания — подозрение на тромбоз глубоких вен</li>
+      <li><strong>Отек + покраснение + боль + повышение температуры</strong> кожи — возможна инфекция (целлюлит, рожистое воспаление)
+        <div class="med-note">⚠️ Напоминание: медицинский «целлюлит» — это опасная инфекция мягких тканей, требующая срочного лечения антибиотиками, а не косметический дефект.</div>
+      </li>
+      <li><strong>Внезапный отек лица, губ, языка, затруднение дыхания</strong> — аллергическая реакция, возможен отек Квинке</li>
+      <li><strong>Отек ног + одышка, особенно в положении лежа, слабость</strong> — может указывать на декомпенсацию сердечной недостаточности</li>
+      <li><strong>Быстро нарастающий отек</strong> без очевидной причины</li>
+      <li><strong>Отек после недавней операции, травмы, длительной иммобилизации или перелета</strong></li>
+      <li><strong>Беременность:</strong> внезапные сильные отеки лица и рук + повышенное давление + белок в моче — это <strong>преэклампсия</strong>, нужна срочная помощь. Односторонний отек ноги у беременной — исключить тромбоз (риск при беременности повышен).</li>
+    </ul>
+
+    <div class="warning-box">
+      При любом из этих признаков не ждите «само пройдет» и не принимайте мочегонные самостоятельно — это может смазать картину и затруднить диагностику.
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>ВОЗ. Информационный бюллетень «Преэклампсия», 2026.</li>
+        <li>MSD Manual. Отеки нижних конечностей на поздних сроках беременности.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7 QUIZ -->
+  <div class="step" data-step="7">
+    <div class="step-number">Шаг 7 · Интерактивный тест</div>
+    <span class="emoji-big">🎯</span>
+    <h2 class="step-title">Мой случай? Разберёмся вместе</h2>
+    <p id="quizIntro">Дорогой гость, ответьте на несколько вопросов — и мы подскажем, к какому врачу стоит обратиться.</p>
+
+    <div class="quiz-container">
+      <div id="quizContent">
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <button class="btn btn-next" id="quizNextBtn" disabled>Следующий вопрос</button>
+      </div>
+      
+      <div class="quiz-result" id="quizResult">
+        <h4 id="resultTitle"></h4>
+        <p id="resultText"></p>
+        <div class="doctor-recommendation" id="doctorRecommendation"></div>
+        <button class="btn btn-back" id="quizRestartBtn" style="margin-top: 16px;">🔄 Пройти тест заново</button>
+      </div>
+    </div>
+
+    <div class="sources">
+      <h4>Важно</h4>
+      <p style="font-size: 13px; color: #6b7280;">Этот тест носит информационный характер и не заменяет консультацию врача. Окончательный диагноз может поставить только специалист после осмотра и обследования.</p>
+    </div>
+  </div>
+
+  <!-- 8 MYTHS -->
+  <div class="step" data-step="8">
+    <div class="step-number">Шаг 8 · Разбор мифов</div>
+    <span class="emoji-big">🧠</span>
+    <h2 class="step-title">Что говорят про отеки в интернете — и что говорит наука</h2>
+    <p>Нажмите на карточку, чтобы раскрыть разбор.</p>
+
+    <div class="myth">
+      <div class="myth-header">Миф 1: «Отеки — это всегда больные почки» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> почечные отеки существуют, но у них свой почерк: они начинаются с лица и век, заметны утром, часто сочетаются с бледностью и изменениями в моче (белок). Большинство же легких бытовых отеков — это вены, гиподинамия, лекарства, цикл, соль. Списать любой отек на почки нельзя: это и лишняя тревога, и риск пропустить настоящую причину.</p>
+        <span class="verdict verdict-bad">❌ Миф (частично верен, но обобщение неверно)</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 2: «Чтобы не отекать, пейте меньше воды» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> при функциональных отеках объем выпитой воды почти не при чем — важна задержка натрия и состояние сосудов/лимфы. Ограничение воды не убирает отек, а у части людей только ухудшает самочувствие и концентрирует кровь. Разумно не пить много прямо перед сном (из-за положения во сне — утром лицо), но урезать воду в течение дня незачем.</p>
+        <span class="verdict verdict-bad">❌ Миф</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 3: «Травяные мочегонные и «таблетки для вывода воды» безопасны» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> бесконтрольные мочегонные выводят не только воду, но и калий, натрий, магний, что грозит нарушением ритма сердца, судорогами, обезвоживанием и падением давления. Они маскируют настоящую причину отека и формируют «зависимость»: отменили — отек вернулся сильнее. Мочегонные — это лекарство с показаниями и контролем анализов, а не «безопасный чай для похудения».</p>
+        <span class="verdict verdict-bad">❌ Миф, противоречащий данным</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 4: «Соль нужно убрать полностью» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> чувствительность к соли индивидуальна, а часть натрия при избытке уходит в «депо» в коже (связывается с гликозаминогликанами) и выводится почками за день-два. Полное обезсоливание вредно и почти непереносимо на практике. Разумный ориентир — не больше ~5 г соли в сутки и не пересаливать на ночь, а не «соль = зло».</p>
+        <span class="verdict verdict-warn">⚠️ Частично верно, но вывод неверен</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 5: «Лимфодренажный массаж выводит лишнюю воду всем» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> с точки зрения доказательной медицины эффективность лимфодренажного массажа у здоровых людей не подтверждена. Он может временно уменьшить припухлость, но не лечит причину. При диагностированной лимфедеме ручной лимфодренаж — часть терапии, но его назначает и проводит специалист, а не «для красоты всем подряд».</p>
+        <span class="verdict verdict-bad">❌ Миф (эффект переоценен)</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 6: «Если при нажатии не остается ямка — значит, отек безопасный» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> как раз наоборот. Отсутствие ямки (непиттинговый отек) характерно для лимфедемы на поздних стадиях и для микседемы при гипотиреозе. Это плотный, «тестоватый» отек, и он требует внимания врача, а не успокоения «раз ямки нет — всё нормально».</p>
+        <span class="verdict verdict-bad">❌ Миф, опасное заблуждение</span>
+      </div>
+    </div>
+
+    <div class="myth">
+      <div class="myth-header">Миф 7: «Отёкшие/полные ноги у женщины — это просто лишний вес или «апельсиновая корка»» <span class="arrow">▼</span></div>
+      <div class="myth-body">
+        <p><strong>Что говорит наука:</strong> под этим могут скрываться разные состояния: истинный отек, липедема (отдельное заболевание жировой ткани, устойчивое к похудению, часто болезненное) и лимфедема. Их путают и годами «лечат диетой», хотя тактика разная. Если ноги плотные, симметричные, болят и не уходят при снижении веса — стоит показаться специалисту.</p>
+        <span class="verdict verdict-warn">⚠️ Частично верно, но вывод неверен</span>
+      </div>
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу мифов</h4>
+      <ul>
+        <li>Wenstedt E.F.E. et al. Distinct osmoregulatory responses to sodium loading. PMC, 2021.</li>
+        <li>Engberink R.H.G.O. et al. Clinical impact of tissue sodium storage. PMC, 2019.</li>
+        <li>Википедия (ру). Лимфодренаж — об отсутствии доказательств эффективности у здоровых.</li>
+        <li>Клинические рекомендации «Лимфедема конечностей», 2025.</li>
+        <li>Goss J.A. et al. Sensitivity and Specificity of the Stemmer Sign for Lymphedema. PMC, 2019.</li>
+        <li>Обзоры по липедеме и лимфедеме (Medanta, Actual Phlebology, Royal Medical).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 9 EXAM -->
+  <div class="step" data-step="9">
+    <div class="step-number">Шаг 9</div>
+    <span class="emoji-big">🔬</span>
+    <h2 class="step-title">Минимальное обследование для исключения патологических причин</h2>
+    <p>Если отеки повторяются, сохраняются больше 1–2 недель или вызывают беспокойство, имеет смысл пройти базовый набор исследований. Он помогает врачу быстро отсечь серьезные причины.</p>
+
+    <ol>
+      <li><strong>Общий анализ крови</strong> — признаки воспаления, анемии</li>
+      <li><strong>Общий анализ мочи</strong> — потеря белка (ключевой маркер почечной патологии)</li>
+      <li><strong>Биохимия крови:</strong>
+        <ul>
+          <li>альбумин и общий белок</li>
+          <li>креатинин, мочевина (функция почек)</li>
+          <li>АЛТ, АСТ, билирубин (функция печени)</li>
+          <li>глюкоза</li>
+        </ul>
+      </li>
+      <li><strong>ТТГ</strong> — скрининг гипотиреоза</li>
+      <li><strong>ЭКГ</strong> — базовая оценка работы сердца</li>
+      <li><strong>УЗИ вен нижних конечностей</strong> — при одностороннем отеке или подозрении на венозную недостаточность/тромбоз</li>
+      <li><strong>ЭхоКГ и NT-proBNP</strong> — по показаниям, при подозрении на сердечную недостаточность (одышка, отеки к вечеру, нарастающие)</li>
+      <li><strong>Ревмопробы (С-реактивный белок, АНФ, РФ)</strong> — при подозрении на системное воспалительное заболевание (отёки + скованность суставов, сыпь, лихорадка)</li>
+    </ol>
+
+    <div class="highlight-box">
+      Дальнейший объем обследования определяет врач по результатам первого этапа и клинической картине. Не нужно сдавать «все сразу» — это создает лишнюю нагрузку и путаницу.
+    </div>
+
+    <div class="sources">
+      <h4>Источники к разделу</h4>
+      <ul>
+        <li>ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure, 2021 (NT-proBNP, ЭхоКГ).</li>
+        <li>Клинические рекомендации по хронической венозной недостаточности (дуплекс вен).</li>
+        <li>EULAR рекомендации по диагностике системных аутоиммунных заболеваний.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 10 LIFESTYLE -->
+  <div class="step" data-step="10">
+    <div class="step-number">Шаг 10</div>
+    <span class="emoji-big">🧘</span>
+    <h2 class="step-title">Что делать, если отеки есть, но «красных флагов» нет</h2>
+    <p>Простые шаги, которые помогают в большинстве случаев с функциональными отеками:</p>
+
+    <ul class="check-list">
+      <li>Ограничить соль (не более 5 г в сутки), особенно во второй половине дня</li>
+      <li>Двигаться: ходьба, подъем на носки, приседания — все, что включает мышечный насос голени</li>
+      <li>При сидячей работе — вставать и разминаться каждый час</li>
+      <li>Во время сна или отдыха — приподнимать ноги выше уровня сердца на 15–20 минут</li>
+      <li>Носить компрессионный трикотаж при венозной недостаточности (подбирается по размеру и классу компрессии)</li>
+      <li>Спать 7–8 часов, приподнять изголовье кровати на 5–10 см</li>
+      <li>Не пить много жидкости за 2 часа до сна</li>
+      <li>Проверить, нет ли среди ваших лекарств «подозреваемых» (амлодипин, НПВС и др.) — и обсудить это с врачом</li>
+      <li>Вести дневник отеков: когда появляются, с чем связаны, как проходят, симметричные или нет — это очень помогает врачу на приеме</li>
+    </ul>
+
+    <div class="success-box">
+      <strong>Главное:</strong> отеки — это симптом, а не диагноз. В большинстве случаев при грамотном подходе причину удается найти и скорректировать. Не занимайтесь самолечением мочегонными без назначения врача: они могут маскировать проблему и создавать новые.
+    </div>
+  </div>
+
+  <!-- 11 FINAL -->
+  <div class="step" data-step="11">
+    <div class="step-number">Финал · Памятка</div>
+    <span class="emoji-big">📋</span>
+    <h2 class="step-title">Маршрут коротко</h2>
+
+    <div class="highlight-box">
+      <strong>Отек — это скопление жидкости в межклеточном пространстве.</strong> За ним стоят 5 механизмов: повышение давления в сосудах, снижение альбумина, проницаемость стенки, лимфостаз и микседема.
+    </div>
+
+    <ul class="check-list">
+      <li><strong>Физиологические отеки</strong> бывают у здоровых: после соленого, алкоголя, долгого сидения, во второй половине цикла, утром после недосыпа. Они симметричные, мягкие, проходят сами.</li>
+      <li><strong>Утренние отеки лица у девушек</strong> — чаще всего недосып, положение во сне и вечерние «триггеры». Проходят за 1–2 часа.</li>
+      <li><strong>Лекарства</strong> (амлодипин, НПВС, гормоны и др.) — частая и недооцененная причина. Не отменяйте сами, обсудите со специалистом.</li>
+      <li><strong>Проверка дома:</strong> ямка при надавливании, симптом Стеммера, симметричность. Отсутствие ямки ≠ безопасность.</li>
+      <li><strong>Патологические отеки</strong> нарастают, не проходят, часто сопровождаются другими симптомами.</li>
+      <li><strong>Системные воспаления:</strong> отёки + скованность суставов, сыпь или лихорадка могут быть первым признаком аутоиммунного заболевания.</li>
+      <li><strong>Красные флаги:</strong> односторонний отек, боль, покраснение, температура, одышка, отек языка/губ, при беременности — АД + белок в моче + внезапные отеки. Срочно к врачу.</li>
+      <li><strong>Минимальное обследование:</strong> ОАК, ОАМ, биохимия (альбумин, креатинин, АЛТ/АСТ), ТТГ, ЭКГ. По показаниям — УЗИ вен, ЭхоКГ, ревмопробы.</li>
+      <li><strong>Не пейте мочегонные без назначения врача</strong> и не верьте, что «травяные безопасны».</li>
+    </ul>
+
+    <p style="margin-top:20px;" id="finalMessage">Вы прошли маршрут. Если что-то осталось непонятным — вернитесь к нужному шагу через точки вверху или обсудите с врачом.</p>
+
+    <div class="disclaimer">
+      <strong>Дисклеймер.</strong> Материал носит информационный характер и не заменяет консультацию врача. Не занимайтесь самолечением. Обсудите ваши симптомы с врачом. При ухудшении самочувствия — обратитесь за медицинской помощью.
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-back" id="btnBack" disabled>← Назад</button>
+    <button class="btn btn-next" id="btnNext">Дальше →</button>
+  </div>
+
+</div>
+
+<script>
+  const steps = document.querySelectorAll('.step');
+  const totalSteps = steps.length;
+  let currentStep = 0;
+  let patientName = 'Дорогой гость';
+
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+  const progressFill = document.getElementById('progressFill');
+  const stepsNav = document.getElementById('stepsNav');
+
+  for (let i = 0; i < totalSteps; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot';
+    dot.textContent = i === 0 ? '🏁' : i;
+    dot.addEventListener('click', () => goToStep(i));
+    stepsNav.appendChild(dot);
+  }
+
+  const nameSubmit = document.getElementById('nameSubmit');
+  const nameSkip = document.getElementById('nameSkip');
+  const patientNameInput = document.getElementById('patientName');
+  const nameSaved = document.getElementById('nameSaved');
+  const greetingText = document.getElementById('greetingText');
+
+  function applyName(name) {
+    patientName = name || 'Дорогой гость';
+    greetingText.textContent = patientName + '!';
+    updatePersonalizedTexts();
+    nameSaved.classList.add('show');
+    setTimeout(() => { nameSaved.classList.remove('show'); }, 2000);
+  }
+
+  nameSubmit.addEventListener('click', () => {
+    const name = patientNameInput.value.trim();
+    if (name) {
+      applyName(name);
+    } else {
+      applyName('Дорогой гость');
+    }
+  });
+
+  nameSkip.addEventListener('click', () => {
+    applyName('Дорогой гость');
+    patientNameInput.value = '';
+  });
+
+  patientNameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') nameSubmit.click();
+  });
+
+  document.querySelectorAll('.myth-header').forEach(h => {
+    h.addEventListener('click', () => {
+      h.classList.toggle('open');
+      const body = h.nextElementSibling;
+      if (body && body.classList.contains('myth-body')) body.classList.toggle('open');
+    });
+  });
+
+  const quizQuestions = [
+    {
+      question: "Где у вас появляются отеки?",
+      options: [
+        { text: "На обеих ногах (стопы, голени)", value: "legs" },
+        { text: "На лице (особенно утром)", value: "face" },
+        { text: "Только на одной ноге или руке", value: "one_side" },
+        { text: "По всему телу", value: "general" }
+      ]
+    },
+    {
+      question: "Когда отеки сильнее всего?",
+      options: [
+        { text: "Утром после пробуждения", value: "morning" },
+        { text: "К вечеру", value: "evening" },
+        { text: "В течение дня не меняются", value: "constant" }
+      ]
+    },
+    {
+      question: "Есть ли другие симптомы?",
+      options: [
+        { text: "Одышка, особенно лежа", value: "breath" },
+        { text: "Боль, покраснение, температура кожи", value: "pain" },
+        { text: "Изменения в моче (пена, цвет)", value: "urine" },
+        { text: "Ничего особенного", value: "none" }
+      ]
+    },
+    {
+      question: "Как долго длятся отеки?",
+      options: [
+        { text: "Проходят за 1-2 часа", value: "short" },
+        { text: "Несколько дней", value: "days" },
+        { text: "Постоянно, не проходят", value: "permanent" }
+      ]
+    }
+  ];
+
+  let currentQuestion = 0;
+  let quizAnswers = {};
+
+  function renderQuestion() {
+    const q = quizQuestions[currentQuestion];
+    document.getElementById('quizQuestion').textContent = q.question;
+    const optionsDiv = document.getElementById('quizOptions');
+    optionsDiv.innerHTML = '';
+    q.options.forEach(opt => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-option';
+      btn.textContent = opt.text;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+        btn.classList.add('selected');
+        quizAnswers[currentQuestion] = opt.value;
+        document.getElementById('quizNextBtn').disabled = false;
+      });
+      optionsDiv.appendChild(btn);
+    });
+    document.getElementById('quizNextBtn').disabled = true;
+  }
+
+  function showResult() {
+    document.getElementById('quizContent').style.display = 'none';
+    const resultDiv = document.getElementById('quizResult');
+    resultDiv.classList.add('show');
+
+    let resultTitle = '';
+    let resultText = '';
+    let doctor = '';
+
+    const location = quizAnswers[0];
+    const timing = quizAnswers[1];
+    const symptoms = quizAnswers[2];
+    const duration = quizAnswers[3];
+
+    if (location === 'one_side' || symptoms === 'pain') {
+      resultTitle = '⚠️ Требуется срочная консультация';
+      resultText = 'Односторонний отек или отек с болью/покраснением может указывать на тромбоз или инфекцию. Это требует быстрого обследования.';
+      doctor = '<strong>К какому врачу:</strong> Срочно обратитесь к хирургу или в приемный покой. При нарастающих симптомах — вызовите скорую помощь.';
+    } else if (location === 'legs' && timing === 'evening' && symptoms === 'breath') {
+      resultTitle = '🫀 Возможна сердечная недостаточность';
+      resultText = 'Отеки ног к вечеру в сочетании с одышкой — классическая картина, требующая проверки сердца.';
+      doctor = '<strong>К какому врачу:</strong> Кардиолог. Нужно сделать ЭКГ, ЭхоКГ, сдать NT-proBNP.';
+    } else if (location === 'face' && timing === 'morning' && symptoms === 'urine') {
+      resultTitle = '🫘 Возможна почечная патология';
+      resultText = 'Утренние отеки лица с изменениями в моче — повод проверить почки.';
+      doctor = '<strong>К какому врачу:</strong> Терапевт или нефролог. Нужно сдать ОАМ, биохимию (креатинин, альбумин).';
+    } else if (location === 'legs' && timing === 'evening' && duration === 'permanent') {
+      resultTitle = '🩸 Возможна венозная недостаточность';
+      resultText = 'Стойкие вечерние отеки ног часто связаны с венами или лимфатической системой.';
+      doctor = '<strong>К какому врачу:</strong> Флеболог или сосудистый хирург. Нужно УЗИ вен нижних конечностей.';
+    } else if (duration === 'short' && symptoms === 'none') {
+      resultTitle = '✅ Скорее всего, физиологические отеки';
+      resultText = 'Кратковременные отеки без других симптомов чаще всего связаны с образом жизни: соль, алкоголь, гиподинамия, недосып.';
+      doctor = '<strong>Что делать:</strong> Попробуйте скорректировать образ жизни (см. шаг 10). Если не поможет — обратитесь к терапевту для базового обследования.';
+    } else {
+      resultTitle = '👨‍⚕️ Нужна консультация терапевта';
+      resultText = 'Ваша ситуация требует очного осмотра и базового обследования для уточнения причины.';
+      doctor = '<strong>К какому врачу:</strong> Терапевт. Он проведет осмотр, назначит базовые анализы и при необходимости направит к узкому специалисту.';
+    }
+
+    document.getElementById('resultTitle').textContent = resultTitle;
+    document.getElementById('resultText').textContent = resultText;
+    document.getElementById('doctorRecommendation').innerHTML = doctor;
+  }
+
+  document.getElementById('quizNextBtn').addEventListener('click', () => {
+    currentQuestion++;
+    if (currentQuestion < quizQuestions.length) {
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  });
+
+  document.getElementById('quizRestartBtn').addEventListener('click', () => {
+    currentQuestion = 0;
+    quizAnswers = {};
+    document.getElementById('quizContent').style.display = 'block';
+    document.getElementById('quizResult').classList.remove('show');
+    renderQuestion();
+  });
+
+  function updatePersonalizedTexts() {
+    document.getElementById('quizIntro').textContent = patientName + ', ответьте на несколько вопросов — и мы подскажем, к какому врачу стоит обратиться.';
+    document.getElementById('finalMessage').textContent = patientName + ', вы прошли маршрут. Если что-то осталось непонятным — вернитесь к нужному шагу через точки вверху или обсудите с врачом.';
+  }
+
+  function updateView() {
+    steps.forEach((s, i) => s.classList.toggle('active', i === currentStep));
+    const dots = stepsNav.querySelectorAll('.step-dot');
+    dots.forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i === currentStep) d.classList.add('active');
+      else if (i < currentStep) d.classList.add('done');
+    });
+    progressFill.style.width = ((currentStep / (totalSteps - 1)) * 100) + '%';
+    btnBack.disabled = currentStep === 0;
+    btnNext.textContent = currentStep === totalSteps - 1 ? '🔄 Пройти заново' : 'Дальше →';
+    updatePersonalizedTexts();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goToStep(n) {
+    if (n < 0 || n >= totalSteps) return;
+    currentStep = n;
+    updateView();
+    if (n === 7 && currentQuestion === 0 && Object.keys(quizAnswers).length === 0) {
+      renderQuestion();
+    }
+  }
+
+  btnBack.addEventListener('click', () => goToStep(currentStep - 1));
+  btnNext.addEventListener('click', () => {
+    if (currentStep === totalSteps - 1) goToStep(0);
+    else goToStep(currentStep + 1);
+  });
+
+  updateView();
+</script>
+</body>
+</html>
