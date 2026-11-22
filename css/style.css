@@ -105,7 +105,6 @@ body::before {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Hero-блок на всю ширину экрана */
 .hero {
     background-color: var(--hero-bg);
     padding: 60px 20px;
@@ -133,7 +132,6 @@ body::before {
 .hero .photo { width: 260px; height: 260px; object-fit: cover; border-radius: 16px; box-shadow: 0 8px 20px rgba(49, 130, 206, 0.15); border: 3px solid var(--card-bg); flex-shrink: 0; }
 .hero-actions { margin-top: 10px; }
 
-/* Меню */
 .menu {
     width: 100%;
     background-color: var(--card-bg);
@@ -205,7 +203,6 @@ body::before {
     max-width: 200px;
 }
 
-/* ===== Карточки материалов ===== */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .card-item {
     display: flex;
@@ -247,7 +244,6 @@ body::before {
 }
 .card:hover::after { opacity: 1; transform: translateX(0); }
 
-/* ===== КНОПКА ЛАЙКА ===== */
 .like-container {
     display: flex;
     justify-content: center;
@@ -531,7 +527,6 @@ body::before {
 }
 .card-button:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3); }
 
-/* Кнопки мессенджеров */
 .messenger-buttons {
     position: fixed;
     bottom: 110px;
@@ -582,7 +577,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 
 .disclaimer { font-size: 0.85rem; color: var(--text-secondary); max-width: 700px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid var(--border-color); line-height: 1.5; font-style: italic; }
 
-/* ===== КАЛЬКУЛЯТОРЫ ===== */
 .calculator-box {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -594,7 +588,7 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 
 .calc-inputs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
 }
@@ -716,7 +710,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     line-height: 1.5;
 }
 
-/* Callout общий */
 .callout {
     background: var(--callout-bg);
     border-left: 6px solid var(--callout-border);
@@ -733,7 +726,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 }
 .callout strong { color: inherit; }
 
-/* Мобильная адаптация */
 @media (max-width: 768px) {
     .hero { padding: 30px 15px; }
     .hero-inner {
@@ -804,7 +796,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     
     footer { padding-bottom: 80px; }
     
-    /* Калькуляторы на мобильном */
     .calc-inputs {
         grid-template-columns: 1fr;
     }
