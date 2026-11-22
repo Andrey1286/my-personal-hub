@@ -193,7 +193,7 @@ body::before {
     max-width: 200px;
 }
 
-/* ===== Карточки материалов с кнопкой лайка ===== */
+/* ===== Карточки материалов ===== */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
 .card-item {
     display: flex;
@@ -235,7 +235,7 @@ body::before {
 }
 .card:hover::after { opacity: 1; transform: translateX(0); }
 
-/* ===== НОВАЯ КНОПКА ЛАЙКА (стиль стикера) ===== */
+/* ===== КНОПКА ЛАЙКА ===== */
 .like-container {
     display: flex;
     justify-content: center;
@@ -244,80 +244,74 @@ body::before {
 .like-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     background: var(--card-bg);
     border: 2px solid var(--border-color);
     border-radius: 30px;
-    padding: 8px 16px 8px 10px;
+    padding: 8px 16px 8px 12px;
     cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
     font-size: 0.95rem;
     color: var(--text-secondary);
     transition: all 0.25s ease;
-    font-family: inherit;
-    font-weight: 500;
     box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     user-select: none;
 }
-.like-btn:hover {
+.like-btn:hover:not(.liked) {
     border-color: var(--accent-blue);
+    color: var(--accent-blue);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15);
 }
-.like-btn:active {
+.like-btn:active:not(.liked) {
     transform: translateY(0);
 }
 .like-btn.liked {
     border-color: var(--accent-blue);
-    background: rgba(49, 130, 206, 0.06);
+    background: rgba(49, 130, 206, 0.08);
     color: var(--accent-blue);
+    cursor: default;
 }
 .like-btn.loading {
     opacity: 0.6;
     cursor: wait;
 }
 
-/* SVG-иконка пальца */
 .like-icon-wrap {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .like-icon-wrap svg {
-    width: 28px;
-    height: 28px;
-    transition: transform 0.3s ease;
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s ease;
 }
-.like-btn:hover .like-icon-wrap svg {
-    transform: scale(1.1) rotate(-8deg);
-}
-.like-btn.liked .like-icon-wrap svg {
-    transform: scale(1.05);
+.like-btn:hover:not(.liked) .like-icon-wrap svg {
+    transform: scale(1.1);
 }
 
-/* Счетчик */
 .like-count {
     font-weight: 700;
-    min-width: 22px;
-    text-align: center;
     font-size: 0.95rem;
-    color: var(--text-secondary);
+    min-width: 14px;
+    text-align: center;
     transition: color 0.25s;
 }
-.like-btn.liked .like-count {
-    color: var(--accent-blue);
-}
 
-/* Анимация "пульса" при лайке */
+/* Анимация подпрыгивания при лайке */
 @keyframes likePop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
+    0% { transform: scale(1) rotate(0deg); }
+    30% { transform: scale(1.3) rotate(-10deg); }
+    60% { transform: scale(0.95) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
 }
 .like-btn.just-liked .like-icon-wrap svg {
-    animation: likePop 0.4s ease;
+    animation: likePop 0.5s ease;
 }
 
 .about-text { background-color: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid var(--border-color); transition: background-color 0.3s; }
@@ -647,19 +641,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .booking-wrapper iframe { height: 750px; }
     
     footer { padding-bottom: 80px; }
-    
-    /* Кнопка лайка на мобильном */
-    .like-btn {
-        padding: 6px 14px 6px 8px;
-    }
-    .like-icon-wrap {
-        width: 28px;
-        height: 28px;
-    }
-    .like-icon-wrap svg {
-        width: 24px;
-        height: 24px;
-    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
