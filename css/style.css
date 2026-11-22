@@ -17,6 +17,9 @@
     --warning-bg: #FFF5F5;
     --warning-border: #FED7D7;
     --warning-text: #C53030;
+    --callout-blue-bg: #eaf2fb;
+    --callout-blue-border: #2e86c1;
+    --muted: #64748b;
 }
 
 /* Цветовые переменные: темная тема */
@@ -38,6 +41,9 @@
     --warning-bg: #2D1F1F;
     --warning-border: #742A2A;
     --warning-text: #FC8181;
+    --callout-blue-bg: #1e3a5f;
+    --callout-blue-border: #60a5fa;
+    --muted: #94a3b8;
 }
 
 body {
@@ -571,6 +577,153 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 
 .disclaimer { font-size: 0.85rem; color: var(--text-secondary); max-width: 700px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid var(--border-color); line-height: 1.5; font-style: italic; }
 
+/* ===== КАЛЬКУЛЯТОРЫ ===== */
+.calculator-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.calc-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calc-field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.calc-field input,
+.calc-field select {
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+}
+
+.calc-field input:focus,
+.calc-field select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.calc-button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-hover) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.calc-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3);
+}
+
+.calc-button:active {
+    transform: translateY(0);
+}
+
+.calc-result {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--card-bg);
+    border: 2px solid var(--accent-blue);
+    border-radius: 12px;
+    animation: fadeInUp 0.4s ease;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.result-category {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.result-recommendation {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.result-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+}
+
+.result-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.result-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.result-note {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--callout-blue-bg);
+    border-left: 4px solid var(--callout-blue-border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Callout общий */
+.callout {
+    background: var(--callout-bg, #eaf7ea);
+    border-left: 6px solid var(--callout-border, #2e8b57);
+    padding: 18px 20px;
+    border-radius: 14px;
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 18px;
+    color: var(--ink-soft, var(--text-secondary));
+}
+.callout.blue {
+    background: var(--callout-blue-bg);
+    border-left-color: var(--callout-blue-border);
+}
+.callout strong { color: inherit; }
+
 /* Мобильная адаптация */
 @media (max-width: 768px) {
     .hero { padding: 30px 15px; }
@@ -641,6 +794,18 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .booking-wrapper iframe { height: 750px; }
     
     footer { padding-bottom: 80px; }
+    
+    /* Калькуляторы на мобильном */
+    .calc-inputs {
+        grid-template-columns: 1fr;
+    }
+    .calc-button {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+    .result-value {
+        font-size: 1.6rem;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
