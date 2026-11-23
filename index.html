@@ -14,7 +14,7 @@
     
     <meta name="yandex-verification" content="4689ef1ad2a266b6" />
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=35">
+    <link rel="stylesheet" href="css/style.css?v=36">
     
     <script>
         (function() {
@@ -158,64 +158,10 @@
             <section class="materials fade-in">
                 <h2>Полезные материалы</h2>
                 <p>Статьи и памятки, которые я подготовил для вас.</p>
-                <div class="cards">
-                    <div class="card-item">
-                        <a href="riski.html" class="card" target="_blank">
-                            <span class="card-icon">📊</span>
-                            <h3>Оценка рисков заболеваний</h3>
-                            <p>Интерактивный калькулятор: SCORE2, FINDRISC, FIB-4, СКФ, биологический возраст</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="GB.html" class="card" target="_blank">
-                            <span class="card-icon">❤️</span>
-                            <h3>Повышенное давление</h3>
-                            <p>Маршрут пациента: как правильно измерять, когда идти к врачу, что делать при скачке</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="dislipidemia.html" class="card" target="_blank">
-                            <span class="card-icon">🧬</span>
-                            <h3>Повышенный холестерин</h3>
-                            <p>Памятка: просто о дислипидемии и липидном профиле</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="glp.html" class="card" target="_blank">
-                            <span class="card-icon">💊</span>
-                            <h3>Препараты для снижения веса</h3>
-                            <p>Самая важная информация для безопасного применения</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="pitanie.html" class="card" target="_blank">
-                            <span class="card-icon">🥗</span>
-                            <h3>Осознанное питание</h3>
-                            <p>Руководство по формированию здоровых отношений с едой</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="nutrition-diabetes.html" class="card" target="_blank">
-                            <span class="card-icon">🍽️</span>
-                            <h3>Питание при диабете</h3>
-                            <p>Практическое руководство: что есть при сахарном диабете</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="oteki.html" class="card" target="_blank">
-                            <span class="card-icon">💧</span>
-                            <h3>Причины отеков</h3>
-                            <p>Разбираемся, почему появляются отеки и когда нужно обратиться к врачу</p>
-                        </a>
-                    </div>
-                    <div class="card-item">
-                        <a href="vakcina.html" class="card" target="_blank">
-                            <span class="card-icon">💉</span>
-                            <h3>План вакцинации</h3>
-                            <p>Персональный сервис: какие вакцины и когда нужно ввести с учётом ваших данных</p>
-                        </a>
-                    </div>
-                </div>
+                <div class="cards" id="materials-container"></div>
+                <button id="show-more-btn" class="show-more-btn" style="display: none;">
+                    Показать все материалы <span id="materials-count"></span> ↓
+                </button>
             </section>
 
             <hr class="section-divider">
@@ -734,6 +680,69 @@
             carouselInited = true;
         }
 
+        // ===== ЗАГРУЗКА МАТЕРИАЛОВ ИЗ JSON =====
+        const MATERIALS_PER_PAGE = 3;
+        let allMaterials = [];
+        let isExpanded = false;
+
+        function loadMaterials() {
+            const container = document.getElementById('materials-container');
+            const showMoreBtn = document.getElementById('show-more-btn');
+            const countSpan = document.getElementById('materials-count');
+            
+            fetch('materials.json?t=' + Date.now())
+                .then(response => response.json())
+                .then(materials => {
+                    allMaterials = materials;
+                    renderMaterials();
+                    
+                    if (materials.length > MATERIALS_PER_PAGE) {
+                        showMoreBtn.style.display = 'block';
+                        countSpan.textContent = '(' + materials.length + ')';
+                    }
+                })
+                .catch(err => {
+                    console.error('Ошибка загрузки материалов:', err);
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Не удалось загрузить материалы. Пожалуйста, обновите страницу.</p>';
+                });
+        }
+
+        function renderMaterials() {
+            const container = document.getElementById('materials-container');
+            const showMoreBtn = document.getElementById('show-more-btn');
+            
+            container.innerHTML = '';
+            
+            const materialsToShow = isExpanded ? allMaterials : allMaterials.slice(0, MATERIALS_PER_PAGE);
+            
+            materialsToShow.forEach(item => {
+                const cardItem = document.createElement('div');
+                cardItem.className = 'card-item';
+                cardItem.innerHTML = `
+                    <a href="${item.link}" class="card" target="_blank">
+                        <span class="card-icon">${item.icon}</span>
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                    </a>
+                `;
+                container.appendChild(cardItem);
+            });
+            
+            if (isExpanded) {
+                showMoreBtn.innerHTML = 'Свернуть ↑';
+            } else {
+                showMoreBtn.innerHTML = 'Показать все материалы <span id="materials-count">(' + allMaterials.length + ')</span> ↓';
+            }
+        }
+
+        document.getElementById('show-more-btn').addEventListener('click', function() {
+            isExpanded = !isExpanded;
+            renderMaterials();
+        });
+
+        // Загружаем материалы при загрузке страницы
+        loadMaterials();
+
         // ===== КАЛЬКУЛЯТОРЫ =====
         function calculateBMI() {
             const weight = parseFloat(document.getElementById('bmi-weight').value);
@@ -876,8 +885,8 @@
             const brocaWeight = gender === 'male' ? height - 100 : height - 110;
             const proteinBaseWeight = (goalWeightInput && goalWeightInput > 0) ? goalWeightInput : brocaWeight;
             const weightSourceText = (goalWeightInput && goalWeightInput > 0) 
-                ? `На основе желаемого веса (${Math.round(proteinBaseWeight)} кг)` 
-                : `На основе идеальной массы тела (${Math.round(proteinBaseWeight)} кг, формула Брока)`;
+                ? 'На основе желаемого веса (' + Math.round(proteinBaseWeight) + ' кг)' 
+                : 'На основе идеальной массы тела (' + Math.round(proteinBaseWeight) + ' кг, формула Брока)';
 
             let proteinPerKg;
             if (goal === 'lose') {
