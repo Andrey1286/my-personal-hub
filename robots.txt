@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pystogov-doc.ru/sitemap.xml
