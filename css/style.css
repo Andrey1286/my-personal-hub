@@ -462,7 +462,6 @@ body::before {
 .messenger-btn { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: transform 0.25s ease, box-shadow 0.25s ease; position: relative; }
 .messenger-btn:hover { transform: scale(1.12); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
 .messenger-btn svg { width: 28px; height: 28px; fill: currentColor; }
-.messenger-btn.whatsapp { background-color: #25D366; }
 .messenger-btn.telegram { background-color: #0088cc; }
 .messenger-btn.max { background-color: #5B6ABF; }
 .messenger-btn.vk { background-color: #0077FF; }
@@ -497,6 +496,15 @@ footer { text-align: center; padding: 40px 20px; background-color: var(--card-bg
 footer a { color: var(--accent-blue); text-decoration: none; margin: 0 10px; }
 footer a:hover { text-decoration: underline; }
 footer .offer-link { font-weight: 800 !important; font-size: 1em !important; color: var(--accent-blue) !important; text-decoration: underline !important; display: inline-block; margin-top: 5px; }
+
+.footer-channels {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 15px;
+}
 
 .disclaimer { font-size: 0.85rem; color: var(--text-secondary); max-width: 700px; margin: 20px auto 0; padding-top: 20px; border-top: 1px solid var(--border-color); line-height: 1.5; font-style: italic; }
 
@@ -750,8 +758,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     
     .booking-wrapper iframe { height: 750px; }
     
-    footer { padding-bottom: 80px; }
-    
     .calc-inputs {
         grid-template-columns: 1fr;
     }
@@ -767,6 +773,25 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .calculator-box {
         padding: 20px 15px;
     }
+    
+    /* Футер на мобильном: каналы в одну строку с уменьшенным шрифтом */
+    .footer-channels {
+        font-size: 0.85rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 0 10px;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+    }
+    .footer-channels a {
+        margin: 0 6px;
+        white-space: nowrap;
+    }
+    footer > p:first-child {
+        display: none; /* скрываем старую строку каналов */
+    }
+    
+    footer { padding-bottom: 80px; }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
