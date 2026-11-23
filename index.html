@@ -14,7 +14,7 @@
     
     <meta name="yandex-verification" content="4689ef1ad2a266b6" />
     <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="stylesheet" href="css/style.css?v=33">
+    <link rel="stylesheet" href="css/style.css?v=34">
     
     <script>
         (function() {
@@ -585,12 +585,12 @@
             </section>
         </div>
 
-        <!-- НОВЫЙ РАЗДЕЛ: СТАТЬИ В ДЗЕНЕ -->
+        <!-- РАЗДЕЛ: СТАТЬИ ИЗ ДЗЕНА -->
         <div id="section-dzen" class="page-section" style="display:none;">
             <section class="materials fade-in">
                 <div class="about-text">
                     <h3>Статьи и заметки в Дзене</h3>
-                    <p>Я регулярно пишу о здоровье, эндокринологии и доказательной медицине. Здесь автоматически публикуются мои последние статьи с платформы Дзен.</p>
+                    <p>Я регулярно пишу о здоровье, эндокринологии и доказательной медицине. Здесь публикуются мои последние статьи с канала в Дзене.</p>
                     
                     <div id="dzen-loading" style="text-align: center; padding: 40px; color: var(--text-secondary);">
                         Загрузка статей...
@@ -758,7 +758,7 @@
             carouselInited = true;
         }
 
-        // ===== АВТОМАТИЧЕСКАЯ ЗАГРУЗКА СТАТЕЙ ИЗ ДЗЕНА =====
+        // ===== ЗАГРУЗКА СТАТЕЙ ИЗ ЛОКАЛЬНОГО ФАЙЛА (GitHub Action) =====
         function loadDzenArticles() {
             const container = document.getElementById('dzen-articles');
             const loading = document.getElementById('dzen-loading');
@@ -771,29 +771,29 @@
             const cachedData = localStorage.getItem(cacheKey);
             const cachedTime = localStorage.getItem(cacheTimeKey);
 
-            // Если есть свежий кэш, показываем его сразу
+            // Если есть свежий кэш — показываем сразу
             if (cachedData && cachedTime && (now - cachedTime < cacheDuration)) {
                 renderDzenArticles(JSON.parse(cachedData), container, loading);
                 return;
             }
 
-            const rssUrl = 'https://dzen.ru/endo_dok/rss';
-            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=6`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'ok') {
-                        localStorage.setItem(cacheKey, JSON.stringify(data.items));
+            // Читаем локальный файл, обновляемый GitHub Action
+            fetch('dzen-articles.json?t=' + now)
+                .then(response => {
+                    if (!response.ok) throw new Error('Файл не найден');
+                    return response.json();
+                })
+                .then(articles => {
+                    if (articles && articles.length > 0) {
+                        localStorage.setItem(cacheKey, JSON.stringify(articles));
                         localStorage.setItem(cacheTimeKey, now.toString());
-                        renderDzenArticles(data.items, container, loading);
+                        renderDzenArticles(articles, container, loading);
                     } else {
-                        loading.innerHTML = '<p>Не удалось загрузить статьи. <a href="https://dzen.ru/endo_dok" target="_blank" style="color: var(--accent-blue);">Перейдите в канал напрямую</a>.</p>';
+                        loading.innerHTML = '<p>Статьи пока не добавлены. <a href="https://dzen.ru/endo_dok" target="_blank" style="color: var(--accent-blue);">Перейдите в канал напрямую</a>.</p>';
                     }
                 })
                 .catch(err => {
-                    console.error('Ошибка загрузки Dzen RSS:', err);
-                    // Если ошибка сети, но есть старый кэш, покажем его
+                    console.error('Ошибка загрузки статей:', err);
                     if (cachedData) {
                         renderDzenArticles(JSON.parse(cachedData), container, loading);
                     } else {
@@ -805,26 +805,23 @@
         function renderDzenArticles(items, container, loading) {
             container.innerHTML = '';
             items.slice(0, 6).forEach(item => {
-                // Пытаемся найти картинку в описании или в метаданных
-                let imageUrl = 'https://pystogov-doc.ru/images/my-photo.jpg';
-                const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-                if (imgMatch) {
-                    imageUrl = imgMatch[1];
-                } else if (item.enclosure && item.enclosure.link) {
-                    imageUrl = item.enclosure.link;
-                } else if (item.thumbnail) {
-                    imageUrl = item.thumbnail;
+                const imageUrl = item.image || 'https://pystogov-doc.ru/images/my-photo.jpg';
+
+                let shortDesc = item.description || '';
+                if (shortDesc.length > 200) {
+                    shortDesc = shortDesc.substring(0, 200) + '...';
                 }
 
-                // Очищаем описание от HTML-тегов для короткого анонса
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = item.description;
-                let shortDesc = tempDiv.textContent || tempDiv.innerText || '';
-                shortDesc = shortDesc.replace(/\s+/g, ' ').substring(0, 150) + '...';
-
-                const date = new Date(item.pubDate).toLocaleDateString('ru-RU', {
-                    day: 'numeric', month: 'long', year: 'numeric'
-                });
+                let dateStr = '';
+                if (item.pubDate) {
+                    try {
+                        dateStr = new Date(item.pubDate).toLocaleDateString('ru-RU', {
+                            day: 'numeric', month: 'long', year: 'numeric'
+                        });
+                    } catch(e) {
+                        dateStr = item.pubDate;
+                    }
+                }
 
                 const card = document.createElement('div');
                 card.className = 'card-item';
@@ -832,8 +829,8 @@
                     <a href="${item.link}" target="_blank" class="card" style="height: 100%;">
                         <img src="${imageUrl}" alt="${item.title}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background: var(--border-color);">
                         <h3 style="font-size: 1.1rem; margin-bottom: 8px; line-height: 1.3;">${item.title}</h3>
-                        <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">${date}</p>
-                        <p style="font-size: 0.95rem; line-height: 1.5;">${shortDesc}</p>
+                        ${dateStr ? '<p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;">' + dateStr + '</p>' : ''}
+                        ${shortDesc ? '<p style="font-size: 0.95rem; line-height: 1.5;">' + shortDesc + '</p>' : ''}
                     </a>
                 `;
                 container.appendChild(card);
