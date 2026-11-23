@@ -690,6 +690,34 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 }
 .callout strong { color: inherit; }
 
+/* ===== КНОПКА "ПОКАЗАТЬ ВСЕ" ===== */
+.show-more-btn {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 30px auto 0;
+    padding: 16px 32px;
+    background: var(--card-bg);
+    border: 2px solid var(--accent-blue);
+    border-radius: 30px;
+    color: var(--accent-blue);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.show-more-btn:hover {
+    background: var(--accent-blue);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3);
+}
+
+.show-more-btn:active {
+    transform: translateY(0);
+}
 @media (max-width: 768px) {
     .hero { padding: 30px 15px; }
     .hero-inner {
