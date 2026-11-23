@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>План вакцинации — Приказ 1122н</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6; color: #333; background: #f5f5f5; padding: 20px;
+    }
+    .container {
+      max-width: 900px; margin: 0 auto; background: white;
+      border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px;
+    }
+    h1 { color: #2c3e50; margin-bottom: 10px; font-size: 28px; }
+    h2 { color: #34495e; margin: 20px 0 15px; font-size: 22px; }
+    h3 { color: #555; margin: 15px 0 10px; font-size: 18px; }
+    .disclaimer {
+      background: #fff3cd; border-left: 4px solid #ffc107;
+      padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 14px;
+    }
+    .steps-nav {
+      display: flex; gap: 10px; margin-bottom: 30px;
+      border-bottom: 2px solid #e0e0e0; padding-bottom: 15px;
+    }
+    .step-tab {
+      flex: 1; padding: 10px; text-align: center; background: #f8f9fa;
+      border: 1px solid #dee2e6; border-radius: 4px; cursor: pointer;
+      transition: all 0.3s; font-size: 14px;
+    }
+    .step-tab.active { background: #007bff; color: white; border-color: #007bff; }
+    .step-tab.completed { background: #28a745; color: white; border-color: #28a745; }
+    .step-content { display: none; }
+    .step-content.active { display: block; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
+    input[type="text"], input[type="number"], input[type="date"], select {
+      width: 100%; padding: 10px; border: 1px solid #ddd;
+      border-radius: 4px; font-size: 16px;
+    }
+    input[type="range"] { width: 100%; margin: 10px 0; }
+    .radio-group, .checkbox-group { display: flex; gap: 20px; flex-wrap: wrap; }
+    .radio-group label, .checkbox-group label {
+      display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: normal;
+    }
+    .hint { font-size: 12px; color: #888; margin-top: 5px; }
+    .age-display { display: inline-block; margin-left: 10px; font-weight: bold; color: #007bff; }
+
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .button-group-left { display: flex; gap: 10px; flex-wrap: wrap; }
+    .button-group-right { display: flex; gap: 10px; margin-left: auto; }
+
+    button {
+      padding: 12px 24px; border: none; border-radius: 4px;
+      font-size: 16px; cursor: pointer; transition: all 0.3s;
+    }
+    button.primary { background: #007bff; color: white; }
+    button.primary:hover { background: #0056b3; }
+    button.secondary { background: #6c757d; color: white; }
+    button.secondary:hover { background: #545b62; }
+    button.danger { background: #dc3545; color: white; }
+    button.danger:hover { background: #c82333; }
+
+    .result-group { margin-bottom: 25px; }
+    .result-group-title {
+      background: #e9ecef; padding: 10px 15px; border-radius: 4px;
+      font-weight: 600; color: #495057; margin-bottom: 10px; font-size: 16px;
+    }
+    .result-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    .result-table th, .result-table td {
+      padding: 10px; text-align: left; border: 1px solid #ddd; vertical-align: top;
+    }
+    .result-table th { background: #f8f9fa; font-weight: 600; color: #555; }
+
+    .result-table tr.row-planovo { border-left: 4px solid #28a745; background: #f8fff8; }
+    .result-table tr.row-recommended { border-left: 4px solid #007bff; background: #f0f7ff; }
+    .result-table tr.row-contraindicated { border-left: 4px solid #dc3545; background: #fff5f5; }
+    .result-table tr.row-discuss_with_doctor { border-left: 4px solid #ffc107; background: #fffdf0; }
+    .result-table tr.row-test_antibodies { border-left: 4px solid #6c757d; background: #f8f9fa; }
+    .result-table tr.row-postpone { border-left: 4px solid #fd7e14; background: #fff8f0; }
+
+    .status-badge {
+      display: inline-block; padding: 4px 10px; border-radius: 12px;
+      font-size: 12px; font-weight: 500;
+    }
+    .status-planovo { background: #d4edda; color: #155724; }
+    .status-recommended { background: #cce5ff; color: #004085; }
+    .status-contraindicated { background: #f8d7da; color: #721c24; }
+    .status-discuss_with_doctor { background: #fff3cd; color: #856404; }
+    .status-test_antibodies { background: #e2e3e5; color: #383d41; }
+    .status-postpone { background: #ffe5d0; color: #984c0c; }
+
+    .warning-box {
+      background: #fff3cd; border-left: 4px solid #ffc107;
+      padding: 15px; margin: 15px 0; border-radius: 4px;
+    }
+    .info-box {
+      background: #d1ecf1; border-left: 4px solid #17a2b8;
+      padding: 15px; margin: 15px 0; border-radius: 4px;
+    }
+    .notes-section {
+      margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 4px;
+    }
+    .notes-section ul { margin-left: 20px; }
+    .notes-section li { margin-bottom: 10px; }
+    .history-item {
+      border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 4px;
+    }
+    .history-item-title { font-weight: 600; margin-bottom: 10px; color: #2c3e50; }
+    .date-input {
+      margin-top: 10px; padding: 10px; border: 1px solid #ddd;
+      border-radius: 4px; width: 320px; font-size: 15px;
+    }
+    .date-label {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      color: #666;
+      font-style: italic;
+    }
+    .trimester-group {
+      margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px;
+    }
+
+    .color-legend {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin: 15px 0; padding: 12px; background: #f8f9fa;
+      border-radius: 4px; font-size: 13px;
+    }
+    .color-legend-item {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .color-legend-swatch {
+      width: 16px; height: 16px; border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    @media print {
+      body { background: white; padding: 0; font-size: 12px; }
+      .container { box-shadow: none; max-width: 100%; padding: 15px; }
+      .steps-nav, .button-group, .step-content:not(.active) { display: none !important; }
+      .step-content.active { display: block !important; }
+      h1 { font-size: 20px; margin-bottom: 5px; }
+      h2 { font-size: 16px; margin: 10px 0 8px; }
+      h3 { font-size: 14px; margin: 8px 0 5px; }
+      .disclaimer { padding: 8px; margin: 10px 0; font-size: 11px; }
+      .result-group { margin-bottom: 15px; page-break-inside: avoid; }
+      .result-group-title { padding: 6px 10px; font-size: 13px; }
+      .result-table { font-size: 11px; }
+      .result-table th, .result-table td { padding: 6px; }
+      .notes-section { padding: 10px; margin-top: 15px; font-size: 11px; }
+      .notes-section ul { margin-left: 15px; }
+      .notes-section li { margin-bottom: 5px; }
+      .warning-box, .info-box { padding: 8px; margin: 8px 0; font-size: 11px; }
+      .color-legend { font-size: 10px; padding: 6px; }
+      button { display: none !important; }
+      @page { margin: 1.5cm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>План вакцинации — персональный сервис</h1>
+    <p><strong>Основа:</strong> Приказ Минздрава России от 06.12.2021 № 1122н (ред. от 12.12.2023) «Об утверждении национального календаря профилактических прививок…».</p>
+    <p><strong>Актуальность:</strong> 15.05.2026.</p>
+
+    <div class="disclaimer">
+      <strong>⚠ Важно.</strong> Сервис носит информационный характер и не заменяет консультацию врача.
+      Перед вакцинацией необходима консультация специалиста. Все данные обрабатываются локально
+      в вашем браузере — ничего не отправляется на сервер.
+    </div>
+
+    <div class="steps-nav">
+      <div class="step-tab active" data-step="1">1. Общие данные</div>
+      <div class="step-tab" data-step="2">2. Здоровье</div>
+      <div class="step-tab" data-step="3">3. Анамнез</div>
+      <div class="step-tab" data-step="4">4. Результат</div>
+    </div>
+
+    <!-- ШАГ 1 -->
+    <div class="step-content active" id="step-1">
+      <h2>Шаг 1 — Общие данные</h2>
+
+      <div class="form-group">
+        <label>Пол</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="male" checked> Мужчина</label>
+          <label><input type="radio" name="gender" value="female"> Женщина</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="pregnancy-status-group">
+        <label>Статус (для женщин)</label>
+        <div class="radio-group">
+          <label><input type="radio" name="pregnancyStatus" value="pregnant"> Беременна</label>
+          <label><input type="radio" name="pregnancyStatus" value="lactation"> Лактация</label>
+          <label><input type="radio" name="pregnancyStatus" value="not_pregnant" checked> Не беременна, не кормлю</label>
+        </div>
+      </div>
+
+      <div class="form-group" id="pregnancy-details-group" style="display: none;">
+        <label>Срок беременности</label>
+        <div class="trimester-group">
+          <div class="radio-group">
+            <label><input type="radio" name="trimester" value="1"> 1 триместр (1–13 нед.)</label>
+            <label><input type="radio" name="trimester" value="2"> 2 триместр (14–26 нед.)</label>
+            <label><input type="radio" name="trimester" value="3"> 3 триместр (27–40 нед.)</label>
+          </div>
+          <div class="form-group" style="margin-top: 10px;">
+            <label for="pregnancyWeeks">Точный срок, недель</label>
+            <input type="number" id="pregnancyWeeks" min="1" max="42" style="width: 200px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Возраст: <span class="age-display" id="ageDisplay">30</span> лет</label>
+        <input type="range" id="age" min="18" max="120" value="30">
+        <div class="hint">Ползунок — основной способ ввода. Числовое поле — для точного значения.</div>
+        <input type="number" id="ageNumber" min="18" max="120" value="30" style="width: 200px; margin-top: 10px;">
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Дата рождения (необязательно)</label>
+        <input type="date" id="birthDate">
+        <div class="hint">Точная дата влияет на расчёт ревакцинаций и интервалов</div>
+      </div>
+
+      <div class="form-group">
+        <label for="region">Регион проживания</label>
+        <select id="region">
+          <option value="">— выберите регион —</option>
+          <optgroup label="Эндемичные по клещевому энцефалиту">
+            <option value="Ивановская область">Ивановская область</option>
+            <option value="Костромская область">Костромская область</option>
+            <option value="Московская область (Дмитровский, Талдомский р-ны)">Московская область (Дмитровский, Талдомский р-ны)</option>
+            <option value="Тверская область (ряд районов)">Тверская область (ряд районов)</option>
+            <option value="Ярославская область">Ярославская область</option>
+            <option value="Архангельская область">Архангельская область</option>
+            <option value="Вологодская область">Вологодская область</option>
+            <option value="Калининградская область">Калининградская область</option>
+            <option value="Республика Карелия">Республика Карелия</option>
+            <option value="Республика Коми (ряд районов)">Республика Коми (ряд районов)</option>
+            <option value="Ленинградская область">Ленинградская область</option>
+            <option value="Новгородская область">Новгородская область</option>
+            <option value="Псковская область">Псковская область</option>
+            <option value="Санкт-Петербург (ряд районов)">Санкт-Петербург (ряд районов)</option>
+            <option value="Республика Крым (ряд районов)">Республика Крым (ряд районов)</option>
+            <option value="Севастополь">Севастополь</option>
+            <option value="Кировская область">Кировская область</option>
+            <option value="Нижегородская область (ряд районов)">Нижегородская область (ряд районов)</option>
+            <option value="Оренбургская область (ряд районов)">Оренбургская область (ряд районов)</option>
+            <option value="Пермский край">Пермский край</option>
+            <option value="Республика Башкортостан">Республика Башкортостан</option>
+            <option value="Республика Марий Эл">Республика Марий Эл</option>
+            <option value="Республика Татарстан (ряд районов)">Республика Татарстан (ряд районов)</option>
+            <option value="Самарская область">Самарская область</option>
+            <option value="Удмуртская Республика">Удмуртская Республика</option>
+            <option value="Ульяновская область (ряд районов)">Ульяновская область (ряд районов)</option>
+            <option value="Курганская область">Курганская область</option>
+            <option value="Свердловская область">Свердловская область</option>
+            <option value="Тюменская область">Тюменская область</option>
+            <option value="Ханты-Мансийский АО (ряд районов)">Ханты-Мансийский АО (ряд районов)</option>
+            <option value="Челябинская область">Челябинская область</option>
+            <option value="Республика Алтай">Республика Алтай</option>
+            <option value="Алтайский край">Алтайский край</option>
+            <option value="Иркутская область">Иркутская область</option>
+            <option value="Кемеровская область">Кемеровская область</option>
+            <option value="Красноярский край">Красноярский край</option>
+            <option value="Новосибирская область">Новосибирская область</option>
+            <option value="Омская область">Омская область</option>
+            <option value="Томская область">Томская область</option>
+            <option value="Республика Тыва">Республика Тыва</option>
+            <option value="Республика Хакасия">Республика Хакасия</option>
+            <option value="Амурская область">Амурская область</option>
+            <option value="Республика Бурятия">Республика Бурятия</option>
+            <option value="Забайкальский край">Забайкальский край</option>
+            <option value="Еврейская автономная область">Еврейская автономная область</option>
+            <option value="Приморский край">Приморский край</option>
+            <option value="Республика Саха (Якутия, южные районы)">Республика Саха (Якутия, южные районы)</option>
+            <option value="Сахалинская область">Сахалинская область</option>
+            <option value="Хабаровский край">Хабаровский край</option>
+          </optgroup>
+          <optgroup label="Неэндемичные">
+            <option value="Белгородская область">Белгородская область</option>
+            <option value="Брянская область">Брянская область</option>
+            <option value="Владимирская область">Владимирская область</option>
+            <option value="Воронежская область">Воронежская область</option>
+            <option value="Калужская область">Калужская область</option>
+            <option value="Курская область">Курская область</option>
+            <option value="Липецкая область">Липецкая область</option>
+            <option value="Московская область (остальные районы)">Московская область (остальные районы)</option>
+            <option value="Орловская область">Орловская область</option>
+            <option value="Рязанская область">Рязанская область</option>
+            <option value="Смоленская область">Смоленская область</option>
+            <option value="Тамбовская область">Тамбовская область</option>
+            <option value="Тульская область">Тульская область</option>
+            <option value="Москва">Москва</option>
+            <option value="Мурманская область">Мурманская область</option>
+            <option value="Ненецкий АО">Ненецкий АО</option>
+            <option value="Республика Адыгея">Республика Адыгея</option>
+            <option value="Астраханская область">Астраханская область</option>
+            <option value="Волгоградская область">Волгоградская область</option>
+            <option value="Республика Калмыкия">Республика Калмыкия</option>
+            <option value="Краснодарский край">Краснодарский край</option>
+            <option value="Ростовская область">Ростовская область</option>
+            <option value="Республика Дагестан">Республика Дагестан</option>
+            <option value="Республика Ингушетия">Республика Ингушетия</option>
+            <option value="Кабардино-Балкарская Республика">Кабардино-Балкарская Республика</option>
+            <option value="Карачаево-Черкесская Республика">Карачаево-Черкесская Республика</option>
+            <option value="Республика Северная Осетия—Алания">Республика Северная Осетия—Алания</option>
+            <option value="Ставропольский край">Ставропольский край</option>
+            <option value="Чеченская Республика">Чеченская Республика</option>
+            <option value="Пензенская область">Пензенская область</option>
+            <option value="Республика Мордовия">Республика Мордовия</option>
+            <option value="Саратовская область">Саратовская область</option>
+            <option value="Чувашская Республика">Чувашская Республика</option>
+            <option value="Ямало-Ненецкий АО">Ямало-Ненецкий АО</option>
+            <option value="Камчатский край">Камчатский край</option>
+            <option value="Магаданская область">Магаданская область</option>
+            <option value="Чукотский АО">Чукотский АО</option>
+          </optgroup>
+          <option value="other">Другой (не эндемичный по клещевому энцефалиту)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="profession">Профессия (группа риска)</label>
+        <select id="profession">
+          <option value="">— выберите группу —</option>
+          <option value="медики">Медики</option>
+          <option value="учителя_воспитатели">Учителя, воспитатели</option>
+          <option value="общепит_торговля_жкх">Общепит, торговля, ЖКХ</option>
+          <option value="сельхоз_лесники_геологи">Сельское хозяйство, лесники, геологи</option>
+          <option value="ветеринары_охотники">Ветеринары, охотники</option>
+          <option value="студенты_военнослужащие">Студенты, военнослужащие</option>
+          <option value="other">Другое</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><input type="checkbox" id="travel"> Планирую поездки</label>
+        <div class="hint">Без указания конкретной страны/даты — только справочный блок.</div>
+      </div>
+
+      <div class="button-group">
+        <div class="button-group-left">
+          <button type="button" class="primary" onclick="nextStep(2)">Далее</button>
+        </div>
+        <div class="button-group-right">
+          <button type="button" class="danger" onclick="resetForm()">Сбросить всё</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 2 -->
+    <div class="step-content" id="step-2">
+      <h2>Шаг 2 — Здоровье</h2>
+
+      <h3>Хронические заболевания</h3>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="immunodeficiency"> Есть иммунодефицит / иммуносупрессия</label>
+        <label><input type="checkbox" id="oncology"> Онкология / химиотерапия / лучевая терапия</label>
+      </div>
+
+      <div class="form-group">
+        <label>Спленэктомия (удалена селезёнка)</label>
+        <div class="hint">Отдельное состояние: при спленэктомии обязательно показаны пневмококковая, менингококковая вакцина и вакцина против гемофильной инфекции типа b.</div>
+        <div class="radio-group">
+          <label><input type="radio" name="splenectomy" value="no" checked> Нет</label>
+          <label><input type="radio" name="splenectomy" value="yes"> Да</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Курение</label>
+        <div class="hint">Влияет на рекомендации: курильщикам рекомендуется пневмококковая вакцина.</div>
+        <div class="radio-group">
+          <label><input type="radio" name="smoking" value="no" checked> Нет</label>
+          <label><input type="radio" name="smoking" value="yes"> Да</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Аллергоанамнез</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="allergy" value="none" checked> Нет тяжёлой аллергии</label>
+          <label><input type="checkbox" name="allergy" value="egg"> Аллергия на куриный/перепелиный белок</label>
+          <label><input type="checkbox" name="allergy" value="yeast"> Аллергия на дрожжи</label>
+          <label><input type="checkbox" name="allergy" value="neomycin"> Аллергия на неомицин, полимиксин В</label>
+          <label><input type="checkbox" name="allergy" value="formaldehyde"> Аллергия на формальдегид</label>
+          <label><input type="checkbox" name="allergy" value="latex"> Аллергия на латекс</label>
+          <label><input type="checkbox" name="allergy" value="previous_dose"> Анафилаксия на предыдущую дозу вакцины</label>
+          <label><input type="checkbox" name="allergy" value="other"> Другие тяжёлые аллергические реакции</label>
+        </div>
+        <div class="hint">Выберите все подходящие варианты. Программа автоматически учтёт ограничения.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Обострение хронического заболевания сейчас</label>
+        <div class="hint">При «Да» — все плановые вакцинации временно откладываются до выздоровления.</div>
+        <div class="radio-group">
+          <label><input type="radio" name="exacerbation" value="no" checked> Нет</label>
+          <label><input type="radio" name="exacerbation" value="yes"> Да</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Острая инфекция / температура сейчас</label>
+        <div class="hint">При «Да» — все вакцинации временно откладываются до выздоровления.</div>
+        <div class="radio-group">
+          <label><input type="radio" name="acuteInfection" value="no" checked> Нет</label>
+          <label><input type="radio" name="acuteInfection" value="yes"> Да</label>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <div class="button-group-left">
+          <button type="button" class="secondary" onclick="prevStep(1)">Назад</button>
+          <button type="button" class="primary" onclick="nextStep(3)">Далее</button>
+        </div>
+        <div class="button-group-right">
+          <button type="button" class="danger" onclick="resetForm()">Сбросить всё</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 3 -->
+    <div class="step-content" id="step-3">
+      <h2>Шаг 3 — Вакцинальный анамнез</h2>
+      <p class="hint">
+        По умолчанию выбрано «Не помню» — при необходимости измените статус.
+        Если не помните — сервис подскажет, какой анализ сдать.
+      </p>
+
+      <div id="history-container"></div>
+
+      <div class="button-group">
+        <div class="button-group-left">
+          <button type="button" class="secondary" onclick="prevStep(2)">Назад</button>
+          <button type="button" class="primary" onclick="calculatePlan()">Рассчитать план</button>
+        </div>
+        <div class="button-group-right">
+          <button type="button" class="danger" onclick="resetForm()">Сбросить всё</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ШАГ 4 -->
+    <div class="step-content" id="step-4">
+      <h2>Шаг 4 — Результат</h2>
+
+      <div class="disclaimer">
+        <strong>⚠ Результат</strong> носит информационный характер и не заменяет
+        консультацию врача. Перед вакцинацией обязательна консультация специалиста.
+      </div>
+
+      <div id="result-container"></div>
+
+      <div class="button-group">
+        <div class="button-group-left">
+          <button type="button" class="secondary" onclick="goToStep(1)">Назад к общим данным</button>
+          <button type="button" class="secondary" onclick="goToStep(2)">К здоровью</button>
+          <button type="button" class="secondary" onclick="goToStep(3)">К анамнезу</button>
+          <button type="button" class="primary" onclick="window.print()">Распечатать / Сохранить как PDF</button>
+        </div>
+        <div class="button-group-right">
+          <button type="button" class="danger" onclick="resetForm()">Сбросить всё</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes-section">
+      <h3>Как читать результат</h3>
+      <ul>
+        <li><strong style="color:#155724">🟢 Планово</strong> — вакцинация по возрасту/календарю, без срочности.</li>
+        <li><strong style="color:#004085">🔵 Рекомендуется</strong> — по эпидпоказаниям, группе риска или состоянию.</li>
+        <li><strong style="color:#856404">🟡 Обсудить с врачом</strong> — требуется индивидуальная оценка.</li>
+        <li><strong style="color:#383d41">⚪ Сдать анализы</strong> — сначала нужно сдать анализы на антитела.</li>
+        <li><strong style="color:#721c24">🔴 Противопоказано</strong> — временно или постоянно нельзя.</li>
+      </ul>
+
+      <h3>Про антитела</h3>
+      <p>Если вы не помните, болели ли вы или были ли привиты, сервис вместо вакцинации рекомендует сдать анализ:
+      для гепатита В — anti-HBs (HBsAg); для кори/краснухи/паротита — IgG к каждому возбудителю;
+      для клещевого энцефалита — IgG к ВКЭ; для ветряной оспы — IgG к VZV. По результатам врач решит,
+      нужна ли прививка. Пневмококк — без анализа, по возрасту/риску.</p>
+
+      <h3>Адасель / АДС-М</h3>
+      <p>АДС-М защищает от дифтерии и столбняка, но не от коклюша. Поэтому при беременности рекомендуется именно
+      Адасель (дифтерия, столбняк, коклюш) — однократно на сроке 27–36 недель при каждой беременности.
+      Вне беременности — плановая ревакцинация АДС-М каждые 10 лет.</p>
+
+      <h3>Живые вакцины</h3>
+      <p>Живые вакцины (корь, краснуха, паротит, ветряная оспа, БЦЖ) нельзя при беременности и при выраженной
+      иммуносупрессии. При беременности план ограничен: разрешены Адасель (27–36 нед.) и грипп (2–3 триместр),
+      остальное — «по усмотрению врача» или «противопоказано».</p>
+
+      <h3>Спленэктомия</h3>
+      <p>Пациентам с удалённой селезёнкой обязательно показаны: пневмококковая, менингококковая вакцина и вакцина
+      против гемофильной инфекции типа b — из-за высокого риска инкапсулированных бактерий. Программа автоматически
+      добавит их в рекомендации.</p>
+
+      <h3>Курение</h3>
+      <p>Курильщикам рекомендуется пневмококковая вакцина — у них повышенный риск инвазивной пневмококковой инфекции.</p>
+    </div>
+  </div>
+
+  <script>
+    const VACCINE_CALENDAR = {
+      meta: {
+        version: "1.2",
+        legalBasis: "Приказ Минздрава России от 06.12.2021 № 1122н",
+        lastRevision: "12.12.2023",
+        actualDate: "15.05.2026"
+      },
+      vaccines: {
+        "dt": {
+          name: "Против дифтерии и столбняка (АДС-М)",
+          type: "инактивированная",
+          diseases: ["дифтерия", "столбняк"],
+          minAgeYears: 0,
+          notes: "Плановая ревакцинация каждые 10 лет. Конкретный препарат (АДС-М или другой) выбирает врач."
+        },
+        "dtap_pregnancy": {
+          name: "Против дифтерии, столбняка и коклюша при беременности (Адасель)",
+          type: "инактивированная",
+          diseases: ["дифтерия", "столбняк", "коклюш"],
+          minAgeYears: 18,
+          targetGroups: ["беременные"],
+          notes: "Однократно на 27–36 неделе каждой беременности."
+        },
+        "hep_b": {
+          name: "Против гепатита В",
+          type: "инактивированная",
+          diseases: ["гепатит_в"],
+          minAgeYears: 0,
+          schedule: { doses: 3, intervals: [0, "1 мес", "6 мес"] },
+          notes: "По нацкалендарю — до 55 лет. Старше 55 — по эпидпоказаниям."
+        },
+        "mmr": {
+          name: "Против кори, краснухи и паротита",
+          type: "живая",
+          diseases: ["корь", "краснуха", "паротит"],
+          minAgeYears: 0,
+          schedule: { doses: 2, intervals: [0, "4–6 нед"] },
+          notes: "18–35 лет — по нацкалендарю. 36–55 лет — по эпидпоказаниям."
+        },
+        "varicella": {
+          name: "Против ветряной оспы",
+          type: "живая",
+          diseases: ["ветряная_оспа"],
+          minAgeYears: 1,
+          schedule: { doses: 2, intervals: [0, "6–10 нед"] },
+          notes: "Взрослым, не болевшим в детстве. Особенно рекомендуется женщинам, планирующим беременность."
+        },
+        "influenza": {
+          name: "Против гриппа",
+          type: "инактивированная",
+          diseases: ["грипп"],
+          minAgeYears: 0,
+          schedule: { doses: 1, intervals: ["ежегодно"] },
+          notes: "Ежегодно, перед началом эпидсезона."
+        },
+        "covid19": {
+          name: "Против COVID-19",
+          type: "инактивированная",
+          diseases: ["covid19"],
+          minAgeYears: 12,
+          notes: "Ревакцинация согласно текущим рекомендациям Минздрава."
+        },
+        "pneumo": {
+          name: "Против пневмококковой инфекции",
+          type: "инактивированная",
+          diseases: ["пневмококк"],
+          minAgeYears: 2,
+          schedule: { doses: 1, intervals: ["однократно"] },
+          notes: "С 65 лет — всем. Младше 65 — по показаниям (ХОБЛ, иммуносупрессия, спленэктомия, курение и др.)."
+        },
+        "meningococcus": {
+          name: "Против менингококковой инфекции",
+          type: "инактивированная",
+          diseases: ["менингококк"],
+          minAgeYears: 0,
+          notes: "Обязательно при спленэктомии, иммуносупрессии. По эпидпоказаниям — студентам, путешественникам."
+        },
+        "hib": {
+          name: "Против гемофильной инфекции типа b",
+          type: "инактивированная",
+          diseases: ["hib"],
+          minAgeYears: 0,
+          notes: "Взрослым — только при спленэктомии или выраженной иммуносупрессии."
+        },
+        "tick_borne_encephalitis": {
+          name: "Против клещевого энцефалита",
+          type: "инактивированная",
+          diseases: ["клещевой_энцефалит"],
+          minAgeYears: 0,
+          schedule: { doses: 3, intervals: [0, "1–7 мес", "12 мес"] },
+          notes: "Жителям эндемичных районов и работающим с клещами."
+        }
+      },
+      pregnancy: {
+        allowed: {
+          "dtap_pregnancy": { timing: "27–36 недель каждой беременности", note: "Для защиты новорождённого от коклюша" },
+          "influenza": { timing: "любой срок, оптимально 2–3 триместр", note: "Инактивированная вакцина — безопасна" }
+        },
+        contraindicated: ["mmr", "varicella"]
+      },
+      liveVaccines: {
+        list: ["mmr", "varicella"],
+        intervalBetweenDifferent: { days: 28 }
+      },
+      antibodyTests: {
+        "гепатит_в": { test: "anti-HBs (количественно) + HBsAg" },
+        "корь": { test: "IgG к вирусу кори" },
+        "краснуха": { test: "IgG к вирусу краснухи" },
+        "паротит": { test: "IgG к вирусу паротита" },
+        "ветряная_оспа": { test: "IgG к вирусу Varicella Zoster (VZV)" },
+        "клещевой_энцефалит": { test: "IgG к вирусу клещевого энцефалита" }
+      },
+      riskGroups: {
+        "медики": { vaccines: ["гепатит_в", "корь", "краснуха", "грипп"] },
+        "учителя_воспитатели": { vaccines: ["корь", "краснуха", "грипп"] },
+        "общепит_торговля_жкх": { vaccines: ["гепатит_в"] },
+        "сельхоз_лесники_геологи": { vaccines: ["клещевой_энцефалит"] },
+        "ветеринары_охотники": { vaccines: [] },
+        "студенты_военнослужащие": { vaccines: ["корь", "краснуха"] }
+      },
+      endemicRegions: [
+        "Ивановская область", "Костромская область",
+        "Московская область (Дмитровский, Талдомский р-ны)",
+        "Тверская область (ряд районов)", "Ярославская область",
+        "Архангельская область", "Вологодская область", "Калининградская область",
+        "Республика Карелия", "Республика Коми (ряд районов)",
+        "Ленинградская область", "Новгородская область", "Псковская область",
+        "Санкт-Петербург (ряд районов)",
+        "Республика Крым (ряд районов)", "Севастополь",
+        "Кировская область", "Нижегородская область (ряд районов)",
+        "Оренбургская область (ряд районов)", "Пермский край",
+        "Республика Башкортостан", "Республика Марий Эл",
+        "Республика Татарстан (ряд районов)", "Самарская область",
+        "Удмуртская Республика", "Ульяновская область (ряд районов)",
+        "Курганская область", "Свердловская область", "Тюменская область",
+        "Ханты-Мансийский АО (ряд районов)", "Челябинская область",
+        "Республика Алтай", "Алтайский край",
+        "Иркутская область", "Кемеровская область", "Красноярский край",
+        "Новосибирская область", "Омская область", "Томская область",
+        "Республика Тыва", "Республика Хакасия",
+        "Амурская область", "Республика Бурятия", "Забайкальский край",
+        "Еврейская автономная область", "Приморский край",
+        "Республика Саха (Якутия, южные районы)", "Сахалинская область",
+        "Хабаровский край"
+      ],
+      allergyRestrictions: {
+        "egg": { contraindicated: ["mmr", "influenza"], note: "Содержит куриный белок" },
+        "yeast": { contraindicated: ["hep_b"], note: "Содержит дрожжевые компоненты" },
+        "neomycin": { contraindicated: ["mmr", "varicella"], note: "Содержит неомицин" },
+        "previous_dose": { note: "Анафилаксия на предыдущую дозу — пожизненный отвод от этой вакцины" }
+      }
+    };
+
+    const VaccineCalculator = (function() {
+      const STATUS = {
+        PLANOVO: "planovo",
+        RECOMMENDED: "recommended",
+        CONTRAINDICATED: "contraindicated",
+        DISCUSS: "discuss_with_doctor",
+        TEST_ANTIBODIES: "test_antibodies",
+        POSTPONE: "postpone"
+      };
+
+      const STATUS_LABELS = {
+        planovo: "Планово",
+        recommended: "Рекомендуется",
+        contraindicated: "Противопоказано",
+        discuss_with_doctor: "Обсудить с врачом",
+        test_antibodies: "Сдать анализ на антитела",
+        postpone: "Временно отложить"
+      };
+
+      function calculateVaccinePlan(patient) {
+        const plan = [];
+        const warnings = [];
+        const postponements = [];
+
+        if (patient.acuteInfection || patient.exacerbation) {
+          postponements.push({
+            reason: patient.acuteInfection ? "Острая инфекция / температура" : "Обострение хронического заболевания",
+            waitUntil: "через 2–4 недели после выздоровления / стихания обострения"
+          });
+        }
+
+        for (const [vaccineKey, vaccine] of Object.entries(VACCINE_CALENDAR.vaccines)) {
+          const decision = decideForVaccine(vaccineKey, vaccine, patient);
+          if (decision) {
+            if (decision.status === STATUS.POSTPONE) {
+              postponements.push({ vaccine: vaccine.name, reason: decision.reason, waitUntil: decision.waitUntil });
+            } else {
+              plan.push({
+                vaccineKey,
+                vaccine: vaccine.name,
+                type: vaccine.type,
+                diseases: vaccine.diseases,
+                status: decision.status,
+                statusLabel: STATUS_LABELS[decision.status],
+                timing: decision.timing,
+                notes: decision.notes,
+                alternativeTest: decision.alternativeTest,
+                priority: decision.priority || 0
+              });
+            }
+          }
+        }
+
+        checkLiveVaccineIntervals(plan, warnings);
+        plan.sort((a, b) => b.priority - a.priority);
+
+        return { success: true, plan, warnings, postponements };
+      }
+
+      function decideForVaccine(vaccineKey, vaccine, patient) {
+        if (vaccine.minAgeYears > patient.age) return null;
+
+        const allergyDecision = applyAllergyRules(vaccineKey, vaccine, patient);
+        if (allergyDecision) return allergyDecision;
+
+        if (patient.pregnancyStatus === "pregnant") {
+          const pregnancyDecision = applyPregnancyRules(vaccineKey, vaccine, patient);
+          if (pregnancyDecision) return pregnancyDecision;
+        }
+
+        if (vaccine.type === "живая" && (patient.immunodeficiency || patient.oncology)) {
+          return {
+            status: STATUS.CONTRAINDICATED,
+            timing: "противопоказано при иммуносупрессии",
+            notes: "Живые вакцины запрещены при иммунодефиците и онкологии.",
+            priority: 0
+          };
+        }
+
+        const historyDecision = applyHistoryRules(vaccineKey, vaccine, patient);
+        if (historyDecision) return historyDecision;
+
+        const specialDecision = applySpecialRules(vaccineKey, vaccine, patient);
+        if (specialDecision) return specialDecision;
+
+        const calendarDecision = applyCalendarRules(vaccineKey, vaccine, patient);
+        if (calendarDecision) return calendarDecision;
+
+        const riskDecision = applyRiskGroupRules(vaccineKey, vaccine, patient);
+        if (riskDecision) return riskDecision;
+
+        return null;
+      }
+
+      function applyAllergyRules(vaccineKey, vaccine, patient) {
+        if (!patient.allergies || patient.allergies.length === 0 || patient.allergies.includes("none")) return null;
+
+        for (const allergy of patient.allergies) {
+          const restriction = VACCINE_CALENDAR.allergyRestrictions[allergy];
+          if (restriction && restriction.contraindicated && restriction.contraindicated.includes(vaccineKey)) {
+            return {
+              status: STATUS.CONTRAINDICATED,
+              timing: "противопоказано из-за аллергии",
+              notes: restriction.note,
+              priority: 0
+            };
+          }
+        }
+        return null;
+      }
+
+      function applyPregnancyRules(vaccineKey, vaccine, patient) {
+        const pregnancyRules = VACCINE_CALENDAR.pregnancy;
+
+        if (pregnancyRules.allowed[vaccineKey]) {
+          const rule = pregnancyRules.allowed[vaccineKey];
+          return { status: STATUS.RECOMMENDED, timing: rule.timing, notes: rule.note, priority: 10 };
+        }
+
+        if (pregnancyRules.contraindicated.includes(vaccineKey)) {
+          return { status: STATUS.CONTRAINDICATED, timing: "противопоказано при беременности", priority: 0 };
+        }
+
+        return { status: STATUS.DISCUSS, timing: "только по решению врача", priority: 1 };
+      }
+
+      function applyHistoryRules(vaccineKey, vaccine, patient) {
+        const relevantDiseases = vaccine.diseases;
+        let allUnknown = true;
+        let needsTest = [];
+        let allImmune = true;
+        let anyRelevant = false;
+
+        for (const disease of relevantDiseases) {
+          const historyEntry = patient.history[disease];
+          if (!historyEntry) continue;
+
+          anyRelevant = true;
+
+          if (historyEntry.status === "sick" ||
+              historyEntry.status === "vaccinated" ||
+              historyEntry.status === "vaccinated_unknown_date") {
+            allUnknown = false;
+          } else if (historyEntry.status === "dont_know" || historyEntry.status === "not_vaccinated") {
+            allImmune = false;
+            if (historyEntry.status === "dont_know") {
+              const testInfo = VACCINE_CALENDAR.antibodyTests[disease];
+              if (testInfo) needsTest.push({ disease, test: testInfo.test });
+            }
+          }
+        }
+
+        if (!anyRelevant) return null;
+
+        if (allImmune && relevantDiseases.length > 0) {
+          return {
+            status: STATUS.PLANOVO,
+            timing: "вакцинация не требуется — есть иммунитет",
+            notes: "По данным анамнеза, вы болели или были привиты.",
+            priority: -1
+          };
+        }
+
+        if (allUnknown && needsTest.length > 0) {
+          return {
+            status: STATUS.TEST_ANTIBODIES,
+            timing: "сдать анализы перед решением о вакцинации",
+            alternativeTest: needsTest,
+            notes: "Вы не помните, болели ли вы или были привиты. Рекомендуем сдать анализы на антитела.",
+            priority: 5
+          };
+        }
+
+        return null;
+      }
+
+      function applySpecialRules(vaccineKey, vaccine, patient) {
+        if (patient.splenectomy) {
+          if (vaccineKey === "pneumo" || vaccineKey === "meningococcus" || vaccineKey === "hib") {
+            return {
+              status: STATUS.RECOMMENDED,
+              timing: "обязательно при спленэктомии",
+              notes: "Пациентам без селезёнки показана вакцинация против пневмококка, менингококка и гемофильной инфекции типа b из-за высокого риска инкапсулированных бактерий.",
+              priority: 9
+            };
+          }
+        }
+
+        if (patient.smoking && vaccineKey === "pneumo") {
+          return {
+            status: STATUS.RECOMMENDED,
+            timing: "рекомендуется курильщикам",
+            notes: "Курильщики имеют повышенный риск инвазивной пневмококковой инфекции.",
+            priority: 6
+          };
+        }
+
+        return null;
+      }
+
+      function applyCalendarRules(vaccineKey, vaccine, patient) {
+        if (vaccineKey === "dt") {
+          return { status: STATUS.PLANOVO, timing: "ревакцинация каждые 10 лет", notes: vaccine.notes, priority: 8 };
+        }
+        if (vaccineKey === "hep_b" && patient.age <= 55) {
+          return { status: STATUS.PLANOVO, timing: "по нацкалендарю до 55 лет", notes: vaccine.notes, priority: 8 };
+        }
+        if (vaccineKey === "mmr" && patient.age <= 35) {
+          return { status: STATUS.PLANOVO, timing: "по нацкалендарю 18–35 лет", notes: vaccine.notes, priority: 8 };
+        }
+        if (vaccineKey === "influenza") {
+          return { status: STATUS.PLANOVO, timing: "ежегодно", notes: vaccine.notes, priority: 7 };
+        }
+        if (vaccineKey === "covid19") {
+          return { status: STATUS.PLANOVO, timing: "по текущим рекомендациям Минздрава", notes: vaccine.notes, priority: 6 };
+        }
+        if (vaccineKey === "pneumo" && patient.age >= 65) {
+          return { status: STATUS.PLANOVO, timing: "с 65 лет однократно", notes: vaccine.notes, priority: 8 };
+        }
+        if (vaccineKey === "tick_borne_encephalitis" && VACCINE_CALENDAR.endemicRegions.includes(patient.region)) {
+          return { status: STATUS.RECOMMENDED, timing: "проживаете в эндемичном регионе", notes: vaccine.notes, priority: 8 };
+        }
+        return null;
+      }
+
+      function applyRiskGroupRules(vaccineKey, vaccine, patient) {
+        if (!patient.profession) return null;
+        const groupInfo = VACCINE_CALENDAR.riskGroups[patient.profession];
+        if (!groupInfo) return null;
+
+        const diseaseMatch = vaccine.diseases.some(d => groupInfo.vaccines.includes(d));
+        if (diseaseMatch) {
+          return {
+            status: STATUS.RECOMMENDED,
+            timing: "по эпидпоказаниям для вашей профессии",
+            notes: vaccine.notes,
+            priority: 7
+          };
+        }
+        return null;
+      }
+
+      function checkLiveVaccineIntervals(plan, warnings) {
+        const liveRules = VACCINE_CALENDAR.liveVaccines;
+        const liveVaccinesInPlan = plan.filter(p =>
+          liveRules.list.includes(p.vaccineKey) &&
+          p.status !== STATUS.CONTRAINDICATED
+        );
+
+        if (liveVaccinesInPlan.length > 1) {
+          warnings.push({
+            type: "live_vaccine_interval",
+            message: `В плане несколько живых вакцин: ${liveVaccinesInPlan.map(v => v.vaccine).join(", ")}. Если они не сделаны в один день — между ними минимум ${liveRules.intervalBetweenDifferent.days} дней.`
+          });
+        }
+      }
+
+      return { calculate: calculateVaccinePlan, STATUS, STATUS_LABELS };
+    })();
+
+    const historyConfig = {
+      "дифтерия": { name: "Дифтерия", group: "Б", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date"] },
+      "столбняк": { name: "Столбняк", group: "Б", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date"] },
+      "коклюш": { name: "Коклюш", group: "Б", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date"] },
+      "корь": { name: "Корь", group: "А", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date", "sick"] },
+      "краснуха": { name: "Краснуха", group: "А", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date", "sick"] },
+      "паротит": { name: "Паротит", group: "А", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date", "sick"] },
+      "гепатит_в": { name: "Гепатит В", group: "А", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date", "sick"] },
+      "грипп": { name: "Грипп (текущий сезон)", group: "В", options: ["vaccinated_this_season", "not_vaccinated"] },
+      "covid19": { name: "COVID-19", group: "В", options: ["vaccinated", "not_vaccinated"] },
+      "пневмококк": { name: "Пневмококк", group: "Г", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date"] },
+      "ветряная_оспа": { name: "Ветряная оспа", group: "А", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date", "sick"] },
+      "клещевой_энцефалит": { name: "Клещевой энцефалит", group: "Г", options: ["dont_know", "not_vaccinated", "vaccinated", "vaccinated_unknown_date"] }
+    };
+
+    let currentStep = 1;
+
+    document.querySelectorAll('.step-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const step = parseInt(tab.dataset.step);
+        if (step <= currentStep || tab.classList.contains('completed')) {
+          goToStep(step);
+        }
+      });
+    });
+
+    function goToStep(step) {
+      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.step-tab').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(`step-${step}`).classList.add('active');
+      document.querySelector(`.step-tab[data-step="${step}"]`).classList.add('active');
+
+      for (let i = 1; i < step; i++) {
+        document.querySelector(`.step-tab[data-step="${i}"]`).classList.add('completed');
+      }
+
+      currentStep = step;
+      window.scrollTo(0, 0);
+    }
+
+    function nextStep(step) {
+      if (step === 2) updatePregnancyVisibility();
+      if (step === 3) renderHistoryForm();
+      goToStep(step);
+    }
+
+    function prevStep(step) {
+      goToStep(step);
+    }
+
+    function updatePregnancyVisibility() {
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      const pregnancyStatus = document.querySelector('input[name="pregnancyStatus"]:checked')?.value;
+
+      const pregnancyGroup = document.getElementById('pregnancy-status-group');
+      const detailsGroup = document.getElementById('pregnancy-details-group');
+
+      pregnancyGroup.style.display = gender === 'female' ? 'block' : 'none';
+      detailsGroup.style.display = (gender === 'female' && pregnancyStatus === 'pregnant') ? 'block' : 'none';
+    }
+
+    document.querySelectorAll('input[name="gender"]').forEach(radio => {
+      radio.addEventListener('change', updatePregnancyVisibility);
+    });
+
+    document.querySelectorAll('input[name="pregnancyStatus"]').forEach(radio => {
+      radio.addEventListener('change', updatePregnancyVisibility);
+    });
+
+    const ageSlider = document.getElementById('age');
+    const ageNumber = document.getElementById('ageNumber');
+    const ageDisplay = document.getElementById('ageDisplay');
+
+    ageSlider.addEventListener('input', (e) => {
+      ageNumber.value = e.target.value;
+      ageDisplay.textContent = e.target.value;
+    });
+
+    ageNumber.addEventListener('input', (e) => {
+      let v = parseInt(e.target.value);
+      if (v < 18) v = 18;
+      if (v > 120) v = 120;
+      ageSlider.value = v;
+      ageDisplay.textContent = v;
+    });
+
+    document.querySelectorAll('input[name="allergy"]').forEach(checkbox => {
+      checkbox.addEventListener('change', (e) => {
+        if (e.target.value === 'none' && e.target.checked) {
+          document.querySelectorAll('input[name="allergy"]').forEach(cb => {
+            if (cb.value !== 'none') cb.checked = false;
+          });
+        } else if (e.target.value !== 'none' && e.target.checked) {
+          document.querySelector('input[name="allergy"][value="none"]').checked = false;
+        }
+      });
+    });
+
+    function renderHistoryForm() {
+      const container = document.getElementById('history-container');
+
+      container.innerHTML = Object.entries(historyConfig).map(([key, config]) => {
+        let optionsHtml = '';
+
+        if (config.options.includes('dont_know')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="dont_know" checked> Не помню</label>`;
+        }
+        if (config.options.includes('not_vaccinated')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="not_vaccinated"> Не привит(а)</label>`;
+        }
+        if (config.options.includes('vaccinated')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="vaccinated"> Привит(а)</label>`;
+          optionsHtml += `<div class="date-field" id="date_${key}" style="display: none;">
+            <input type="number" class="date-input" min="1950" max="2026">
+            <span class="date-label">Год вакцинации</span>
+          </div>`;
+        }
+        if (config.options.includes('vaccinated_unknown_date')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="vaccinated_unknown_date"> Привит(а), но не помню когда</label>`;
+        }
+        if (config.options.includes('sick')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="sick"> Переболел(а)</label>`;
+        }
+        if (config.options.includes('vaccinated_this_season')) {
+          optionsHtml += `<label><input type="radio" name="history_${key}" value="vaccinated_this_season"> Привит(а) в текущем сезоне</label>`;
+        }
+
+        return `
+          <div class="history-item">
+            <div class="history-item-title">${config.name}</div>
+            <div class="radio-group">${optionsHtml}</div>
+          </div>
+        `;
+      }).join('');
+
+      Object.keys(historyConfig).forEach(key => {
+        const radios = document.querySelectorAll(`input[name="history_${key}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            const dateField = document.getElementById(`date_${key}`);
+            if (dateField) {
+              dateField.style.display = e.target.value === 'vaccinated' ? 'block' : 'none';
+            }
+          });
+        });
+      });
+    }
+
+    function collectPatientData() {
+      const history = {};
+
+      Object.keys(historyConfig).forEach(key => {
+        const selected = document.querySelector(`input[name="history_${key}"]:checked`);
+        if (selected) {
+          const status = selected.value;
+          const entry = { status };
+
+          if (status === 'vaccinated') {
+            const dateInput = document.querySelector(`#date_${key} input`);
+            entry.year = dateInput ? dateInput.value : null;
+          }
+
+          history[key] = entry;
+        }
+      });
+
+      const allergies = [];
+      document.querySelectorAll('input[name="allergy"]:checked').forEach(cb => {
+        allergies.push(cb.value);
+      });
+
+      return {
+        gender: document.querySelector('input[name="gender"]:checked').value,
+        pregnancyStatus: document.querySelector('input[name="pregnancyStatus"]:checked')?.value || 'not_pregnant',
+        pregnancyWeeks: parseInt(document.getElementById('pregnancyWeeks').value) || null,
+        age: parseInt(document.getElementById('age').value),
+        birthDate: document.getElementById('birthDate').value || null,
+        region: document.getElementById('region').value,
+        profession: document.getElementById('profession').value,
+        travel: document.getElementById('travel').checked,
+        immunodeficiency: document.getElementById('immunodeficiency').checked,
+        oncology: document.getElementById('oncology').checked,
+        splenectomy: document.querySelector('input[name="splenectomy"]:checked').value === 'yes',
+        smoking: document.querySelector('input[name="smoking"]:checked').value === 'yes',
+        allergies: allergies,
+        acuteInfection: document.querySelector('input[name="acuteInfection"]:checked').value === 'yes',
+        exacerbation: document.querySelector('input[name="exacerbation"]:checked').value === 'yes',
+        history: history
+      };
+    }
+
+    function calculatePlan() {
+      const patient = collectPatientData();
+      const result = VaccineCalculator.calculate(patient);
+
+      if (!result.success) {
+        alert('Ошибка при расчёте плана');
+        return;
+      }
+
+      renderResult(result);
+      goToStep(4);
+    }
+
+    function renderResult(result) {
+      const container = document.getElementById('result-container');
+      let html = '';
+
+      html += `
+        <div class="color-legend">
+          <div class="color-legend-item"><div class="color-legend-swatch" style="background:#28a745"></div> Планово</div>
+          <div class="color-legend-item"><div class="color-legend-swatch" style="background:#007bff"></div> Рекомендуется</div>
+          <div class="color-legend-item"><div class="color-legend-swatch" style="background:#ffc107"></div> Обсудить с врачом</div>
+          <div class="color-legend-item"><div class="color-legend-swatch" style="background:#6c757d"></div> Сдать анализы</div>
+          <div class="color-legend-item"><div class="color-legend-swatch" style="background:#dc3545"></div> Противопоказано</div>
+        </div>
+      `;
+
+      if (result.postponements.length > 0) {
+        html += '<div class="result-group"><div class="result-group-title">⚠ Временно отложить</div>';
+        html += '<div class="warning-box"><ul>';
+        result.postponements.forEach(p => {
+          html += `<li><strong>${p.vaccine || 'Вакцинация'}</strong>: ${p.reason}. Ждать: ${p.waitUntil}</li>`;
+        });
+        html += '</ul></div></div>';
+      }
+
+      const groups = {
+        planovo: { title: "🟢 Плановые вакцинации", items: [] },
+        recommended: { title: "🔵 Рекомендуется по эпидпоказаниям", items: [] },
+        test_antibodies: { title: "⚪ Сдать анализы на антитела", items: [] },
+        discuss_with_doctor: { title: "🟡 Обсудить с врачом", items: [] },
+        contraindicated: { title: "🔴 Противопоказано", items: [] }
+      };
+
+      result.plan.forEach(item => {
+        if (item.status === 'planovo' && item.priority >= 0) {
+          groups.planovo.items.push(item);
+        } else if (item.status === 'recommended') {
+          groups.recommended.items.push(item);
+        } else if (item.status === 'test_antibodies') {
+          groups.test_antibodies.items.push(item);
+        } else if (item.status === 'discuss_with_doctor') {
+          groups.discuss_with_doctor.items.push(item);
+        } else if (item.status === 'contraindicated') {
+          groups.contraindicated.items.push(item);
+        }
+      });
+
+      Object.entries(groups).forEach(([key, group]) => {
+        if (group.items.length > 0) {
+          html += `<div class="result-group"><div class="result-group-title">${group.title}</div>`;
+          html += '<table class="result-table"><thead><tr><th>Вакцинация</th><th>Сроки</th><th>Примечания</th></tr></thead><tbody>';
+          group.items.forEach(item => {
+            html += `<tr class="row-${item.status}">
+              <td><strong>${item.vaccine}</strong></td>
+              <td>${item.timing}</td>
+              <td>${item.notes || ''}${item.alternativeTest ? '<br><small>Анализы: ' + item.alternativeTest.map(t => t.test).join(', ') + '</small>' : ''}</td>
+            </tr>`;
+          });
+          html += '</tbody></table></div>';
+        }
+      });
+
+      if (result.plan.length === 0 && result.postponements.length === 0) {
+        html += '<div class="info-box"><p>Вакцинация не требуется или все данные не заполнены.</p></div>';
+      }
+
+      if (result.warnings.length > 0) {
+        html += '<div class="result-group"><div class="result-group-title">⚠ Важные предупреждения</div>';
+        html += '<div class="warning-box"><ul>';
+        result.warnings.forEach(w => {
+          html += `<li>${w.message}</li>`;
+        });
+        html += '</ul></div></div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    function resetForm() {
+      if (confirm('Вы уверены? Все данные будут удалены.')) {
+        location.reload();
+      }
+    }
+
+    updatePregnancyVisibility();
+  </script>
+</body>
+</html>
