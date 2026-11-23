@@ -79,7 +79,14 @@
           "closes": "18:00"
         }
       ],
-      "medicalSpecialty": "Endocrine"
+      "medicalSpecialty": "Endocrine",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "150",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
     }
     </script>
 
@@ -635,7 +642,6 @@
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Исправление для карусели: инициализируем только когда секция становится видимой
             if (name === 'about' && !carouselInited) {
                 setTimeout(initCarousel, 50);
             }
@@ -693,7 +699,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // ===== КАРУСЕЛЬ ДОКУМЕНТОВ =====
         let carouselInited = false;
         function initCarousel() {
             const carousel = document.getElementById('docCarousel');
@@ -730,7 +735,6 @@
             carouselInited = true;
         }
 
-        // ===== КАЛЬКУЛЯТОРЫ =====
         function calculateBMI() {
             const weight = parseFloat(document.getElementById('bmi-weight').value);
             const height = parseFloat(document.getElementById('bmi-height').value) / 100;
