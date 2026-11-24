@@ -1,3 +1,8 @@
+/* ===== ГЛОБАЛЬНОЕ ПРАВИЛО: padding и border включаются в ширину элемента ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* Цветовые переменные: светлая тема */
 :root {
     --bg-color: #F7FAFC;
@@ -50,6 +55,11 @@
     --callout-border: #4ade80;
     --muted: #94a3b8;
     --ink-soft: #cbd5e1;
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -718,6 +728,7 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
 .show-more-btn:active {
     transform: translateY(0);
 }
+
 @media (max-width: 768px) {
     .hero { padding: 30px 15px; }
     .hero-inner {
@@ -747,7 +758,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
         text-align: center;
         padding: 14px 24px;
     }
-
     .menu {
         flex-direction: column;
         gap: 12px;
@@ -759,12 +769,10 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
         align-items: center;
     }
     .theme-toggle { margin-left: 0; }
-    
     .about-text { padding: 25px; }
     #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; font-size: 20px; }
     .price-table th, .price-table td { padding: 12px 14px; font-size: 0.9rem; }
     .card::after { right: 20px; bottom: 20px; font-size: 1.5rem; }
-    
     .messenger-buttons {
         flex-direction: row;
         bottom: 16px;
@@ -775,7 +783,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .messenger-btn { width: 46px; height: 46px; }
     .messenger-btn svg { width: 24px; height: 24px; }
     .messenger-btn::before { display: none; }
-    
     .clinic-grid { grid-template-columns: 1fr; }
     .warning-box { padding: 20px; }
     .carousel-wrapper { padding: 0 10px; }
@@ -783,9 +790,7 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .carousel-btn { width: 38px; height: 38px; font-size: 1.2rem; }
     .carousel-btn.prev { left: -5px; }
     .carousel-btn.next { right: -5px; }
-    
     .booking-wrapper iframe { height: 750px; }
-    
     .calc-inputs {
         grid-template-columns: 1fr;
     }
@@ -801,8 +806,6 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
     .calculator-box {
         padding: 20px 15px;
     }
-    
-    /* Футер на мобильном: каналы в одну строку с уменьшенным шрифтом */
     .footer-channels {
         font-size: 0.85rem;
         flex-wrap: nowrap;
@@ -816,9 +819,8 @@ footer .offer-link { font-weight: 800 !important; font-size: 1em !important; col
         white-space: nowrap;
     }
     footer > p:first-child {
-        display: none; /* скрываем старую строку каналов */
+        display: none;
     }
-    
     footer { padding-bottom: 80px; }
 }
 
